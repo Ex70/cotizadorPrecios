@@ -24,8 +24,12 @@ Route::get('/', function () {
 // });
 
 Route::get('/importar', [ExcelController::class, 'index']);
-Route::post('/import', [ExcelController::class, 'importData']);
+// Route::post('/import', [ExcelController::class, 'importData']);
 Route::get('/export', [ExcelController::class, 'exportData']);
 
 Route::get('/precios', [PreciosController::class, 'index']);
+Route::post('/import', [PreciosController::class, 'cotizar']);
 // Route::get('/precios', 'PreciosController@index');
+
+Route::get('get/{id?}', [PreciosController::class,'getCategorias'])->name('getCategorias');
+// Route::get('books/{id}',['as'=>'books.view','uses'=>'BOOKController@view']);

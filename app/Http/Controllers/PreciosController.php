@@ -24,8 +24,9 @@ class PreciosController extends Controller
     public function cotizar(Request $request){
         $test = $request->get('filtro1');
         $test2 = $request->get('filtro2');
-        $skus = DB::table('productos')->select('id','sku')->where('estatus','Activo')->where('categoria',$test)->where('subcategoria',$test2)->orderBy('id', 'ASC')->get()->toArray();
-        // dd($skus);
+        // $skus = DB::table('productos')->select('id','sku')->where('estatus','Activo')->where('categoria',$test)->where('subcategoria',$test2)->orderBy('id', 'ASC')->get()->toArray();
+        $skus = DB::table('productos')->select('id','sku')->where('id','>=','21001')->where('id','<=','24000')->orderBy('id', 'ASC')->get()->toArray();
+        // dd(sizeof($skus));
         
         // $skus = DB::table('productos')->select('id','sku')->where('estatus','Activo')->orderBy('id', 'DESC')->get()->toArray();
         $client = new Client();
@@ -34,8 +35,8 @@ class PreciosController extends Controller
             $sku = $skus[$i]->sku;
             if($sku==""){
                 $sku="NOEXISTE";
-                print_r($skus[$i]->id);
-                print_r("NO EXISTE");
+                // dd($skus[$i]->id);
+                // print_r("NO EXISTE");
             }
             $url = "https://www.abasteo.mx/api/v0.1/catalog/filter?type=search&id=".$sku;
             $res = $client->request('GET', $url);
@@ -48,8 +49,9 @@ class PreciosController extends Controller
             // $precios = array_merge($precios, $data);
             // print_r("\n");
         }
-        // dd($data['precios']);
+        // dd($precios);
         $data['precios'] = $precios;
+        // dd($data['precios']);
         $data['categoria'] = $request->get('filtro1');
         $data['subcategoria'] = $request->get('filtro2');
         $data['productos'] = DB::table('productos')->select('id','descripcion')->where('estatus','Activo')->where('categoria',$test)->where('subcategoria',$test2)->orderBy('id', 'ASC')->get()->toArray();

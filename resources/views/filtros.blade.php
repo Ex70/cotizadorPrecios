@@ -10,13 +10,13 @@
 <body>
 <div class="container">
    <div class="card-header bg-secondary dark bgsize-darken-4 white card-header">
-       <h4 class="text-white">Handling Excel Data using PHPSpreadsheet in Laravel</h4>
+       <h4 class="text-white">EHS Tecnologías</h4>
    </div>
    <div class="row justify-content-centre" style="margin-top: 4%">
        <div class="col-md-8">
            <div class="card">
                <div class="card-header bgsize-primary-4 white card-header">
-                   <h4 class="card-title">Import Excel Data</h4>
+                   <h4 class="card-title">Cotizador de precios</h4>
                </div>
                <div class="card-body">
                    @if ($message = Session::get('success'))
@@ -29,7 +29,7 @@
                    <form action="{{url("import")}}" method="post" enctype="multipart/form-data">
                        @csrf
                        <fieldset>
-                           <label>Select File to Upload  <small class="warning text-muted">{{__('Please upload only Excel (.xlsx or .xls) files')}}</small></label>
+                           <label>Seleccione una categoría y subcategoría para consultar</label>
                            <div class="input-group">
                             <select name="filtro1" id="filtro1" class="form-control">
                                 <option value="x">Todas las categorias</option>
@@ -56,29 +56,28 @@
            <br />
            <div class="card">
                <div class="card-header bgsize-primary-4 white card-header">
-                   <h4 class="card-title">Customer Data Table</h4>
+                   <h4 class="card-title">Precios</h4>
                </div>
                <div class="card-body">
-                   <div class="pull-right">
+                   <!-- <div class="pull-right">
                        <a href="{{url("export")}}" class="btn btn-primary" style="margin-left:85%">Export Excel Data</a>
-                   </div>
+                   </div> -->
                    <div class=" card-content table-responsive">
                        <table id="example" class="table table-striped table-bordered" style="width:100%">
                            <thead>
                            <th>Precios</th>
-                           <th>Gender</th>
+                           <!-- <th>Gender</th>
                            <th>Address</th>
                            <th>City</th>
                            <th>Postal Code</th>
-                           <th>Country</th>
+                           <th>Country</th> -->
                            </thead>
                            <tbody>
                            @if(!empty($data['productos']))
-                               @foreach($data['productos'] as $key=>$row)
+                               @foreach($data['precios'] as $key=>$row)
                                    <tr>
-                                       <!-- <td>{{ $row->descripcion }}</td> -->
                                        <td>{{$data['precios'][$key]}}</td>
-                                       <!-- <td>{{$key}}</td> -->
+                                       
                                    </tr>
                                @endforeach
                            @else

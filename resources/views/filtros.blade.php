@@ -42,7 +42,7 @@
                                 
                             </select>
                                <div class="input-group-append" id="button-addon2">
-                                   <button class="btn btn-primary square" type="submit"><i class="ft-upload mr-1"></i> Upload</button>
+                                   <button class="btn btn-primary square" type="submit"><i class="ft-upload mr-1"></i>Consultar</button>
                                </div>
                            </div>
                        </fieldset>

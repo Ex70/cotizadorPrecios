@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\MiPCController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,9 @@ Route::get('/importar', [ExcelController::class, 'index']);
 Route::get('/export', [ExcelController::class, 'exportData']);
 
 Route::get('/precios', [PreciosController::class, 'index']);
+Route::get('/preciosmipc', [MiPCController::class, 'index']);
 Route::post('/import', [PreciosController::class, 'cotizar']);
+Route::post('/importMiPC', [MiPCController::class, 'cotizar']);
 // Route::get('/precios', 'PreciosController@index');
 
 Route::get('get/{id?}', [PreciosController::class,'getCategorias'])->name('getCategorias');

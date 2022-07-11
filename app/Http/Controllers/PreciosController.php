@@ -25,7 +25,7 @@ class PreciosController extends Controller
         $test = $request->get('filtro1');
         $test2 = $request->get('filtro2');
         // $skus = DB::table('productos')->select('id','sku')->where('estatus','Activo')->where('categoria',$test)->where('subcategoria',$test2)->orderBy('id', 'ASC')->get()->toArray();
-        $skus = DB::table('productos')->select('id','sku')->where('id','>=','38001')->where('id','<=','40000')->orderBy('id', 'ASC')->get()->toArray();
+        $skus = DB::table('productos')->select('id','sku')->where('id','>=','0')->where('id','<=','100')->orderBy('id', 'ASC')->get()->toArray();
         // dd(sizeof($skus));
         
         // $skus = DB::table('productos')->select('id','sku')->where('estatus','Activo')->orderBy('id', 'DESC')->get()->toArray();

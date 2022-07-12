@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MiPCController;
+use App\Http\Controllers\ScraperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,7 @@ Route::get('/', function () {
 //     return view('importar');
 // });
 
+Route::get('/scraping', [ScraperController::class, 'index']);
 Route::get('/importar', [ExcelController::class, 'index']);
 // Route::post('/import', [ExcelController::class, 'importData']);
 Route::get('/export', [ExcelController::class, 'exportData']);

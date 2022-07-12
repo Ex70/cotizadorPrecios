@@ -16,7 +16,7 @@ class MiPCController extends Controller{
     public function cotizar(Request $request){
         $test = $request->get('filtro1');
         $test2 = $request->get('filtro2');
-        $skus = DB::table('productos')->select('id','sku')->where('id','>=','9001')->where('id','<=','11000')->orderBy('id', 'ASC')->get()->toArray();
+        $skus = DB::table('productos')->select('id','sku')->where('id','>=','21001')->where('id','<=','23000')->orderBy('id', 'ASC')->get()->toArray();
         $client = new Client();
         $precios = [];
         for($i=0;$i<sizeof($skus);$i++){

@@ -25,15 +25,17 @@ Route::get('/', function () {
 //     return view('importar');
 // });
 
-Route::get('/scraping', [ScraperController::class, 'index']);
+// Route::get('/scraping', [ScraperController::class, 'index']);
 Route::get('/importar', [ExcelController::class, 'index']);
 // Route::post('/import', [ExcelController::class, 'importData']);
 Route::get('/export', [ExcelController::class, 'exportData']);
 
 Route::get('/precios', [PreciosController::class, 'index']);
 Route::get('/preciosmipc', [MiPCController::class, 'index']);
+Route::get('/precioscp', [ScraperController::class, 'index']);
 Route::post('/import', [PreciosController::class, 'cotizar']);
 Route::post('/importMiPC', [MiPCController::class, 'cotizar']);
+Route::post('/importCyberpuerta', [ScraperController::class, 'cotizar']);
 // Route::get('/precios', 'PreciosController@index');
 
 Route::get('get/{id?}', [PreciosController::class,'getCategorias'])->name('getCategorias');

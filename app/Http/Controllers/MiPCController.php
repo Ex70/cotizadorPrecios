@@ -16,7 +16,7 @@ class MiPCController extends Controller{
     public function cotizar(Request $request){
         $test = $request->get('filtro1');
         $test2 = $request->get('filtro2');
-        $skus = DB::table('productos')->select('id','sku')->where('id','>=','21001')->where('id','<=','23000')->orderBy('id', 'ASC')->get()->toArray();
+        $skus = DB::table('productos')->select('id','sku')->where('id','>=','39001')->where('id','<=','40000')->orderBy('id', 'ASC')->get()->toArray();
         $client = new Client();
         $precios = [];
         for($i=0;$i<sizeof($skus);$i++){
@@ -43,32 +43,25 @@ class MiPCController extends Controller{
 
             // print_r(count($data));
             if(count($data)>0){
-                if(count($data)>=4){
-                    // echo $data->price;
-                    // $clave = array_search('price', $data);
-                    // echo " -- ";
-                    // echo $clave;
-                    // echo ".".$sku;
-                    // print_r($data);
-                    $precios[$i] = $data[3]['price'];
+                if(count($data)>=5){
+                    $precios[$i] = $data[4]['price'];
                 }else{
-                    if(count($data)==3){
-                        $precios[$i] = $data[2]['price'];
+                    if(count($data)>=4){
+                        $precios[$i] = $data[3]['price'];
                     }else{
-                        if(count($data)==2){
-                            $precios[$i] = $data[1]['price'];
+                        if(count($data)==3){
+                            $precios[$i] = $data[2]['price'];
                         }else{
-                            // if(in_array("price",$data[0])){
-                            //     dd ("Tiene precio");
-                            // }else{
-                            //     echo ("No tiene precio");
-                            // }
-                            if(in_array("price",$data[0])){
-                                if($data[0]['price']){
-                                    $precios[$i] = $data[0]['price'];
-                                }
+                            if(count($data)==2){
+                                $precios[$i] = $data[1]['price'];
                             }else{
-                                $precios[$i] = 0;
+                                if(in_array("price",$data[0])){
+                                    if($data[0]['price']){
+                                        $precios[$i] = $data[0]['price'];
+                                    }
+                                }else{
+                                    $precios[$i] = 0;
+                                }
                             }
                         }
                     }

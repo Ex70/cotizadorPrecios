@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MiPCController;
+use App\Http\Controllers\ZegucomController;
 use App\Http\Controllers\ScraperController;
+use App\Http\Controllers\GrupoDecmeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +38,11 @@ Route::get('/precioscp', [ScraperController::class, 'index']);
 Route::post('/import', [PreciosController::class, 'cotizar']);
 Route::post('/importMiPC', [MiPCController::class, 'cotizar']);
 Route::post('/importCyberpuerta', [ScraperController::class, 'cotizar']);
+Route::get('/precioszegucom', [ZegucomController::class, 'index']);
+Route::post('/importZegucom', [ZegucomController::class, 'cotizar']);
+Route::get('/preciosgrupodecme', [GrupoDecmeController::class, 'index']);
+// Route::post('/importGrupoDecme', [GrupoDecmeController::class, 'cotizar']);
+Route::post('/importGrupoDecme', [GrupoDecmeController::class, 'llenadoJSON']);
 // Route::get('/precios', 'PreciosController@index');
 
 Route::get('get/{id?}', [PreciosController::class,'getCategorias'])->name('getCategorias');

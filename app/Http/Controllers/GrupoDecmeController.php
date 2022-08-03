@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
+use App\Models\totalesDecme;
 
 class GrupoDecmeController extends Controller
 {
@@ -90,12 +91,23 @@ class GrupoDecmeController extends Controller
         $client = new Client();
         $precios = [];
         // $skus=2;
-        // for($i=0;$i<sizeof($skus);$i++){
-        $url = "http://www.grupo-decme.myshopify.com/products.json?limit=250&page=40";
-        $res = $client->request('GET', $url);
-        $result = $res->getBody();
-        $data = json_decode($result, true);
-        dd($data);
+        for($i=0;$i<41;$i++){
+            // $url = "http://www.grupo-decme.myshopify.com/products.json?limit=250&page=".$i;
+            $url = "http://www.grupo-decme.myshopify.com/products.json?limit=250&page=1";
+            $res = $client->request('GET', $url);
+            $result = $res->getBody();
+            $data = json_decode($result, true);
+            $productos = $data['products'];
+            dd($data);
+            for($j=0;$j<sizeof($productos)-1;$j++){
+                totalesDecme::create([
+                    "title" => $productos[$j]['title'],
+                    "sku" => $productos[$j]['variants'][0]['sku'],
+                    "precio" => $productos[$j]['variants'][0]['price']
+                ]);
+            }
+        }
+        // dd($data['products']);
 
         // dd($data['precios']);
         

@@ -34,7 +34,7 @@
                             <select name="filtro1" id="filtro1" class="form-control">
                                 <option value="x">Todas las categorias</option>
                                 @foreach($data['categorias'] as $row)
-                                    <option value="{{$row->categoria}}">{{$row->categoria}}</option>
+                                    <option value="{{$row->id}}">{{$row->nombre}}</option>
                                 @endforeach
                             </select>
                             <select name="filtro2" id="llenar" class="form-control">
@@ -59,25 +59,23 @@
                    <h4 class="card-title">Precios</h4>
                </div>
                <div class="card-body">
-                   <!-- <div class="pull-right">
-                       <a href="{{url("export")}}" class="btn btn-primary" style="margin-left:85%">Export Excel Data</a>
-                   </div> -->
                    <div class=" card-content table-responsive">
                        <table id="example" class="table table-striped table-bordered" style="width:100%">
                            <thead>
-                           <th>Precios</th>
-                           <!-- <th>Gender</th>
-                           <th>Address</th>
-                           <th>City</th>
-                           <th>Postal Code</th>
-                           <th>Country</th> -->
+                            <th>Clave CT</th>
+                            <th>SKU</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <!-- <th>Abasteo</th> -->
                            </thead>
                            <tbody>
                            @if(!empty($data['productos']))
-                               @foreach($data['precios'] as $key=>$row)
+                               @foreach($data['productos'] as $key=>$row)
                                    <tr>
-                                       <td>{{$data['precios'][$key]}}</td>
-                                       
+                                       <td>{{$row->clave_ct}}</td>
+                                       <td>{{$row->sku}}</td>
+                                       <td>{{$row->nombre}}</td>
+                                       <td>{{$row->precio_unitario}}</td>
                                    </tr>
                                @endforeach
                            @else
@@ -94,40 +92,30 @@
    </div>
    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
    <script>
-       $(document).ready(function() {
-        //    $('#example').DataTable();
-
+        $(document).ready(function() {
             $("#filtro1").change(function () {    
                 var id = $(this).val();
+                $("#llenar option").remove();
+                $('#llenar ').append('<option value="y" id="llenar2">Todas las subcategorias</option>');
                 var url = '{{ route("getCategorias", ":id") }}';
                 url = url.replace(':id', id);
                 $.ajax({
-                // var url = '{{ route("getCategorias", ":categoria") }}';
-                // var id = $(this).val();
-                // url = url.replace(':categoria', id),
-                // url: "{{ route('getCategorias') }}",
-                url: url,
-                type: 'get',
-                dataType: 'json',
-                success: function(response){
-                // type: 'POST',
-                // data: {
-                //     _token: "{{ csrf_token() }}"
-                // },
-                // success: function (data) {
-                    var newOption = '';
+                    url: url,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response){
+                        var newOption = '';
                         $.each(response, function (k, category) {
-                            newOption += '<option value="' + category.subcategoria + '">' + category.subcategoria + '</option>';
+                            newOption += '<option value="' + category.id + '">' + category.nombre + '</option>';
                         });
                         $('#llenar').append(newOption);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
             });
         });
-       } );
-
    </script>
 </body>
 </html>

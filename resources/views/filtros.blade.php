@@ -61,16 +61,21 @@
                     <div class=" card-content table-responsive">
                         <table id="example" class="table table-striped table-bordered" style="width:100%">
                             <thead>
+                                <th>ID</th>
                                 <th>Clave CT</th>
                                 <th>SKU</th>
                                 <th>Producto</th>
-                                <th>Precio</th>
+                                <th>Precio CT</th>
                                 <th>Abasteo</th>
+                                <th>Cyberpuerta</th>
+                                <th>MiPC</th>
+                                <th>Zegucom</th>
                             </thead>
                             <tbody>
                                 @if(!empty($data['productos']))
                                     @foreach($data['productos'] as $key=>$row)
                                         <tr>
+                                            <td>{{$key}}</td>
                                             <td>{{$row->clave_ct}}</td>
                                             <td>{{$row->sku}}</td>
                                             <td>{{$row->nombre}}</td>
@@ -78,7 +83,22 @@
                                             @if(!empty($data['abasteo'][$key]))
                                                 <td>{{$data['abasteo'][$key]}}</td>
                                             @else
-                                                <td></td>
+                                                <td>0</td>
+                                            @endif
+                                            @if(!empty($data['cyberpuerta'][$key]))
+                                                <td>{{$data['cyberpuerta'][$key]}}</td>
+                                            @else
+                                                <td>0</td>
+                                            @endif
+                                            @if(!empty($data['mipc'][$key]))
+                                                <td>{{$data['mipc'][$key]}}</td>
+                                            @else
+                                                <td>0</td>
+                                            @endif
+                                            @if(!empty($data['zegucom'][$key]))
+                                                <td>{{$data['zegucom'][$key]}}</td>
+                                            @else
+                                                <td>0</td>
                                             @endif
                                         </tr>
                                     @endforeach

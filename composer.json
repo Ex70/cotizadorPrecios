@@ -7,11 +7,13 @@
     "require": {
         "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.4",
+        "html2text/html2text": "^4.3",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "phpoffice/phpspreadsheet": "dev-NumberFormatMask-Helpers",
-        "weidner/goutte": "^2.2"
+        "weidner/goutte": "^2.2",
+        "yajra/laravel-datatables-oracle": "^10.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

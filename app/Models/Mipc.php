@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Abasteo extends Model
+class Mipc extends Model
 {
     use HasFactory;
 
-    protected $table = 'abasteo';
+    protected $table = 'mipc';
 
     protected $fillable = [
         'clave_ct',

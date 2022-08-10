@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mipc;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
@@ -13,14 +14,14 @@ class MiPCController extends Controller{
         return view('filtrosmipc',compact('data'));
     }
 
-    public function cotizar(Request $request){
-        $test = $request->get('filtro1');
-        $test2 = $request->get('filtro2');
-        $skus = DB::table('productos')->select('id','sku')->where('id','>=','39001')->where('id','<=','40000')->orderBy('id', 'ASC')->get()->toArray();
+    public function cotizar($productos){
+        set_time_limit(0);
+        $remove = array(" ","  ","   ","    ", "(", ")", "$", "*", "/",",");
         $client = new Client();
         $precios = [];
-        for($i=0;$i<sizeof($skus);$i++){
-            $sku = $skus[$i]->sku;
+        for($i=0;$i<sizeof($productos);$i++){
+            $sku = $productos [$i]->sku;
+            $clave_ct = $productos[$i]->clave_ct;
             if($sku==""){
                 $sku="NOEXISTE";
             }
@@ -28,36 +29,88 @@ class MiPCController extends Controller{
             $res = $client->request('GET', $url);
             $result = $res->getBody();
             $data = json_decode($result, true);
-            // $results = $this->searchJson( $data , 'price' );
-            // dd($results);
-            // print_r( $results );
-            echo $sku." - ";
-
-
-            // $results = array_filter($data['price'], function($data) {
-            //     return $data['price'];
-            // });
-            // dd($results);
-
             $precios[$i] = $data;
-
-            // print_r(count($data));
             if(count($data)>0){
                 if(count($data)>=5){
-                    $precios[$i] = $data[4]['price'];
+                    if(strpos(str_replace($remove, "", strip_tags($data[4]['price'])), "PrecioEspecial") !== false){
+                        $string = str_replace($remove, "", strip_tags($data[4]['price']));
+                        $start = 'PrecioEspecial';
+                        $end = 'PrecioRegular';
+                        $startpos = strpos($string, $start) + strlen($start);
+                        if (strpos($string, $start) !== false) {
+                            $endpos = strpos($string, $end, $startpos);
+                            if (strpos($string, $end, $startpos) !== false) {
+                                $precios[$i] = substr($string, $startpos, $endpos - $startpos);
+                            }
+                        }
+                    } else{
+                        $precios[$i] = str_replace($remove, "", strip_tags($data[4]['price']));
+                    }
                 }else{
                     if(count($data)>=4){
-                        $precios[$i] = $data[3]['price'];
+                        if(strpos(str_replace($remove, "", strip_tags($data[3]['price'])), "PrecioEspecial") !== false){
+                            $string = str_replace($remove, "", strip_tags($data[3]['price']));
+                            $start = 'PrecioEspecial';
+                            $end = 'PrecioRegular';
+                            $startpos = strpos($string, $start) + strlen($start);
+                            if (strpos($string, $start) !== false) {
+                                $endpos = strpos($string, $end, $startpos);
+                                if (strpos($string, $end, $startpos) !== false) {
+                                    $precios[$i] = substr($string, $startpos, $endpos - $startpos);
+                                }
+                            }
+                        } else{
+                            $precios[$i] = str_replace($remove, "", strip_tags($data[3]['price']));
+                        }
                     }else{
                         if(count($data)==3){
-                            $precios[$i] = $data[2]['price'];
+                            if(strpos(str_replace($remove, "", strip_tags($data[2]['price'])), "PrecioEspecial") !== false){
+                                $string = str_replace($remove, "", strip_tags($data[2]['price']));
+                                $start = 'PrecioEspecial';
+                                $end = 'PrecioRegular';
+                                $startpos = strpos($string, $start) + strlen($start);
+                                if (strpos($string, $start) !== false) {
+                                    $endpos = strpos($string, $end, $startpos);
+                                    if (strpos($string, $end, $startpos) !== false) {
+                                        $precios[$i] = substr($string, $startpos, $endpos - $startpos);
+                                    }
+                                }
+                            } else{
+                                $precios[$i] = str_replace($remove, "", strip_tags($data[2]['price']));
+                            }
                         }else{
                             if(count($data)==2){
-                                $precios[$i] = $data[1]['price'];
+                                if(strpos(str_replace($remove, "", strip_tags($data[1]['price'])), "PrecioEspecial") !== false){
+                                    $string = str_replace($remove, "", strip_tags($data[1]['price']));
+                                    $start = 'PrecioEspecial';
+                                    $end = 'PrecioRegular';
+                                    $startpos = strpos($string, $start) + strlen($start);
+                                    if (strpos($string, $start) !== false) {
+                                        $endpos = strpos($string, $end, $startpos);
+                                        if (strpos($string, $end, $startpos) !== false) {
+                                            $precios[$i] = substr($string, $startpos, $endpos - $startpos);
+                                        }
+                                    }
+                                } else{
+                                    $precios[$i] = str_replace($remove, "", strip_tags($data[1]['price']));
+                                }
                             }else{
                                 if(in_array("price",$data[0])){
                                     if($data[0]['price']){
-                                        $precios[$i] = $data[0]['price'];
+                                        if(strpos(str_replace($remove, "", strip_tags($data[0]['price'])), "PrecioEspecial") !== false){
+                                            $string = str_replace($remove, "", strip_tags($data[0]['price']));
+                                            $start = 'PrecioEspecial';
+                                            $end = 'PrecioRegular';
+                                            $startpos = strpos($string, $start) + strlen($start);
+                                            if (strpos($string, $start) !== false) {
+                                                $endpos = strpos($string, $end, $startpos);
+                                                if (strpos($string, $end, $startpos) !== false) {
+                                                    $precios[$i] = substr($string, $startpos, $endpos - $startpos);
+                                                }
+                                            }
+                                        } else{
+                                            $precios[$i] = str_replace($remove, "", strip_tags($data[0]['price']));
+                                        }
                                     }
                                 }else{
                                     $precios[$i] = 0;
@@ -65,29 +118,16 @@ class MiPCController extends Controller{
                             }
                         }
                     }
-                }    
+                }
             }else{
                 $precios[$i] = 0;
             }
-            // $precios[$i] = $data[1]['price'];
-            // dd($data[1]['price']);
-            // dd($precios);
-            // echo $precio;
-            // print_r($sku);
-            // print_r(" - ".$data['price'][0]);
-            // $precios[$i]= $data['price'][0];
-            // $precios = array_merge($precios, $data);
-            // print_r("\n");
+            $productoMiPC = Mipc::updateOrCreate(
+                ['sku'=>$sku, 'clave_ct'=>$clave_ct],
+                ['precio_unitario'=>$precios[$i]]
+            );
         }
-        // dd($precios);
-        $data['precios'] = $precios;
-        // dd($data['precios']);
-        $data['categoria'] = $request->get('filtro1');
-        $data['subcategoria'] = $request->get('filtro2');
-        $data['productos'] = DB::table('productos')->select('id','descripcion')->where('estatus','Activo')->where('categoria',$test)->where('subcategoria',$test2)->orderBy('id', 'ASC')->get()->toArray();
-        $data['categorias'] = DB::table('productos')->distinct()->get(['categoria']);
-        $data['subcategorias'] = DB::table('productos')->distinct()->get(['subcategoria']);
-        return view('filtrosmipc',compact('data'));
+        return $precios;
     }
 
     function searchJson( $obj, $value ) {

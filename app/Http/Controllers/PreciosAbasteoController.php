@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Abasteo;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 
@@ -84,15 +85,11 @@ class PreciosAbasteoController extends Controller
     }
 
     public function cotizar($productos){
-        // $client = new Client();
-        // $res = $client->request('GET', 'https://www.abasteo.mx/api/v0.1/catalog/filter?type=search&id=VENTO120-BKCW');
-        // $result = $res->getBody();
-        // $data = json_decode($result, true);
-        // dd($data['price']);
-
+        set_time_limit(0);
         $client = new Client();
-        for($i=0;$i<sizeof($productos)-1;$i++){
+        for($i=0;$i<sizeof($productos);$i++){
             $sku = $productos[$i]->sku;
+            $clave_ct = $productos[$i]->clave_ct;
             if($sku==""){
                 $sku="NOEXISTE";
                 print_r($productos[$i]->id);
@@ -101,12 +98,11 @@ class PreciosAbasteoController extends Controller
             $res = $client->request('GET', $url);
             $result = $res->getBody();
             $data = json_decode($result, true);
-            // print_r($sku);
-            // print_r(" - ".$data['price'][0]);
-            // print_r("\n");
-            // echo "-";
-            // print_r($url);
             $precios[$i]= $data['price'][0];
+            $productoAbasteo = Abasteo::updateOrCreate(
+                ['sku'=>$sku, 'clave_ct'=>$clave_ct],
+                ['precio_unitario'=>$data['price'][0]]
+            );
         }
         return $precios;
     }

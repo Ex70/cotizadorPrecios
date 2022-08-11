@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html>
 <head>
     <title>Cotizador de pagos</title>
@@ -6,12 +6,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" />
-</head>
-<body>
-    <div class="container">
-    <div class="card-header bg-secondary dark bgsize-darken-4 white card-header">
-        <h4 class="text-white">EHS Tecnologías</h4>
-    </div>
+</head> --}}
+@extends("layouts.app")
+@section("style")
+    <link href="assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet"/>
+@endsection
+
+@section("wrapper")
+{{-- <body> --}}
+    <div class="page-wrapper">
+        <div class="page-content">
     <div class="row justify-content-centre" style="margin-top: 4%">
         <div class="col-md-8">
             <div class="card">
@@ -114,6 +118,7 @@
             </div>
         </div>
     </div>
+        </div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script>
         $(document).ready(function() {
@@ -141,5 +146,14 @@
             });
         });
     </script>
-</body>
-</html>
+
+@endsection
+
+@section("script")
+    <script src="assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="assets/plugins/chartjs/js/Chart.min.js"></script>
+    <script src="assets/plugins/chartjs/js/Chart.extension.js"></script>
+    <script src="assets/plugins/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
+    <script src="assets/js/index.js"></script>
+@endsection

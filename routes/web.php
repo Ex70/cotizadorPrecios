@@ -7,6 +7,7 @@ use App\Http\Controllers\MiPCController;
 use App\Http\Controllers\ZegucomController;
 use App\Http\Controllers\ScraperController;
 use App\Http\Controllers\GrupoDecmeController;
+use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +49,9 @@ Route::post('/importGrupoDecme', [GrupoDecmeController::class, 'llenadoJSON']);
 Route::get('get/{id?}', [PreciosController::class,'getCategorias'])->name('getCategorias');
 // Route::get('books/{id}',['as'=>'books.view','uses'=>'BOOKController@view']);
 
+Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');
 
+Route::resource('projects', ProjectController::class);
 
 
 

@@ -46,7 +46,7 @@
 		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
 		<!--End Back To Top Button-->
 		<footer class="page-footer">
-			<p class="mb-0">Copyright © 2021. All right reserved.</p>
+			<p class="mb-0">Copyright © 2022. Todos los derechos reservados.</p>
 		</footer>
 	</div>
 	<!--end wrapper-->
@@ -109,6 +109,37 @@
                     </div>
                     <div class="col">
                         <div class="indigator headercolor8" id="headercolor8"></div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <h6 class="mb-0">Sidebar Colors</h6>
+            <hr/>
+            <div class="header-colors-indigators">
+                <div class="row row-cols-auto g-3">
+                    <div class="col">
+                        <div class="indigator sidebarcolor1" id="sidebarcolor1"></div>
+                    </div>
+                    <div class="col">
+                        <div class="indigator sidebarcolor2" id="sidebarcolor2"></div>
+                    </div>
+                    <div class="col">
+                        <div class="indigator sidebarcolor3" id="sidebarcolor3"></div>
+                    </div>
+                    <div class="col">
+                        <div class="indigator sidebarcolor4" id="sidebarcolor4"></div>
+                    </div>
+                    <div class="col">
+                        <div class="indigator sidebarcolor5" id="sidebarcolor5"></div>
+                    </div>
+                    <div class="col">
+                        <div class="indigator sidebarcolor6" id="sidebarcolor6"></div>
+                    </div>
+                    <div class="col">
+                        <div class="indigator sidebarcolor7" id="sidebarcolor7"></div>
+                    </div>
+                    <div class="col">
+                        <div class="indigator sidebarcolor8" id="sidebarcolor8"></div>
                     </div>
                 </div>
             </div>

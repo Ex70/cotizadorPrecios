@@ -273,7 +273,7 @@
                                 <div class="d-flex">
                                     <div class="flex-grow-1 me-2">
                                         <p class="mb-0 chat-time text-end">you, 3:14 PM</p>
-                                        <p class="chat-right-msg">i purchased dashtreme admin template from themeforest. it is very good product for web application</p>
+                                        <p class="chat-right-msg">i purchased Rocker admin template from themeforest. it is very good product for web application</p>
                                     </div>
                                 </div>
                             </div>

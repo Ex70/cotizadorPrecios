@@ -13,13 +13,16 @@ class ProjectsImport implements ToModel, WithHeadingRow
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function model(array $row)
-    {
+    public function model(array $row){
         return new Project([
             'name'     => $row['name'],
             'introduction'    => $row['introduction'],
             'location'    => $row['location'],
             'cost'    => $row['cost']
         ]);
+    }
+
+    public function headingRow(): int {
+        return 4;
     }
 }

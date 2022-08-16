@@ -8,6 +8,7 @@ use App\Http\Controllers\ZegucomController;
 use App\Http\Controllers\ScraperController;
 use App\Http\Controllers\GrupoDecmeController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TopsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,11 +51,21 @@ Route::get('get/{id?}', [PreciosController::class,'getCategorias'])->name('getCa
 // Route::get('books/{id}',['as'=>'books.view','uses'=>'BOOKController@view']);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');
-
 Route::resource('projects', ProjectController::class);
 
+Route::post('tops/importTops', [TopsController::class, 'importTops'])->name('importTops');
+Route::post('tops', [TopsController::class, 'index'])->name('consultarTops');
+Route::get('tops', [TopsController::class, 'index'])->name('top100');
+// Route::get('tops/importTops', [TopsController::class, 'importTops'])->name('importTops');
+// Route::resource('tops', TopsController::class);
+Route::get('/table-datatable', function () {
+    return view('table-datatable');
+});
 
 
+Route::get('subir-tops', function () {
+    return view('file-upload');
+});
 
 
 Route::get('/', function () {
@@ -101,6 +112,20 @@ Route::get('/charts-chartjs', function () {
 Route::get('/charts-highcharts', function () {
     return view('charts-highcharts');
 });
+/*ecommerce*/
+Route::get('/ecommerce-products', function () {
+    return view('ecommerce-products');
+});
+Route::get('/ecommerce-products-details', function () {
+    return view('ecommerce-products-details');
+});
+Route::get('/ecommerce-add-new-products', function () {
+    return view('ecommerce-add-new-products');
+});
+Route::get('/ecommerce-orders', function () {
+    return view('ecommerce-orders');
+});
+
 /*Components*/
 Route::get('/widgets', function () {
     return view('widgets');
@@ -111,11 +136,17 @@ Route::get('/component-alerts', function () {
 Route::get('/component-accordions', function () {
     return view('component-accordions');
 });
+Route::get('/component-badges', function () {
+    return view('component-badges');
+});
 Route::get('/component-buttons', function () {
     return view('component-buttons');
 });
 Route::get('/component-cards', function () {
     return view('component-cards');
+});
+Route::get('/component-carousels', function () {
+    return view('component-carousels');
 });
 Route::get('/component-list-groups', function () {
     return view('component-list-groups');
@@ -132,6 +163,9 @@ Route::get('/component-navs-tabs', function () {
 Route::get('/component-navbar', function () {
     return view('component-navbar');
 });
+Route::get('/component-paginations', function () {
+    return view('component-paginations');
+});
 Route::get('/component-popovers-tooltips', function () {
     return view('component-popovers-tooltips');
 });
@@ -146,6 +180,26 @@ Route::get('/component-notifications', function () {
 });
 Route::get('/component-avtars-chips', function () {
     return view('component-avtars-chips');
+});
+/*Content*/
+Route::get('/content-grid-system', function () {
+    return view('content-grid-system');
+});
+Route::get('/content-typography', function () {
+    return view('content-typography');
+});
+Route::get('/content-text-utilities', function () {
+    return view('content-text-utilities');
+});
+/*Icons*/
+Route::get('/icons-line-icons', function () {
+    return view('icons-line-icons');
+});
+Route::get('/icons-boxicons', function () {
+    return view('icons-boxicons');
+});
+Route::get('/icons-feather-icons', function () {
+    return view('icons-feather-icons');
 });
 /*Authentication*/
 Route::get('/authentication-signin', function () {
@@ -169,6 +223,13 @@ Route::get('/authentication-reset-password', function () {
 Route::get('/authentication-lock-screen', function () {
     return view('authentication-lock-screen');
 });
+/*Table*/
+Route::get('/table-basic-table', function () {
+    return view('table-basic-table');
+});
+Route::get('/table-datatable', function () {
+    return view('table-datatable');
+});
 /*Pages*/
 Route::get('/user-profile', function () {
     return view('user-profile');
@@ -187,6 +248,12 @@ Route::get('/errors-500-error', function () {
 });
 Route::get('/errors-coming-soon', function () {
     return view('errors-coming-soon');
+});
+Route::get('/error-blank-page', function () {
+    return view('error-blank-page');
+});
+Route::get('/faq', function () {
+    return view('faq');
 });
 /*Forms*/
 Route::get('/form-elements', function () {
@@ -216,6 +283,13 @@ Route::get('/form-date-time-pickes', function () {
 });
 Route::get('/form-select2', function () {
     return view('form-select2');
+});
+/*Maps*/
+Route::get('/map-google-maps', function () {
+    return view('map-google-maps');
+});
+Route::get('/map-vector-maps', function () {
+    return view('map-vector-maps');
 });
 /*Un-found*/
 Route::get('/test/content-grid-system', function () {

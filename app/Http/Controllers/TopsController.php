@@ -30,6 +30,7 @@ class TopsController extends Controller{
                             ->where('tops_mensuales.anio','=', $year)
                             ->get([
                                 'productos.nombre',
+                                'productos.sku',
                                 'categorias.nombre as categoria',
                                 'subcategorias.nombre as subcategoria',
                                 'marcas.nombre as marca'

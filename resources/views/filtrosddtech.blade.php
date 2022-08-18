@@ -30,7 +30,7 @@
                         </div>
                         <br>
                     @endif
-                    <form action="{{url("import")}}" method="post" enctype="multipart/form-data">
+                    <form action="{{url("importDDTech")}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <fieldset>
                             <label>Seleccione una categoría y subcategoría para consultar, la marca es opcional</label>
@@ -81,8 +81,7 @@
                                 <th>Zegucom</th>
                             </thead>
                             <tbody>
-                                {{-- @if(sizeof($data['productos'])>0 || !empty($data['productos'])) --}}
-                                @if(!empty($data['productos']))
+                                @if(sizeof($data['productos'])>0)
                                     @foreach($data['productos'] as $key=>$row)
                                         <tr>
                                             <td>{{$key}}</td>

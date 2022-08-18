@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DDTechController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PreciosController;
 use App\Http\Controllers\ExcelController;
@@ -46,8 +47,11 @@ Route::get('/preciosgrupodecme', [GrupoDecmeController::class, 'index']);
 // Route::post('/importGrupoDecme', [GrupoDecmeController::class, 'cotizar']);
 Route::post('/importGrupoDecme', [GrupoDecmeController::class, 'llenadoJSON']);
 // Route::get('/precios', 'PreciosController@index');
+Route::get('/preciosddtech', [DDTechController::class, 'index']);
+Route::post('/importDDTech', [DDTechController::class, 'cotizar']);
 
 Route::get('get/{id?}', [PreciosController::class,'getCategorias'])->name('getCategorias');
+Route::get('getMarca/{id?}/{id2?}', [PreciosController::class,'getMarcas'])->name('getMarcas');
 // Route::get('books/{id}',['as'=>'books.view','uses'=>'BOOKController@view']);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');

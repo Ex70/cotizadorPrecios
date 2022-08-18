@@ -118,6 +118,7 @@
 							<table id="example2" class="table table-striped table-bordered">
 								<thead>
 									<tr>
+										<th>SKU</th>
 										<th>Categoria</th>
 										<th>Subcategoria</th>
 										<th>Marca</th>
@@ -128,6 +129,7 @@
 									@if($productos['productos'])
 									@foreach ($productos['productos'] as $producto)
 										<tr>
+											<td>{{$producto->sku}}</td>
 											<td>{{$producto->categoria}}</td>
 											<td>{{$producto->subcategoria}}</td>
 											<td>{{$producto->marca}}</td>

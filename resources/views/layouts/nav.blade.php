@@ -61,6 +61,20 @@
                         <li> <a href="{{ url('subir-tops') }}"><i class="bx bx-right-arrow-alt"></i>Subir Archivo</a>
                         </li>
                     </ul>
+                    <li>
+                        <a href="{{ url('precios') }}">
+                            <div class="parent-icon"><i class='bx bx-cookie'></i>
+                            </div>
+                            <div class="menu-title">Cotizador de Precios</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('productos') }}">
+                            <div class="parent-icon"><i class='bx bx-cookie'></i>
+                            </div>
+                            <div class="menu-title">Consulta de productos</div>
+                        </a>
+                    </li>
                 </li>
                 <li class="menu-label">UI Elements</li>
                 <li>

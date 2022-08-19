@@ -34,10 +34,10 @@ class ZegucomController extends Controller
             $website = $client->request('GET', 'https://www.zegucom.com.mx/?cons='.$sku.'&mod=search&reg=1');
             $result = $website->filter('.price-text > .result-price-search');
             $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.price-text > .result-price-search')->first()->text()) : $precios[$i] = 0;
-            // $productoZegucom = Zegucom::updateOrCreate(
-            //     ['sku'=>$sku, 'clave_ct'=>$clave_ct],
-            //     ['precio_unitario'=>$precios[$i]]
-            // );
+            $productoZegucom = Zegucom::updateOrCreate(
+                ['sku'=>$sku, 'clave_ct'=>$clave_ct],
+                ['precio_unitario'=>$precios[$i]]
+            );
         }
         // dd($precios);
         return $precios;

@@ -8,6 +8,7 @@ use App\Http\Controllers\MiPCController;
 use App\Http\Controllers\ZegucomController;
 use App\Http\Controllers\ScraperController;
 use App\Http\Controllers\GrupoDecmeController;
+use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TopsController;
 
@@ -44,6 +45,8 @@ Route::post('/importCyberpuerta', [ScraperController::class, 'cotizar']);
 Route::get('/precioszegucom', [ZegucomController::class, 'index']);
 Route::post('/importZegucom', [ZegucomController::class, 'cotizar']);
 Route::get('/preciosgrupodecme', [GrupoDecmeController::class, 'index']);
+Route::get('/productos', [ProductosController::class, 'index']);
+Route::post('/productos', [ProductosController::class, 'index']);
 // Route::post('/importGrupoDecme', [GrupoDecmeController::class, 'cotizar']);
 Route::post('/importGrupoDecme', [GrupoDecmeController::class, 'llenadoJSON']);
 // Route::get('/precios', 'PreciosController@index');

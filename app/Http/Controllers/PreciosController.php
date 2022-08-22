@@ -12,6 +12,7 @@ use App\Models\Categoria;
 use App\Models\Marca;
 use App\Models\Subcategoria;
 use App\Models\Producto;
+use Illuminate\Support\Facades\Storage;
 
 class PreciosController extends Controller{
     public function index(){
@@ -32,7 +33,7 @@ class PreciosController extends Controller{
         // $data = Producto::distinct('marca_id')->where('categoria_id',$id)->where('subcategoria_id',$id2)->get();
         // $data = Marca::distinct('nombre')->join('productos', 'marcas.id', '=', 'productos.marca_id')->where('marcas.id','<',100)->get();
         // ->join('productos', 'marcas.id', '=', 'productos.marca_id')->where('categoria_id',$id)->get();
-        $sql = "SELECT * FROM users WHERE estado=? AND edad<?";
+        // $sql = "SELECT * FROM users WHERE estado=? AND edad<?";
         $sql = "select id,nombre from marcas where id IN(select DISTINCT marca_id from productos where categoria_id = ? and subcategoria_id = ?)";
         $data = DB::select($sql,array($id,$id2));
         // $data = DB::table('marcas')
@@ -66,5 +67,29 @@ class PreciosController extends Controller{
         $data['subcategorias'] = Subcategoria::distinct('nombre')->get();
         // dd(sizeof($data['productos']));
         return view('filtros',compact('data'));
+    }
+
+    public function lectura(){
+        // $productos = json_decode(file_get_contents(Storage::disk('public')->get('productos.json')), true);
+        $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
+        set_time_limit(0);
+        // dd(($productos[0]['precio']));
+
+        for($i=0;$i<sizeof($productos);$i++){
+            $producto = Producto::updateOrCreate(
+                ['clave_ct'=>$productos[$i]['clave']],
+                [
+                    'marca_id'=>$productos[$i]['idMarca'],
+                    'subcategoria_id'=>$productos[$i]['idSubCategoria'],
+                    'categoria_id'=>$productos[$i]['idCategoria'],
+                    'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
+                    'sku'=>$productos[$i]['numParte'],
+                    'nombre'=>$productos[$i]['descripcion_corta'],
+                    'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
+                ]
+            );
+            // dd($producto);
+        }
+        dd($productos);
     }
 }

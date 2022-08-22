@@ -130,8 +130,8 @@
         $(document).ready(function() {
             $("#filtro1").change(function () {
                 var id = $(this).val();
-                $("#llenar option").remove();
-                $('#llenar ').append('<option select disabled>Todas las subcategorias</option>');
+                $("#filtro2 option").remove();
+                $('#filtro2 ').append('<option select disabled>Todas las subcategorias</option>');
                 var url = '{{ route("getCategorias", ":id") }}';
                 url = url.replace(':id', id);
                 $.ajax({
@@ -153,8 +153,8 @@
             $("#filtro2").change(function () {
                 var id = $('#filtro1').val();
                 var id2 = $(this).val();
-                $("#llenar3 option").remove();
-                $('#llenar3 ').append('<option value="z" id="llenar4">Todas las marcas</option>');
+                $("#filtro3 option").remove();
+                $('#filtro3 ').append('<option value="z" id="llenar4">Todas las marcas</option>');
                 var url = '{{ route("getMarcas", [":id",":id2"]) }}';
                 url = url.replace(':id', id);
                 url = url.replace(':id2', id2);

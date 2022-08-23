@@ -81,7 +81,7 @@ class PreciosController extends Controller{
             dd("No existe");
         }
         // $productos = json_decode(file_get_contents(Storage::disk('public')->get('productos.json')), true);
-        $productos = json_decode(file_get_contents(storage_path() . "productos.json"), true);
+        $productos = json_decode(file_get_contents(storage_path() . "/productos.json"), true);
         set_time_limit(0);
         // dd(($productos[0]['precio']));
 

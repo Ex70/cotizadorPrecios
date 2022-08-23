@@ -76,7 +76,7 @@ class PreciosController extends Controller{
             // dd("Existe");
             $file = Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json');
             // dd(Storage::size($contents));
-            Storage::disk('local')->put('public/json',Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json'));
+            Storage::disk('local')->put('public/json',Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json','productos.json'));
         } else{
             dd("No existe");
         }

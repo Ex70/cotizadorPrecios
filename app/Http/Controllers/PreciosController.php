@@ -71,17 +71,16 @@ class PreciosController extends Controller{
 
     public function lectura(){
         set_time_limit(0);
-        $fileExist = Storage::disk('prueba-ftp')->exists('catalogo_xml/productos.json');
-        if ($fileExist){
-            // dd("Existe");
-            $file = Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json');
-            // dd(Storage::size($contents));
-            Storage::disk('local')->put('public/products.json',Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json'));
-        } else{
-            dd("No existe");
-        }
+        // $fileExist = Storage::disk('prueba-ftp')->exists('catalogo_xml/productos.json');
+        // if ($fileExist){
+        //     Storage::disk('local')->put('public/products.json',Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json'));
+        // } else{
+        //     dd("No existe");
+        // }
         // $productos = json_decode(file_get_contents(Storage::disk('public')->get('productos.json')), true);
-        $productos = json_decode(file_get_contents(storage_path() . "/productos.json"), true);
+        // $productos = json_decode(file_get_contents(storage_path() . "/productos.json"), true);
+        $productos = Storage::get('public/productos.json');
+        // dd($productos);
         set_time_limit(0);
         // dd(($productos[0]['precio']));
 

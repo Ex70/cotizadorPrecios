@@ -70,6 +70,16 @@ class PreciosController extends Controller{
     }
 
     public function lectura(){
+        set_time_limit(0);
+        $fileExist = Storage::disk('prueba-ftp')->exists('catalogo_xml/productos.json');
+        if ($fileExist){
+            // dd("Existe");
+            $file = Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json');
+            // dd(Storage::size($contents));
+            Storage::disk('local')->put('public/json',Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json'));
+        } else{
+            dd("No existe");
+        }
         // $productos = json_decode(file_get_contents(Storage::disk('public')->get('productos.json')), true);
         $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
         set_time_limit(0);

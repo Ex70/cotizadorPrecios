@@ -56,6 +56,24 @@ return [
             'throw' => false,
         ],
 
+        'prueba-ftp' => [
+            'driver'        => 'ftp',
+            'host'          => '216.70.82.104',
+            'port'          => 21,
+            'username'      => 'XLP1635',
+            'password'      => 'y7hvRfwSE9cgCadkTYIH',
+            'passive' => true,
+            'timeout' => 30,
+            // 'privateKey'    => storage_path().'/app/'.ENV('TEST_FEED_SFTP_PRIVATE_KEY_FILE'),
+            // 'timeout'       => env('TEST_FEED_SFTP_TIMEOUT')
+            // Optional FTP Settings...
+            // 'ssl'        => true,
+            // 'passphrase' => '',
+            // 'root'       => '/',
+            // 'passive'    => true,
+            // 'timeout'    => 30,
+        ],
+
     ],
 
     /*

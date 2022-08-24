@@ -77,11 +77,31 @@ class PreciosController extends Controller{
         } else{
             dd("No existe");
         }
+        $productos = json_decode(Storage::get('public/products.json'),true);
+        set_time_limit(0);
+        // dd(($productos[0]['precio']));
+
+        for($i=0;$i<sizeof($productos);$i++){
+            $producto = Producto::updateOrCreate(
+                ['clave_ct'=>$productos[$i]['clave']],
+                [
+                    'marca_id'=>$productos[$i]['idMarca'],
+                    'subcategoria_id'=>$productos[$i]['idSubCategoria'],
+                    'categoria_id'=>$productos[$i]['idCategoria'],
+                    'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
+                    'sku'=>$productos[$i]['numParte'],
+                    'nombre'=>$productos[$i]['descripcion_corta'],
+                    'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
+                ]
+            );
+            // dd($producto);
+        }
+        dd($productos);
+    }
+
+    public function lecturaLocal (){
         // $productos = json_decode(file_get_contents(Storage::disk('public')->get('productos.json')), true);
-        // $productos = json_decode(file_get_contents(storage_path() . "/productos.json"), true);
-        // $productos = Storage::get('public/productos.json');
         $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
-        // dd($productos);
         set_time_limit(0);
         // dd(($productos[0]['precio']));
 

@@ -57,6 +57,7 @@ Route::get('get/{id?}', [PreciosController::class,'getCategorias'])->name('getCa
 Route::get('getMarca/{id?}/{id2?}', [PreciosController::class,'getMarcas'])->name('getMarcas');
 // Route::get('books/{id}',['as'=>'books.view','uses'=>'BOOKController@view']);
 Route::get("json", [PreciosController::class, "lectura"]);
+Route::get("jsonLocal", [PreciosController::class, "lecturaLocal"]);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');
 Route::resource('projects', ProjectController::class);

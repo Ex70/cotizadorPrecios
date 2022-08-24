@@ -81,40 +81,53 @@
                                 <th>MiPC</th>
                                 <th>Zegucom</th>
                                 <th>Precio Promedio</th>
-                                <th>Margen de utilidad promedio</th>
+                                <th>Margen promedio</th>
+                                <th>Menor precio</th>
+                                <th>Utilidad a menor precio</th>
                             </thead>
                             <tbody>
-                                <?php $suma = 0.0; ?>
+                                <?php $suma = 0.0; $sumPromedio = 0.0; $sumaCT = 0.0;?>
                                 {{-- @if(sizeof($data['productos'])>0 || !empty($data['productos'])) --}}
                                 @if(!empty($data['productos']))
                                     @foreach($data['productos'] as $key=>$row)
-                                        <?php $divisor = 4; ?>
+                                        <?php $divisor = 4; $min = 1000000;?>
                                         <tr>
-                                            {{-- <td>{{$row->clave_ct}}</td> --}}
                                             <td>{{$row->sku}}</td>
-                                            {{-- <td>{{$row->categoria}}</td>
-                                            <td>{{$row->subcategoria}}</td>
-                                            <td>{{$row->marca}}</td> --}}
                                             <td>{{$row->precioct}}</td>
+                                                <?php $sumaCT = $sumaCT + $row->precioct;?>
                                             <td>{{$row->abasteo}}</td>
-                                            @if($row->abasteo == 0)
-                                                <?php $divisor = $divisor-1;?>
-                                            @endif
+                                                @if($row->abasteo != 0 && $row->abasteo<$min)
+                                                    <?php $min = $row->abasteo;?>
+                                                @endif
+                                                @if($row->abasteo == 0)
+                                                    <?php $divisor = $divisor-1;?>
+                                                @endif
                                             <td>{{$row->cyberpuerta}}</td>
-                                            @if($row->cyberpuerta == 0)
-                                                <?php $divisor = $divisor-1;?>
-                                            @endif
+                                                @if($row->cyberpuerta != 0 && $row->cyberpuerta<$min)
+                                                    <?php $min = $row->cyberpuerta;?>
+                                                @endif
+                                                @if($row->cyberpuerta == 0)
+                                                    <?php $divisor = $divisor-1;?>
+                                                @endif
                                             <td>{{$row->mipc}}</td>
-                                            @if($row->mipc == 0)
-                                                <?php $divisor = $divisor-1;?>
-                                            @endif
+                                                @if($row->mipc != 0 && $row->mipc<$min)
+                                                    <?php $min = $row->mipc;?>
+                                                @endif
+                                                @if($row->mipc == 0)
+                                                    <?php $divisor = $divisor-1;?>
+                                                @endif
                                             <td>{{$row->zegucom}}</td>
-                                            @if($row->zegucom == 0)
-                                                <?php $divisor = $divisor-1;?>
-                                            @endif
+                                                @if($row->zegucom != 0 && $row->zegucom<$min)
+                                                    <?php $min = $row->zegucom;?>
+                                                @endif
+                                                @if($row->zegucom == 0)
+                                                    <?php $divisor = $divisor-1;?>
+                                                @endif
                                             <?php $suma = $row->abasteo + $row->cyberpuerta + $row->mipc + $row->zegucom;?>
-                                            <td><?php if($divisor>0){ $promedio = $suma/$divisor; echo number_format($promedio,2); }else{ echo $row->precioct;}?></td>
+                                            <td><?php if($divisor>0){ $promedio = $suma/$divisor; $sumPromedio = $sumPromedio + $promedio; echo number_format($promedio,2); }else{ echo $row->precioct; $sumPromedio = $sumPromedio + $row->precioct;}?></td>
                                             <td><?php if($divisor>0) echo number_format(($promedio/$row->precioct)*100-100,2)."%"; else echo $row->precioct;?></td>
+                                            <td>{{$min}}</td>
+                                            <td><?php echo number_format(($min/$row->precioct)*100-100,2)."%";?></td>
                                         </tr>
                                     @endforeach
                                 @else
@@ -124,6 +137,9 @@
                                 @endif
                             </tbody>
                         </table>
+                        {{"Precio general promedio: "}}<?php echo "$".number_format($sumPromedio/sizeof($data['productos']),2);?><br>
+                        {{"Precio EHS promedio: "}}<?php echo "$".number_format($sumaCT/sizeof($data['productos']),2);?><br><br>
+                        {{"Margen de utilidad para marca: "}}<?php echo number_format((($sumPromedio/sizeof($data['productos']))/($sumaCT/sizeof($data['productos'])))*100-100,2)."%";?>
                     </div>
                 </div>
             </div>

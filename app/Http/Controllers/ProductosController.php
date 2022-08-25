@@ -21,32 +21,31 @@ class ProductosController extends Controller
         $data['marcas'] = Marca::distinct('nombre')->get();
         if($request->has('filtro1')){
             $data['productos'] = Producto::join('categorias','categorias.id','=','productos.categoria_id')
-                                ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
-                                ->join('marcas','marcas.id','=','productos.marca_id')
-                                ->join('abasteo','abasteo.sku','=','productos.sku')
-                                ->join('cyberpuerta','cyberpuerta.sku','=','productos.sku')
-                                ->join('mipc','mipc.sku','=','productos.sku')
-                                ->join('zegucom','zegucom.sku','=','productos.sku')
-                                // ->where('productos.id','<',10000)
-                                ->where('productos.categoria_id',$request->get('filtro1'))
-                                ->where('productos.subcategoria_id',$request->get('filtro2'))
-                                ->where('productos.marca_id',$request->get('filtro3'))
-                                ->where('productos.estatus','Activo')
-                                ->get([
-                                    'productos.clave_ct',
-                                    'productos.sku',
-                                    'productos.precio_unitario as precioct',
-                                    'abasteo.precio_unitario as abasteo',
-                                    'cyberpuerta.precio_unitario as cyberpuerta',
-                                    'mipc.precio_unitario as mipc',
-                                    'zegucom.precio_unitario as zegucom',
-                                    'categorias.nombre as categoria',
-                                    'subcategorias.nombre as subcategoria',
-                                    'marcas.nombre as marca'
-                                ]);
-                            }else{
-                                $data['productos'] = '';
-                            }
+                ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
+                ->join('marcas','marcas.id','=','productos.marca_id')
+                ->join('abasteo','abasteo.sku','=','productos.sku')
+                ->join('cyberpuerta','cyberpuerta.sku','=','productos.sku')
+                ->join('mipc','mipc.sku','=','productos.sku')
+                ->join('zegucom','zegucom.sku','=','productos.sku')
+                ->where('productos.categoria_id',$request->get('filtro1'))
+                ->where('productos.subcategoria_id',$request->get('filtro2'))
+                ->where('productos.marca_id',$request->get('filtro3'))
+                ->where('productos.estatus','Activo')
+                ->get([
+                    'productos.clave_ct',
+                    'productos.sku',
+                    'productos.precio_unitario as precioct',
+                    'abasteo.precio_unitario as abasteo',
+                    'cyberpuerta.precio_unitario as cyberpuerta',
+                    'mipc.precio_unitario as mipc',
+                    'zegucom.precio_unitario as zegucom',
+                    'categorias.nombre as categoria',
+                    'subcategorias.nombre as subcategoria',
+                    'marcas.nombre as marca'
+                ]);
+        }else{
+            $data['productos'] = '';
+        }
         return view('productos.index', compact('data'));
     }
 

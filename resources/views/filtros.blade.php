@@ -1,19 +1,9 @@
-{{-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Cotizador de pagos</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" />
-</head> --}}
 @extends("layouts.app")
 @section("style")
     <link href="assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet"/>
 @endsection
 
 @section("wrapper")
-{{-- <body> --}}
     <div class="page-wrapper">
         <div class="page-content">
     <div class="row justify-content-centre" style="margin-top: 4%">
@@ -37,14 +27,12 @@
                             <div class="input-group">
                                 <select name="filtro1" id="filtro1" class="form-control" required>
                                     <option selected disabled>Todas las categorias</option>
-                                    {{-- <option value="x">Todas las categorias</option> --}}
                                     @foreach($data['categorias'] as $row)
                                         <option value="{{$row->id}}">{{$row->nombre}}</option>
                                     @endforeach
                                 </select>
                                 <select name="filtro2" id="filtro2" class="form-control">
                                     <option selected disabled>Todas las subcategorias</option>
-                                    {{-- <option value="y" id="llenar2">Todas las subcategorias</option> --}}
                                 </select>
                                 <select name="filtro3" id="filtro3" class="form-control">
                                     <option value="z" id="llenar4">Todas las marcas</option>
@@ -81,7 +69,6 @@
                                 <th>Zegucom</th>
                             </thead>
                             <tbody>
-                                {{-- @if(sizeof($data['productos'])>0 || !empty($data['productos'])) --}}
                                 @if(!empty($data['productos']))
                                     @foreach($data['productos'] as $key=>$row)
                                         <tr>

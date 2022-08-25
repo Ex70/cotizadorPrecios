@@ -11,6 +11,10 @@ use App\Http\Controllers\GrupoDecmeController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TopsController;
+// use Google\Service\Analytics;
+// use Analytics;
+use Spatie\Analytics\AnalyticsFacade as Analytics;
+use Spatie\Analytics\Period;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +74,13 @@ Route::get('tops', [TopsController::class, 'index'])->name('top100');
 Route::get('/table-datatable', function () {
     return view('table-datatable');
 });
+
+Route::get('/analytics', function () {
+    // $prueba = Analytics::fetchTopBrowsers(Period::days(7));
+    // dd($prueba);
+    $analyticsData = Analytics::fetchVisitorsAndPageViews(Period::days(7));
+    return view('ga', ['analyticsData' => $analyticsData]);
+}); 
 
 
 Route::get('subir-tops', function () {

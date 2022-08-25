@@ -29,15 +29,8 @@ class PreciosController extends Controller{
     }
 
     public function getMarcas($id = null,$id2 = null){
-        // dd($id."-".$id2);
-        // $data = Producto::distinct('marca_id')->where('categoria_id',$id)->where('subcategoria_id',$id2)->get();
-        // $data = Marca::distinct('nombre')->join('productos', 'marcas.id', '=', 'productos.marca_id')->where('marcas.id','<',100)->get();
-        // ->join('productos', 'marcas.id', '=', 'productos.marca_id')->where('categoria_id',$id)->get();
-        // $sql = "SELECT * FROM users WHERE estado=? AND edad<?";
         $sql = "select id,nombre from marcas where id IN(select DISTINCT marca_id from productos where categoria_id = ? and subcategoria_id = ?)";
         $data = DB::select($sql,array($id,$id2));
-        // $data = DB::table('marcas')
-        // dd($data);
         return response()->json($data);
     }
 
@@ -65,7 +58,6 @@ class PreciosController extends Controller{
         $data['categorias'] = Categoria::distinct('nombre')->get();
         $data['marcas'] = Marca::distinct('nombre')->get();
         $data['subcategorias'] = Subcategoria::distinct('nombre')->get();
-        // dd(sizeof($data['productos']));
         return view('filtros',compact('data'));
     }
 
@@ -79,8 +71,6 @@ class PreciosController extends Controller{
         }
         $productos = json_decode(Storage::get('public/products.json'),true);
         set_time_limit(0);
-        // dd(($productos[0]['precio']));
-
         for($i=0;$i<sizeof($productos);$i++){
             $producto = Producto::updateOrCreate(
                 ['clave_ct'=>$productos[$i]['clave']],
@@ -94,17 +84,13 @@ class PreciosController extends Controller{
                     'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
                 ]
             );
-            // dd($producto);
         }
         dd($productos);
     }
 
     public function lecturaLocal (){
-        // $productos = json_decode(file_get_contents(Storage::disk('public')->get('productos.json')), true);
         $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
         set_time_limit(0);
-        // dd(($productos[0]['precio']));
-
         for($i=0;$i<sizeof($productos);$i++){
             $producto = Producto::updateOrCreate(
                 ['clave_ct'=>$productos[$i]['clave']],
@@ -118,7 +104,6 @@ class PreciosController extends Controller{
                     'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
                 ]
             );
-            // dd($producto);
         }
         dd($productos);
     }

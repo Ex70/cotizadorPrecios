@@ -197,6 +197,7 @@ return [
         Weidner\Goutte\GoutteServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Spatie\Analytics\AnalyticsServiceProvider::class,
 
     ],
 
@@ -216,6 +217,7 @@ return [
         'Goutte' => Weidner\Goutte\GoutteFacade::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Analytics' => Spatie\Analytics\AnalyticsFacade::class,
     ])->toArray(),
 
 ];

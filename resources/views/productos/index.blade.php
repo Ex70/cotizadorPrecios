@@ -137,9 +137,11 @@
                                 @endif
                             </tbody>
                         </table>
+                        @if(!empty($data['productos']))
                         {{"Precio general promedio: "}}<?php echo "$".number_format($sumPromedio/sizeof($data['productos']),2);?><br>
                         {{"Precio EHS promedio: "}}<?php echo "$".number_format($sumaCT/sizeof($data['productos']),2);?><br><br>
                         {{"Margen de utilidad para marca: "}}<?php echo number_format((($sumPromedio/sizeof($data['productos']))/($sumaCT/sizeof($data['productos'])))*100-100,2)."%";?>
+                        @endif
                     </div>
                 </div>
             </div>

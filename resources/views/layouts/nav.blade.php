@@ -74,6 +74,11 @@
                             </div>
                             <div class="menu-title">Consulta de productos</div>
                         </a>
+                        <a href="{{ url('analytics') }}">
+                            <div class="parent-icon"><i class='bx bx-cookie'></i>
+                            </div>
+                            <div class="menu-title">Páginas más visitadas</div>
+                        </a>
                     </li>
                 </li>
                 <li class="menu-label">UI Elements</li>

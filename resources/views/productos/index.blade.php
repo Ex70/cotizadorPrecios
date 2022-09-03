@@ -72,12 +72,12 @@
                             <thead>
                                 {{-- <th>Clave CT</th> --}}
                                 <th>SKU</th>
+                                <th>Existencias</th>
                                 {{-- <th>Categoría</th>
                                 <th>Subcategoria</th>
                                 <th>Marca</th> --}}
                                 <th>Precio CT</th>
                                 <th>Abasteo</th>
-                                <th>CyberPuerta</th>
                                 <th>MiPC</th>
                                 <th>Zegucom</th>
                                 <th>Precio Promedio</th>
@@ -86,13 +86,13 @@
                                 <th>Utilidad a menor precio</th>
                             </thead>
                             <tbody>
-                                <?php $suma = 0.0; $sumPromedio = 0.0; $sumaCT = 0.0;?>
-                                {{-- @if(sizeof($data['productos'])>0 || !empty($data['productos'])) --}}
+                                <?php  $suma = 0.0; $sumPromedio = 0.0; $sumaCT = 0.0; $a =1;?>
                                 @if(!empty($data['productos']))
                                     @foreach($data['productos'] as $key=>$row)
-                                        <?php $divisor = 4; $min = 1000000;?>
+                                        <?php $divisor = 3; $min = 1000000;?>
                                         <tr>
                                             <td>{{$row->sku}}</td>
+                                            <td>{{$row->existencias}}</td>
                                             <td>{{$row->precioct}}</td>
                                                 <?php $sumaCT = $sumaCT + $row->precioct;?>
                                             <td>{{$row->abasteo}}</td>
@@ -100,13 +100,6 @@
                                                     <?php $min = $row->abasteo;?>
                                                 @endif
                                                 @if($row->abasteo == 0)
-                                                    <?php $divisor = $divisor-1;?>
-                                                @endif
-                                            <td>{{$row->cyberpuerta}}</td>
-                                                @if($row->cyberpuerta != 0 && $row->cyberpuerta<$min)
-                                                    <?php $min = $row->cyberpuerta;?>
-                                                @endif
-                                                @if($row->cyberpuerta == 0)
                                                     <?php $divisor = $divisor-1;?>
                                                 @endif
                                             <td>{{$row->mipc}}</td>
@@ -137,7 +130,8 @@
                                 @endif
                             </tbody>
                         </table>
-                        @if(!empty($data['productos']))
+                        {{-- @if(!empty($data['productos']) && $a = 0) --}}
+                        @if(sizeof($data['productos'])>0)
                         {{"Precio general promedio: "}}<?php echo "$".number_format($sumPromedio/sizeof($data['productos']),2);?><br>
                         {{"Precio EHS promedio: "}}<?php echo "$".number_format($sumaCT/sizeof($data['productos']),2);?><br><br>
                         {{"Margen de utilidad para marca: "}}<?php echo number_format((($sumPromedio/sizeof($data['productos']))/($sumaCT/sizeof($data['productos'])))*100-100,2)."%";?>

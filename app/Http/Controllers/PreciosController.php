@@ -29,7 +29,7 @@ class PreciosController extends Controller{
     }
 
     public function getMarcas($id = null,$id2 = null){
-        $sql = "select id,nombre from marcas where id IN(select DISTINCT marca_id from productos where categoria_id = ? and subcategoria_id = ?)";
+        $sql = "select id,nombre from marcas where id IN(select DISTINCT marca_id from productos where categoria_id = ? and subcategoria_id = ? and estatus = 'Activo')";
         $data = DB::select($sql,array($id,$id2));
         return response()->json($data);
     }
@@ -62,6 +62,8 @@ class PreciosController extends Controller{
     }
 
     public function lectura(){
+        $products = new ProductosController();
+        $products->limpieza();
         set_time_limit(0);
         $fileExist = Storage::disk('prueba-ftp')->exists('catalogo_xml/productos.json');
         if ($fileExist){
@@ -89,6 +91,8 @@ class PreciosController extends Controller{
     }
 
     public function lecturaLocal (){
+        $products = new ProductosController();
+        $products->limpieza();
         $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
         set_time_limit(0);
         for($i=0;$i<sizeof($productos);$i++){

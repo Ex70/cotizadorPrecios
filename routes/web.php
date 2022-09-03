@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CTConnect;
 use App\Http\Controllers\DDTechController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PreciosController;
@@ -62,6 +63,7 @@ Route::get('getMarca/{id?}/{id2?}', [PreciosController::class,'getMarcas'])->nam
 // Route::get('books/{id}',['as'=>'books.view','uses'=>'BOOKController@view']);
 Route::get("json", [PreciosController::class, "lectura"]);
 Route::get("jsonLocal", [PreciosController::class, "lecturaLocal"]);
+Route::get("token", [CTConnect::class, "token"]);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');
 Route::resource('projects', ProjectController::class);

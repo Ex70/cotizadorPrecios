@@ -19,12 +19,22 @@ class ProductosController extends Controller
         $data['categorias'] = Categoria::distinct('nombre')->get();
         $data['subcategorias'] = Subcategoria::distinct('nombre')->get();
         $data['marcas'] = Marca::distinct('nombre')->get();
-        if($request->has('filtro1')){
+        // $data['marcas'] = Producto::distinct('nombre')
+        // ->join('marcas','marcas.id','=','productos.marca_id')
+        // ->where('estatus','Activo')
+        // ->get();
+        if($request->has('filtro1') && $request->has('filtro2')){
+            $productos['data'] = Producto::where('productos.categoria_id',$request->get('filtro1'))
+                    ->where('productos.subcategoria_id',$request->get('filtro2'))
+                    ->where('productos.marca_id',$request->get('filtro3'))
+                    ->where('productos.estatus','Activo')->get();
+            $existencias = new CTConnect;
+            $existencias->existencias($productos['data']);
+            // dd(sizeof($productos['data']));
             $data['productos'] = Producto::join('categorias','categorias.id','=','productos.categoria_id')
                 ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
                 ->join('marcas','marcas.id','=','productos.marca_id')
                 ->join('abasteo','abasteo.sku','=','productos.sku')
-                ->join('cyberpuerta','cyberpuerta.sku','=','productos.sku')
                 ->join('mipc','mipc.sku','=','productos.sku')
                 ->join('zegucom','zegucom.sku','=','productos.sku')
                 ->where('productos.categoria_id',$request->get('filtro1'))
@@ -33,19 +43,23 @@ class ProductosController extends Controller
                 ->where('productos.estatus','Activo')
                 ->get([
                     'productos.clave_ct',
+                    'productos.existencias',
                     'productos.sku',
                     'productos.precio_unitario as precioct',
                     'abasteo.precio_unitario as abasteo',
-                    'cyberpuerta.precio_unitario as cyberpuerta',
                     'mipc.precio_unitario as mipc',
                     'zegucom.precio_unitario as zegucom',
                     'categorias.nombre as categoria',
                     'subcategorias.nombre as subcategoria',
                     'marcas.nombre as marca'
                 ]);
+                // dd(sizeof($data['productos']));
+                // $existencias = new CTConnect;
+                // $data['existencias'] = $existencias->existencias($data['productos']);
         }else{
-            $data['productos'] = '';
+            $data['productos'] = [];
         }
+        // dd(sizeof($data['productos']));
         return view('productos.index', compact('data'));
     }
 
@@ -113,5 +127,11 @@ class ProductosController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function limpieza(){
+        Producto::where('id','>',0)->update([
+            'estatus' => 'Descontinuado'
+        ]);
     }
 }

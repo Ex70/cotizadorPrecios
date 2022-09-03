@@ -20,6 +20,7 @@ class Producto extends Model
         'categoria_id',
         'subcategoria_id',
         'marca_id',
+        'existencias',
         'estatus'
     ];
 }

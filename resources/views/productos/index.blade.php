@@ -84,6 +84,7 @@
                                 <th>Margen promedio</th>
                                 <th>Menor precio</th>
                                 <th>Utilidad a menor precio</th>
+                                <th>Comisión Mercadopago</th>
                             </thead>
                             <tbody>
                                 <?php  $suma = 0.0; $sumPromedio = 0.0; $sumaCT = 0.0; $a =1;?>
@@ -121,6 +122,7 @@
                                             <td><?php if($divisor>0) echo number_format(($promedio/$row->precioct)*100-100,2)."%"; else echo $row->precioct;?></td>
                                             <td>{{$min}}</td>
                                             <td><?php echo number_format(($min/$row->precioct)*100-100,2)."%";?></td>
+                                            <td><?php if($divisor>0) echo number_format(((($row->precioct*number_format(((($promedio/$row->precioct)*100-100)/100)+1,4)/100)*3.49)+1)*1.16,2); else echo $row->precioct;?></td>
                                         </tr>
                                     @endforeach
                                 @else

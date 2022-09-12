@@ -94,23 +94,23 @@
                                         <tr>
                                             <td>{{$row->sku}}</td>
                                             <td>{{$row->existencias}}</td>
-                                            <td>{{$row->precioct}}</td>
+                                            <td>${{$row->precioct}}</td>
                                                 <?php $sumaCT = $sumaCT + $row->precioct;?>
-                                            <td>{{$row->abasteo}}</td>
+                                            <td>${{$row->abasteo}}</td>
                                                 @if($row->abasteo != 0 && $row->abasteo<$min)
                                                     <?php $min = $row->abasteo;?>
                                                 @endif
                                                 @if($row->abasteo == 0)
                                                     <?php $divisor = $divisor-1;?>
                                                 @endif
-                                            <td>{{$row->mipc}}</td>
+                                            <td>${{$row->mipc}}</td>
                                                 @if($row->mipc != 0 && $row->mipc<$min)
                                                     <?php $min = $row->mipc;?>
                                                 @endif
                                                 @if($row->mipc == 0)
                                                     <?php $divisor = $divisor-1;?>
                                                 @endif
-                                            <td>{{$row->zegucom}}</td>
+                                            <td>${{$row->zegucom}}</td>
                                                 @if($row->zegucom != 0 && $row->zegucom<$min)
                                                     <?php $min = $row->zegucom;?>
                                                 @endif
@@ -118,11 +118,11 @@
                                                     <?php $divisor = $divisor-1;?>
                                                 @endif
                                             <?php $suma = $row->abasteo + $row->cyberpuerta + $row->mipc + $row->zegucom;?>
-                                            <td><?php if($divisor>0){ $promedio = $suma/$divisor; $sumPromedio = $sumPromedio + $promedio; echo number_format($promedio,2); }else{ echo $row->precioct; $sumPromedio = $sumPromedio + $row->precioct;}?></td>
+                                            <td>$<?php if($divisor>0){ $promedio = $suma/$divisor; $sumPromedio = $sumPromedio + $promedio; echo number_format($promedio,2); }else{ echo $row->precioct; $sumPromedio = $sumPromedio + $row->precioct;}?></td>
                                             <td><?php if($divisor>0) echo number_format(($promedio/$row->precioct)*100-100,2)."%"; else echo $row->precioct;?></td>
-                                            <td>{{$min}}</td>
+                                            <td>${{$min}}</td>
                                             <td><?php echo number_format(($min/$row->precioct)*100-100,2)."%";?></td>
-                                            <td><?php if($divisor>0) echo number_format(((($row->precioct*number_format(((($promedio/$row->precioct)*100-100)/100)+1,4)/100)*3.49)+1)*1.16,2); else echo $row->precioct;?></td>
+                                            <td>$<?php if($divisor>0) echo number_format(((($row->precioct*number_format(((($promedio/$row->precioct)*100-100)/100)+1,4)/100)*3.49)+1)*1.16,2); else echo $row->precioct;?></td>
                                         </tr>
                                     @endforeach
                                 @else

@@ -102,9 +102,12 @@ class PreciosController extends Controller{
                     'marca_id'=>$productos[$i]['idMarca'],
                     'subcategoria_id'=>$productos[$i]['idSubCategoria'],
                     'categoria_id'=>$productos[$i]['idCategoria'],
+                    'nombre'=>$productos[$i]['nombre'],
                     'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
                     'sku'=>$productos[$i]['numParte'],
-                    'nombre'=>$productos[$i]['descripcion_corta'],
+                    'ean'=>$productos[$i]['ean'],
+                    'upc'=>$productos[$i]['upc'],
+                    'imagen'=>$productos[$i]['imagen'],
                     'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
                 ]
             );

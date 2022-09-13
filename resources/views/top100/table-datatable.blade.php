@@ -20,48 +20,7 @@
 							</ol>
 						</nav>
 					</div>
-					{{-- <div class="ms-auto">
-						<div class="btn-group">
-							<button type="button" class="btn btn-primary">Settings</button>
-							<button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
-							</button>
-							<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>
-								<a class="dropdown-item" href="javascript:;">Another action</a>
-								<a class="dropdown-item" href="javascript:;">Something else here</a>
-								<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
-							</div>
-						</div>
-					</div> --}}
 				</div>
-				<!--end breadcrumb-->
-				{{-- <h6 class="mb-0 text-uppercase">Productos más vendidos del mes</h6>
-				<hr/>
-				<div class="card">
-					<div class="card-body">
-						<div class="table-responsive">
-							<table id="example" class="table table-striped table-bordered" style="width:100%">
-								<thead>
-									<tr>
-										<th>Categoria</th>
-										<th>Subcategoria</th>
-										<th>Marca</th>
-										<th>Descripción</th>
-									</tr>
-								</thead>
-								<tbody>
-									@foreach ($productos as $producto)
-										<tr>
-											<td>{{$producto->categoria}}</td>
-											<td>{{$producto->subcategoria}}</td>
-											<td>{{$producto->marca}}</td>
-											<td>{{$producto->nombre}}</td>
-										</tr>
-									@endforeach
-							</table>
-						</div>
-					</div>
-				</div> --}}
-				{{-- setlocale(LC_ALL,"es_ES"); $fecha=date("F", mktime(0,0,0, $productos['mes'], 10)); echo strftime("%F", $fecha->getTimestamp()); --}}
 				<h6 class="mb-0 text-uppercase">Productos más vendidos del mes de {{$productos['mes']}}</h6>
 				<hr/>
 
@@ -123,6 +82,7 @@
 										<th>Subcategoria</th>
 										<th>Marca</th>
 										<th>Descripción</th>
+										<th>Acciones</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -134,6 +94,7 @@
 											<td>{{$producto->subcategoria}}</td>
 											<td>{{$producto->marca}}</td>
 											<td>{{$producto->nombre}}</td>
+											<td><a href="#">Calcular márgenes</a></td>
 										</tr>
 									@endforeach
 									@endif

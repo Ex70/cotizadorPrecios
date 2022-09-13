@@ -31,6 +31,9 @@ class TopsController extends Controller{
                             ->get([
                                 'productos.nombre',
                                 'productos.sku',
+                                'productos.categoria_id',
+                                'productos.subcategoria_id',
+                                'productos.marca_id',
                                 'categorias.nombre as categoria',
                                 'subcategorias.nombre as subcategoria',
                                 'marcas.nombre as marca'

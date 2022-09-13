@@ -30,7 +30,10 @@ class ProductosController extends Controller
                     ->where('productos.estatus','Activo')->get();
             $existencias = new CTConnect;
             $existencias->existencias($productos['data']);
-            // dd(sizeof($productos['data']));
+            $data['totalSubCat'] = Producto::where('subcategoria_id',$request->get('filtro2'))->where('estatus','Activo')->sum('existencias');
+            $data['totalCat'] = Producto::where('categoria_id',$request->get('filtro1'))->where('estatus','Activo')->sum('existencias');
+            $data['totalMarca'] = Producto::where('categoria_id',$request->get('filtro3'))->where('estatus','Activo')->sum('existencias');
+            // dd($totalSubCat);
             $data['productos'] = Producto::join('categorias','categorias.id','=','productos.categoria_id')
                 ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
                 ->join('marcas','marcas.id','=','productos.marca_id')
@@ -41,6 +44,7 @@ class ProductosController extends Controller
                 ->where('productos.subcategoria_id',$request->get('filtro2'))
                 ->where('productos.marca_id',$request->get('filtro3'))
                 ->where('productos.estatus','Activo')
+                ->orderBy('productos.existencias')
                 ->get([
                     'productos.clave_ct',
                     'productos.existencias',
@@ -59,7 +63,7 @@ class ProductosController extends Controller
         }else{
             $data['productos'] = [];
         }
-        // dd(sizeof($data['productos']));
+        // dd($data['productos']);
         return view('productos.index', compact('data'));
     }
 
@@ -133,5 +137,10 @@ class ProductosController extends Controller
         Producto::where('id','>',0)->update([
             'estatus' => 'Descontinuado'
         ]);
+    }
+
+    public function existencias(){
+        // Producto::count()->where('subcategoria_id',97);
+        dd(Producto::where('subcategoria_id',97)->where('estatus','Activo')->count());
     }
 }

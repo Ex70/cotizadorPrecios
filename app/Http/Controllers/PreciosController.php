@@ -36,7 +36,7 @@ class PreciosController extends Controller{
 
     public function cotizar(Request $request){
         $preciosAbasteo = new PreciosAbasteoController;
-        $preciosCyberpuerta = new CyberPuertaController;
+        // $preciosCyberpuerta = new CyberPuertaController;
         $preciosMiPC = new MiPCController;
         $preciosZegucom = new ZegucomController;
         $test = $request->get('filtro1');
@@ -49,7 +49,7 @@ class PreciosController extends Controller{
         }
         if(sizeof($data['productos'])>0){
             $data['abasteo'] = $preciosAbasteo->cotizar($data['productos']);
-            $data['cyberpuerta'] = $preciosCyberpuerta->cotizar($data['productos']);
+            // $data['cyberpuerta'] = $preciosCyberpuerta->cotizar($data['productos']);
             $data['mipc'] = $preciosMiPC->cotizar($data['productos']);
             $data['zegucom'] = $preciosZegucom->cotizar($data['productos']);
             $data['categoria'] = $request->get('filtro1');
@@ -103,8 +103,9 @@ class PreciosController extends Controller{
                     'subcategoria_id'=>$productos[$i]['idSubCategoria'],
                     'categoria_id'=>$productos[$i]['idCategoria'],
                     'nombre'=>$productos[$i]['nombre'],
+                    'descripcion_corta'=>$productos[$i]['descripcion_corta'],
                     'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
-                    'sku'=>$productos[$i]['numParte'],
+                    'sku'=>ltrim($productos[$i]['numParte']),
                     'ean'=>$productos[$i]['ean'],
                     'upc'=>$productos[$i]['upc'],
                     'imagen'=>$productos[$i]['imagen'],

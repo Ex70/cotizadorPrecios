@@ -52,6 +52,7 @@ Route::post('/importZegucom', [ZegucomController::class, 'cotizar']);
 Route::get('/preciosgrupodecme', [GrupoDecmeController::class, 'index']);
 Route::get('/productos', [ProductosController::class, 'index']);
 Route::post('/productos', [ProductosController::class, 'index']);
+Route::get('/existencias', [ProductosController::class, 'existencias']);
 // Route::post('/importGrupoDecme', [GrupoDecmeController::class, 'cotizar']);
 Route::post('/importGrupoDecme', [GrupoDecmeController::class, 'llenadoJSON']);
 // Route::get('/precios', 'PreciosController@index');

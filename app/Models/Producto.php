@@ -16,6 +16,7 @@ class Producto extends Model
         'clave_ct',
         'sku',
         'nombre',
+        'descripcion_corta',
         'ean',
         'upc',
         'imagen',

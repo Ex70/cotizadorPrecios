@@ -38,14 +38,12 @@
                                     <div class="input-group">
                                         <select name="filtro1" id="filtro1" class="form-control" required>
                                             <option selected disabled>Todas las categorias</option>
-                                            {{-- <option value="x">Todas las categorias</option> --}}
                                             @foreach($data['categorias'] as $row)
                                                 <option value="{{$row->id}}">{{$row->nombre}}</option>
                                             @endforeach
                                         </select>
                                         <select name="filtro2" id="filtro2" class="form-control">
                                             <option selected disabled>Todas las subcategorias</option>
-                                            {{-- <option value="y" id="llenar2">Todas las subcategorias</option> --}}
                                         </select>
                                         <select name="filtro3" id="filtro3" class="form-control">
                                             <option value="z" id="llenar4">Todas las marcas</option>
@@ -74,6 +72,7 @@
                                     <thead>
                                         <th>SKU</th>
                                         <th>Existencias</th>
+                                        <th>Peso</th>
                                         <th>Precio CT</th>
                                         <th>Abasteo</th>
                                         <th>MiPC</th>
@@ -96,6 +95,7 @@
                                                 @endif
                                                     <td>{{$row->sku}}</td>
                                                     <td>{{$row->existencias}}</td>
+                                                    <td>{{$row->existencias/$data['totalFiltro']}}</td>
                                                     <?php $stockTotal = $stockTotal + $row->existencias;?>
                                                     <td>${{$row->precioct}}</td>
                                                         <?php $sumaCT = $sumaCT + $row->precioct;?>

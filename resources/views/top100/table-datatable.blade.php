@@ -82,6 +82,8 @@
 										<th>Subcategoria</th>
 										<th>Marca</th>
 										<th>Descripción</th>
+										<th>Enlace</th>
+										<th>Imagen</th>
 										<th>Acciones</th>
 									</tr>
 								</thead>
@@ -94,6 +96,8 @@
 											<td>{{$producto->subcategoria}}</td>
 											<td>{{$producto->marca}}</td>
 											<td>{{$producto->nombre}}</td>
+											<td>{{$producto->enlace}}</td>
+											<td>{{$producto->imagen}}</td>
 											<td><a href="#">Calcular márgenes</a></td>
 										</tr>
 									@endforeach

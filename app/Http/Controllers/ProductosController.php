@@ -32,9 +32,9 @@ class ProductosController extends Controller
             $existencias->existencias($productos['data']);
             $data['totalSubCat'] = Producto::where('subcategoria_id',$request->get('filtro2'))->where('estatus','Activo')->sum('existencias');
             $data['totalCat'] = Producto::where('categoria_id',$request->get('filtro1'))->where('estatus','Activo')->sum('existencias');
-            $data['totalMarca'] = Producto::where('categoria_id',$request->get('filtro3'))->where('estatus','Activo')->sum('existencias');
-            $data['totalFiltro'] = Producto::where('categoria_id',$request->get('filtro3'))->where('subcategoria_id',$request->get('filtro2'))->where('categoria_id',$request->get('filtro1'))->where('estatus','Activo')->sum('existencias');
-            // dd($totalSubCat);
+            $data['totalMarca'] = Producto::where('marca_id',$request->get('filtro3'))->where('estatus','Activo')->sum('existencias');
+            $data['totalFiltro'] = Producto::where('marca_id',$request->get('filtro3'))->where('subcategoria_id',$request->get('filtro2'))->where('categoria_id',$request->get('filtro1'))->where('estatus','Activo')->sum('existencias');
+            // dd($data['totalFiltro']);
             $data['productos'] = Producto::join('categorias','categorias.id','=','productos.categoria_id')
                 ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
                 ->join('marcas','marcas.id','=','productos.marca_id')

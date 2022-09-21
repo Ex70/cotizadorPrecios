@@ -34,6 +34,8 @@ class TopsController extends Controller{
                                 'productos.categoria_id',
                                 'productos.subcategoria_id',
                                 'productos.marca_id',
+                                'productos.enlace',
+                                'productos.imagen',
                                 'categorias.nombre as categoria',
                                 'subcategorias.nombre as subcategoria',
                                 'marcas.nombre as marca'

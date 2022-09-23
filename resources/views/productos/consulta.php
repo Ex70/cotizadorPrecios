@@ -79,11 +79,9 @@
                                         <th>Zegucom</th>
                                         <th>Precio Promedio</th>
                                         <th>Margen promedio</th>
-                                        <th>Porcentaje agregado</th>
+                                        <th>Menor precio</th>
+                                        <th>Utilidad a menor precio</th>
                                         <th>Comisión Mercadopago</th>
-                                        {{-- <th>Menor precio</th>
-                                        <th>Utilidad a menor precio</th> --}}
-                                        {{-- <th>Comisión Mercadopago</th> --}}
                                     </thead>
                                     <tbody>
                                         <?php  $suma = 0.0; $sumPromedio = 0.0; $sumaCT = 0.0; $a =1; $stockTotal = 0;?>
@@ -111,8 +109,7 @@
                                                         @if($row->abasteo == 0)
                                                             <?php $divisor = $divisor-1;?>
                                                         @endif
-                                                    <td>${{$row->mipc}}
-                                                    </td>
+                                                    <td>${{$row->mipc}}</td>
                                                         @if($row->mipc != 0 && $row->mipc<$min)
                                                             <?php $min = $row->mipc;?>
                                                         @endif
@@ -128,8 +125,9 @@
                                                         @endif
                                                     <?php $suma = $row->abasteo + $row->cyberpuerta + $row->mipc + $row->zegucom;?>
                                                     <td>$<?php if($divisor>0){ $promedio = $suma/$divisor; $sumPromedio = $sumPromedio + $promedio; echo number_format($promedio,2); }else{ echo $row->precioct; $sumPromedio = $sumPromedio + $row->precioct;}?></td>
-                                                    <td><?php if($divisor>0) echo number_format((1-($row->precioct/$promedio))*100,2)."%"; else echo $row->precioct;?></td>
                                                     <td><?php if($divisor>0) echo number_format(($promedio/$row->precioct)*100-100,2)."%"; else echo $row->precioct;?></td>
+                                                    <td>${{$min}}</td>
+                                                    <td><?php echo number_format(($min/$row->precioct)*100-100,2)."%";?></td>
                                                     <td>$<?php if($divisor>0) echo number_format(((($row->precioct*number_format(((($promedio/$row->precioct)*100-100)/100)+1,4)/100)*3.49)+1)*1.16,2); else echo $row->precioct." - ".$divisor;?></td>
                                                 </tr>
                                             @endforeach

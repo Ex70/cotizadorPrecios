@@ -74,7 +74,7 @@ class PreciosController extends Controller{
         $productos = json_decode(Storage::get('public/products.json'),true);
         set_time_limit(0);
         for($i=0;$i<sizeof($productos);$i++){
-            if($productos[$i]['idCategoria']!=0)
+            if($productos[$i]['idCategoria']!=0){
                 $producto = Producto::updateOrCreate(
                     ['clave_ct'=>$productos[$i]['clave']],
                     [

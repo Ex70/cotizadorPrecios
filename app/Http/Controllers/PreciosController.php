@@ -74,22 +74,24 @@ class PreciosController extends Controller{
         $productos = json_decode(Storage::get('public/products.json'),true);
         set_time_limit(0);
         for($i=0;$i<sizeof($productos);$i++){
-            $producto = Producto::updateOrCreate(
-                ['clave_ct'=>$productos[$i]['clave']],
-                [
-                    'marca_id'=>$productos[$i]['idMarca'],
-                    'subcategoria_id'=>$productos[$i]['idSubCategoria'],
-                    'categoria_id'=>$productos[$i]['idCategoria'],
-                    'nombre'=>$productos[$i]['nombre'],
-                    'descripcion_corta'=>$productos[$i]['descripcion_corta'],
-                    'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
-                    'sku'=>ltrim($productos[$i]['numParte']),
-                    'ean'=>$productos[$i]['ean'],
-                    'upc'=>$productos[$i]['upc'],
-                    'imagen'=>$productos[$i]['imagen'],
-                    'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
-                ]
-            );
+            if($productos[$i]['idCategoria']!=0)
+                $producto = Producto::updateOrCreate(
+                    ['clave_ct'=>$productos[$i]['clave']],
+                    [
+                        'marca_id'=>$productos[$i]['idMarca'],
+                        'subcategoria_id'=>$productos[$i]['idSubCategoria'],
+                        'categoria_id'=>$productos[$i]['idCategoria'],
+                        'nombre'=>$productos[$i]['nombre'],
+                        'descripcion_corta'=>$productos[$i]['descripcion_corta'],
+                        'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
+                        'sku'=>ltrim($productos[$i]['numParte']),
+                        'ean'=>$productos[$i]['ean'],
+                        'upc'=>$productos[$i]['upc'],
+                        'imagen'=>$productos[$i]['imagen'],
+                        'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
+                    ]
+                );
+            }
         }
         dd($productos);
     }

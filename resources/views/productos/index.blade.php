@@ -79,6 +79,7 @@
                                         <th>Zegucom</th>
                                         <th>Precio Promedio</th>
                                         <th>Margen promedio</th>
+                                        <th>Precio*Margen</th>
                                         <th>Porcentaje agregado</th>
                                         <th>Comisión Mercadopago</th>
                                         {{-- <th>Menor precio</th>
@@ -86,7 +87,7 @@
                                         {{-- <th>Comisión Mercadopago</th> --}}
                                     </thead>
                                     <tbody>
-                                        <?php  $suma = 0.0; $sumPromedio = 0.0; $sumaCT = 0.0; $a =1; $stockTotal = 0;?>
+                                        <?php  $suma = 0.0; $sumPromedio = 0.0; $sumaCT = 0.0; $a =1; $stockTotal = 0; $margenesTotales=0;?>
                                         @if(!empty($data['productos']))
                                             @foreach($data['productos'] as $key=>$row)
                                                 <?php $divisor = 3; $min = 1000000;?>
@@ -127,9 +128,16 @@
                                                             <?php $divisor = $divisor-1;?>
                                                         @endif
                                                     <?php $suma = $row->abasteo + $row->cyberpuerta + $row->mipc + $row->zegucom;?>
+                                                    {{-- PRECIO PROMEDIO --}}
                                                     <td>$<?php if($divisor>0){ $promedio = $suma/$divisor; $sumPromedio = $sumPromedio + $promedio; echo number_format($promedio,2); }else{ echo $row->precioct; $sumPromedio = $sumPromedio + $row->precioct;}?></td>
+                                                    {{-- MARGEN PROMEDIO --}}
+                                                    <?php $precioMargenTotal = $row->existencias*number_format((1-($row->precioct/$promedio)),4); ?>
+                                                    <?php $margenesTotales = $margenesTotales + $precioMargenTotal; ?>
                                                     <td><?php if($divisor>0) echo number_format((1-($row->precioct/$promedio))*100,2)."%"; else echo $row->precioct;?></td>
+                                                    <td>{{$precioMargenTotal}}</td>
+                                                    {{-- Porcentaje Agregado --}}
                                                     <td><?php if($divisor>0) echo number_format(($promedio/$row->precioct)*100-100,2)."%"; else echo $row->precioct;?></td>
+                                                    {{-- Comisión Mercadopago --}}
                                                     <td>$<?php if($divisor>0) echo number_format(((($row->precioct*number_format(((($promedio/$row->precioct)*100-100)/100)+1,4)/100)*3.49)+1)*1.16,2); else echo $row->precioct." - ".$divisor;?></td>
                                                 </tr>
                                             @endforeach
@@ -159,6 +167,8 @@
                                 </a>
                                 <a href="javascript:;" class="list-group-item list-group-item-action">
                                     <div class="d-flex w-100 justify-content-between">
+                                        {{"Sumatoria de producto de márgenes: "}}<?php echo $margenesTotales;?><br>
+                                        {{"Existencias totales de filtro: "}}<?php echo $stockTotal;?><br><br>
                                         {{"Precio general promedio: "}}<?php echo "$".number_format($sumPromedio/sizeof($data['productos']),2);?><br>
                                         {{"Precio EHS promedio: "}}<?php echo "$".number_format($sumaCT/sizeof($data['productos']),2);?><br>
                                         {{"Stock de filtro: "}}<?php echo $stockTotal;?><br><br>

@@ -9,9 +9,11 @@ use App\Http\Controllers\MiPCController;
 use App\Http\Controllers\ZegucomController;
 use App\Http\Controllers\ScraperController;
 use App\Http\Controllers\GrupoDecmeController;
+use App\Http\Controllers\MargenesController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TopsController;
+use App\Models\Margenes;
 // use Google\Service\Analytics;
 // use Analytics;
 use Spatie\Analytics\AnalyticsFacade as Analytics;
@@ -57,6 +59,7 @@ Route::get('/existencias', [ProductosController::class, 'existencias']);
 Route::post('/importGrupoDecme', [GrupoDecmeController::class, 'llenadoJSON']);
 // Route::get('/precios', 'PreciosController@index');
 Route::get('/preciosddtech', [DDTechController::class, 'index']);
+Route::get('/existencias', [ProductosController::class, 'existencias']);
 Route::post('/importDDTech', [DDTechController::class, 'cotizar']);
 
 Route::get('get/{id?}', [PreciosController::class,'getCategorias'])->name('getCategorias');
@@ -65,6 +68,9 @@ Route::get('getMarca/{id?}/{id2?}', [PreciosController::class,'getMarcas'])->nam
 Route::get("json", [PreciosController::class, "lectura"]);
 Route::get("jsonLocal", [PreciosController::class, "lecturaLocal"]);
 Route::get("token", [CTConnect::class, "token"]);
+
+// MÁRGENES //
+Route::get("margenes", [MargenesController::class, "index"]);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');
 Route::resource('projects', ProjectController::class);

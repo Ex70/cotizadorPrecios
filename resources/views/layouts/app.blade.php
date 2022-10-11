@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="assets/css/dark-theme.css" />
     <link rel="stylesheet" href="assets/css/semi-dark.css" />
     <link rel="stylesheet" href="assets/css/header-colors.css" />
-    <title>Rocker - Bootstrap 5 Admin Dashboard Template</title>
+    <title>EHS - Administración</title>
 </head>
 
 <body>
@@ -46,7 +46,7 @@
 		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
 		<!--End Back To Top Button-->
 		<footer class="page-footer">
-			<p class="mb-0">Copyright © 2022. Todos los derechos reservados.</p>
+			<p class="mb-0">Copyright EHS Tecnologías © 2022. Todos los derechos reservados.</p>
 		</footer>
 	</div>
 	<!--end wrapper-->

@@ -102,7 +102,7 @@
                                                     <?php $stockTotal = $stockTotal + $row->existencias;?>
                                                     <td>${{$row->precioct}}</td>
                                                         <?php $sumaCT = $sumaCT + $row->precioct;?>
-                                                    @if($row->abasteo < ($row->precioct*.65))
+                                                    @if($row->abasteo < ($row->precioct*.55)||$row->abasteo > ($row->precioct*1.55))
                                                         <?php $row->abasteo = 0; ?>
                                                     @endif
                                                     <td>${{$row->abasteo}}</td>
@@ -112,6 +112,9 @@
                                                         @if($row->abasteo == 0)
                                                             <?php $divisor = $divisor-1;?>
                                                         @endif
+                                                    @if($row->mipc < ($row->precioct*.55)||$row->mipc > ($row->precioct*1.55))
+                                                        <?php $row->mipc = 0; ?>
+                                                    @endif
                                                     <td>${{$row->mipc}}
                                                     </td>
                                                         @if($row->mipc != 0 && $row->mipc<$min)
@@ -120,6 +123,9 @@
                                                         @if($row->mipc == 0)
                                                             <?php $divisor = $divisor-1;?>
                                                         @endif
+                                                    @if($row->zegucom < ($row->precioct*.55)||$row->zegucom > ($row->precioct*1.55))
+                                                        <?php $row->zegucom = 0; ?>
+                                                    @endif
                                                     <td>${{$row->zegucom}}</td>
                                                         @if($row->zegucom != 0 && $row->zegucom<$min)
                                                             <?php $min = $row->zegucom;?>
@@ -129,9 +135,9 @@
                                                         @endif
                                                     <?php $suma = $row->abasteo + $row->cyberpuerta + $row->mipc + $row->zegucom;?>
                                                     {{-- PRECIO PROMEDIO --}}
-                                                    <td>$<?php if($divisor>0){ $promedio = $suma/$divisor; $sumPromedio = $sumPromedio + $promedio; echo number_format($promedio,2); }else{ echo $row->precioct; $sumPromedio = $sumPromedio + $row->precioct;}?></td>
+                                                    <td>$<?php if($divisor>0){ $promedio = $suma/$divisor; $sumPromedio = $sumPromedio + $promedio; echo number_format($promedio,2); }else{ echo $row->precioct; $promedio = 0; $sumPromedio = $sumPromedio + $row->precioct;}?></td>
                                                     {{-- MARGEN PROMEDIO --}}
-                                                    <?php $precioMargenTotal = $row->existencias*number_format((1-($row->precioct/$promedio)),4); ?>
+                                                    <?php if($divisor>0) $precioMargenTotal = $row->existencias*number_format((1-($row->precioct/$promedio)),4); else $precioMargenTotal = 0; ?>
                                                     <?php $margenesTotales = $margenesTotales + $precioMargenTotal; ?>
                                                     <td><?php if($divisor>0) echo number_format((1-($row->precioct/$promedio))*100,2)."%"; else echo $row->precioct;?></td>
                                                     <td>{{$precioMargenTotal}}</td>
@@ -169,6 +175,8 @@
                                     <div class="d-flex w-100 justify-content-between">
                                         {{"Sumatoria de producto de márgenes: "}}<?php echo $margenesTotales;?><br>
                                         {{"Existencias totales de filtro: "}}<?php echo $stockTotal;?><br><br>
+                                        {{"Margen Ideal: "}}<?php echo $factor = $margenesTotales/$stockTotal;?><br><br>
+
                                         {{"Precio general promedio: "}}<?php echo "$".number_format($sumPromedio/sizeof($data['productos']),2);?><br>
                                         {{"Precio EHS promedio: "}}<?php echo "$".number_format($sumaCT/sizeof($data['productos']),2);?><br>
                                         {{"Stock de filtro: "}}<?php echo $stockTotal;?><br><br>

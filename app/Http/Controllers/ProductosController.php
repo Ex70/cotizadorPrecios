@@ -27,7 +27,9 @@ class ProductosController extends Controller
             $productos['data'] = Producto::where('productos.categoria_id',$request->get('filtro1'))
                     ->where('productos.subcategoria_id',$request->get('filtro2'))
                     ->where('productos.marca_id',$request->get('filtro3'))
-                    ->where('productos.estatus','Activo')->get();
+                    ->where('productos.estatus','Activo')
+                    ->where('productos.existencias','>',0)->get();
+            //$productos['data'] = Producto::all();
             $existencias = new CTConnect;
             $existencias->existencias($productos['data']);
             $data['totalSubCat'] = Producto::where('subcategoria_id',$request->get('filtro2'))->where('estatus','Activo')->sum('existencias');
@@ -44,6 +46,7 @@ class ProductosController extends Controller
                 ->where('productos.categoria_id',$request->get('filtro1'))
                 ->where('productos.subcategoria_id',$request->get('filtro2'))
                 ->where('productos.marca_id',$request->get('filtro3'))
+                ->where('productos.existencias','>',0)
                 ->where('productos.estatus','Activo')
                 ->orderBy('productos.existencias')
                 ->get([
@@ -141,7 +144,8 @@ class ProductosController extends Controller
     }
 
     public function existencias(){
-        // Producto::count()->where('subcategoria_id',97);
-        dd(Producto::where('subcategoria_id',97)->where('estatus','Activo')->count());
+        $productos['data'] = Producto::where('estatus','Activo')->get();
+        $existencias = new CTConnect;
+        $existencias->existencias($productos['data']);
     }
 }

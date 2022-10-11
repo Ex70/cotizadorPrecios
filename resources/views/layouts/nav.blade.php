@@ -81,6 +81,39 @@
                         </a>
                     </li>
                 </li>
+                <li class="menu-label">Márgenes</li>
+                <li>
+                    <li>
+                        <a href="{{ url('precios') }}">
+                            <div class="parent-icon"><i class='bx bx-cookie'></i>
+                            </div>
+                            <div class="menu-title">Generar márgenes</div>
+                        </a>
+                    </li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                        </div>
+                        <div class="menu-title">Consultar márgenes</div>
+                    </a>
+                    <ul>
+                        <li> <a href="{{ route('top100') }}"><i class="bx bx-right-arrow-alt"></i>Márgenes positivos</a>
+                        </li>
+                        <li> <a href="{{ url('subir-tops') }}"><i class="bx bx-right-arrow-alt"></i>Todos los productos</a>
+                        </li>
+                    </ul>
+                    <li>
+                        <a href="{{ url('productos') }}">
+                            <div class="parent-icon"><i class='bx bx-cookie'></i>
+                            </div>
+                            <div class="menu-title">Consulta de productos</div>
+                        </a>
+                        <a href="{{ url('analytics') }}">
+                            <div class="parent-icon"><i class='bx bx-cookie'></i>
+                            </div>
+                            <div class="menu-title">Páginas más visitadas</div>
+                        </a>
+                    </li>
+                </li>
                 <li class="menu-label">UI Elements</li>
                 <li>
                     <a href="{{ url('widgets') }}">

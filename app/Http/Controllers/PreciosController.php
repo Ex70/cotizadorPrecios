@@ -16,20 +16,23 @@ use Illuminate\Support\Facades\Storage;
 
 class PreciosController extends Controller{
     public function index(){
-        $data['categorias'] = Categoria::distinct('nombre')->get();
-        $data['subcategorias'] = Subcategoria::distinct('nombre')->get();
-        $data['marcas'] = Marca::distinct('nombre')->get();
+        $data['categorias'] = Categoria::distinct('nombre')->orderBy('nombre')->get();
+        $data['subcategorias'] = Subcategoria::distinct('nombre')->orderBy('nombre')->get();
+        $data['marcas'] = Marca::distinct('nombre')->orderBy('nombre')->get();
         $data['productos'] = '';
         return view('filtros',compact('data'));
     }
 
     public function getCategorias($id = null){
-        $data = Subcategoria::distinct('nombre')->where('categoria_id',$id)->get();
+        // $data = Subcategoria::distinct('nombre')->where('categoria_id',$id)->get();
+        // return response()->json($data);
+        $sql = "select id,nombre from subcategorias where id IN(select DISTINCT subcategoria_id from productos where categoria_id = ? and estatus = 'Activo') order by nombre asc";
+        $data = DB::select($sql,array($id));
         return response()->json($data);
     }
 
     public function getMarcas($id = null,$id2 = null){
-        $sql = "select id,nombre from marcas where id IN(select DISTINCT marca_id from productos where categoria_id = ? and subcategoria_id = ? and estatus = 'Activo')";
+        $sql = "select id,nombre from marcas where id IN(select DISTINCT marca_id from productos where categoria_id = ? and subcategoria_id = ? and estatus = 'Activo') order by nombre asc";
         $data = DB::select($sql,array($id,$id2));
         return response()->json($data);
     }
@@ -54,10 +57,12 @@ class PreciosController extends Controller{
             $data['zegucom'] = $preciosZegucom->cotizar($data['productos']);
             $data['categoria'] = $request->get('filtro1');
             $data['subcategoria'] = $request->get('filtro2');
+            $existencias = new CTConnect;
+            $data['existencias'] = $existencias->existencias($data['productos']);
         }
-        $data['categorias'] = Categoria::distinct('nombre')->get();
-        $data['marcas'] = Marca::distinct('nombre')->get();
-        $data['subcategorias'] = Subcategoria::distinct('nombre')->get();
+        $data['categorias'] = Categoria::distinct('nombre')->orderBy('nombre')->get();
+        $data['marcas'] = Marca::distinct('nombre')->orderBy('nombre')->get();
+        $data['subcategorias'] = Subcategoria::distinct('nombre')->orderBy('nombre')->get();
         return view('filtros',compact('data'));
     }
 
@@ -100,24 +105,28 @@ class PreciosController extends Controller{
         $products = new ProductosController();
         $products->limpieza();
         $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
+        // dd(storage_path() . "/app/public/productos.json");
+        // dd($productos);
         set_time_limit(0);
         for($i=0;$i<sizeof($productos);$i++){
-            $producto = Producto::updateOrCreate(
-                ['clave_ct'=>$productos[$i]['clave']],
-                [
-                    'marca_id'=>$productos[$i]['idMarca'],
-                    'subcategoria_id'=>$productos[$i]['idSubCategoria'],
-                    'categoria_id'=>$productos[$i]['idCategoria'],
-                    'nombre'=>$productos[$i]['nombre'],
-                    'descripcion_corta'=>$productos[$i]['descripcion_corta'],
-                    'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
-                    'sku'=>ltrim($productos[$i]['numParte']),
-                    'ean'=>$productos[$i]['ean'],
-                    'upc'=>$productos[$i]['upc'],
-                    'imagen'=>$productos[$i]['imagen'],
-                    'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
-                ]
-            );
+            if($productos[$i]['idCategoria']!=0){
+                $producto = Producto::updateOrCreate(
+                    ['clave_ct'=>$productos[$i]['clave']],
+                    [
+                        'marca_id'=>$productos[$i]['idMarca'],
+                        'subcategoria_id'=>$productos[$i]['idSubCategoria'],
+                        'categoria_id'=>$productos[$i]['idCategoria'],
+                        'nombre'=>$productos[$i]['nombre'],
+                        'descripcion_corta'=>$productos[$i]['descripcion_corta'],
+                        'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
+                        'sku'=>ltrim($productos[$i]['numParte']),
+                        'ean'=>$productos[$i]['ean'],
+                        'upc'=>$productos[$i]['upc'],
+                        'imagen'=>$productos[$i]['imagen'],
+                        'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
+                    ]
+                );
+            }
         }
         dd($productos);
     }

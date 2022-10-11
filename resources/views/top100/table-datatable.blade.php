@@ -78,10 +78,12 @@
 								<thead>
 									<tr>
 										<th>SKU</th>
+										<th>Clave CT</th>
 										<th>Categoria</th>
 										<th>Subcategoria</th>
 										<th>Marca</th>
 										<th>Descripción</th>
+										<th>Descripción Corta</th>
 										<th>Enlace</th>
 										<th>Imagen</th>
 										<th>Acciones</th>
@@ -92,10 +94,12 @@
 									@foreach ($productos['productos'] as $producto)
 										<tr>
 											<td>{{$producto->sku}}</td>
+											<td>{{$producto->clave_ct}}</td>
 											<td>{{$producto->categoria}}</td>
 											<td>{{$producto->subcategoria}}</td>
 											<td>{{$producto->marca}}</td>
 											<td>{{$producto->nombre}}</td>
+											<td>{{$producto->descripcion_corta}}</td>
 											<td>{{$producto->enlace}}</td>
 											<td>{{$producto->imagen}}</td>
 											<td><a href="#">Calcular márgenes</a></td>

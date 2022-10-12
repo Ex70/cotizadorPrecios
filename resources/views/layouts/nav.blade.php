@@ -48,7 +48,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-label">Pruebas</li>
+                <li class="menu-label">CT Online</li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
@@ -61,6 +61,9 @@
                         <li> <a href="{{ url('subir-tops') }}"><i class="bx bx-right-arrow-alt"></i>Subir Archivo</a>
                         </li>
                     </ul>
+                </li>
+                <li class="menu-label">Otros</li>
+                <li>
                     <li>
                         <a href="{{ url('precios') }}">
                             <div class="parent-icon"><i class='bx bx-cookie'></i>
@@ -83,36 +86,34 @@
                 </li>
                 <li class="menu-label">Márgenes</li>
                 <li>
-                    <li>
-                        <a href="{{ url('precios') }}">
-                            <div class="parent-icon"><i class='bx bx-cookie'></i>
-                            </div>
-                            <div class="menu-title">Generar márgenes</div>
-                        </a>
-                    </li>
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
                         </div>
-                        <div class="menu-title">Consultar márgenes</div>
+                        <div class="menu-title">Cálculos</div>
                     </a>
                     <ul>
-                        <li> <a href="{{ route('top100') }}"><i class="bx bx-right-arrow-alt"></i>Márgenes positivos</a>
+                        <li> <a href="{{ url('margenes') }}"><i class="bx bx-right-arrow-alt"></i>Márgenes</a>
                         </li>
-                        <li> <a href="{{ url('subir-tops') }}"><i class="bx bx-right-arrow-alt"></i>Todos los productos</a>
+                        <li> <a href="{{ url('existencias') }}"><i class="bx bx-right-arrow-alt"></i>Existencias</a>
                         </li>
                     </ul>
-                    <li>
-                        <a href="{{ url('productos') }}">
-                            <div class="parent-icon"><i class='bx bx-cookie'></i>
-                            </div>
-                            <div class="menu-title">Consulta de productos</div>
-                        </a>
-                        <a href="{{ url('analytics') }}">
-                            <div class="parent-icon"><i class='bx bx-cookie'></i>
-                            </div>
-                            <div class="menu-title">Páginas más visitadas</div>
-                        </a>
-                    </li>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+                        </div>
+                        <div class="menu-title">Consultas</div>
+                    </a>
+                    <ul>
+                        <li> <a href="{{ url('component-alerts') }}"><i class="bx bx-right-arrow-alt"></i>Mayores al 10%</a>
+                        </li>
+                        <li> <a href="{{ url('component-accordions') }}"><i class="bx bx-right-arrow-alt"></i>Del 0% al 100%</a>
+                        </li>
+                        <li> <a href="{{ url('component-badges') }}"><i class="bx bx-right-arrow-alt"></i>Negativos</a>
+                        </li>
+                        <li> <a href="{{ url('component-buttons') }}"><i class="bx bx-right-arrow-alt"></i>Todos</a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="menu-label">UI Elements</li>
                 <li>

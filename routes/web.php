@@ -10,6 +10,7 @@ use App\Http\Controllers\ZegucomController;
 use App\Http\Controllers\ScraperController;
 use App\Http\Controllers\GrupoDecmeController;
 use App\Http\Controllers\MargenesController;
+use App\Http\Controllers\PalabrasClaveController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TopsController;
@@ -72,6 +73,9 @@ Route::get("/margenes", [MargenesController::class, "index"]);
 
 // EXISTENCIAS //
 Route::get('/existencias', [ProductosController::class, 'existencias']);
+
+// PALABRAS CLAVE //
+Route::get('/palabras-clave/nuevas', [PalabrasClaveController::class, 'nuevas']);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');
 Route::resource('projects', ProjectController::class);

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use App\Models\Categoria;
 use App\Models\Marca;
+use App\Models\Palabras;
 use App\Models\Subcategoria;
 use App\Models\Producto;
 use Illuminate\Support\Facades\Storage;
@@ -126,8 +127,26 @@ class PreciosController extends Controller{
                         'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
                     ]
                 );
+                $palabras_clave = explode(",",$productos[$i]['descripcion_corta']);
+                for($j=0;$j<sizeof($palabras_clave);$j++){
+                    $producto = Palabras::updateOrCreate(
+                        ['clave_ct'=>$productos[$i]['clave'],
+                        'palabra'=>$palabras_clave[$j]]
+                    );
+                }
             }
         }
+        // for($i=0;$i<2;$i++){
+        //     if($productos[$i]['idCategoria']!=0){
+        //         $palabras_clave = explode(",",$productos[$i]['descripcion_corta']);
+        //         for($j=0;$j<sizeof($palabras_clave);$j++){
+        //             $producto = Palabras::updateOrCreate(
+        //                 ['clave_ct'=>$productos[$i]['clave'],
+        //                 'palabra'=>$palabras_clave[$j]]
+        //             );
+        //         }
+        //     }
+        // }
         dd($productos);
     }
 }

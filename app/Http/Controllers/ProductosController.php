@@ -148,4 +148,21 @@ class ProductosController extends Controller
         $existencias = new CTConnect;
         $existencias->existencias($productos['data']);
     }
+
+    public function google_my_business(){
+        $data['productos'] = Producto::join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
+            ->join('tops_mensuales','tops_mensuales.clave_ct','=','productos.clave_ct')
+            ->where('productos.estatus','Activo')
+            ->where('tops_mensuales.mes',date('m')-1)
+            ->orderBy('productos.clave_ct')
+            ->get([
+                'tops_mensuales.clave_ct',
+                'subcategorias.nombre as subcategoria',
+                'productos.nombre',
+                'productos.descripcion_corta',
+                'productos.enlace'
+            ]);
+            // dd($data['productos']);
+        return view('reportes.google-my-business', compact('data'));
+    }
 }

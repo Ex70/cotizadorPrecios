@@ -76,6 +76,7 @@ Route::get('/existencias', [ProductosController::class, 'existencias']);
 
 // PALABRAS CLAVE //
 Route::get('/palabras-clave/nuevas', [PalabrasClaveController::class, 'nuevas']);
+Route::get('/productos/gmb', [ProductosController::class, 'google_my_business']);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');
 Route::resource('projects', ProjectController::class);

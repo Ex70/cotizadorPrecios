@@ -13,6 +13,7 @@ use App\Models\Marca;
 use App\Models\Palabras;
 use App\Models\Subcategoria;
 use App\Models\Producto;
+use App\Models\Promocion;
 use Illuminate\Support\Facades\Storage;
 
 class PreciosController extends Controller{
@@ -58,8 +59,8 @@ class PreciosController extends Controller{
             $data['zegucom'] = $preciosZegucom->cotizar($data['productos']);
             $data['categoria'] = $request->get('filtro1');
             $data['subcategoria'] = $request->get('filtro2');
-            $existencias = new CTConnect;
-            $data['existencias'] = $existencias->existencias($data['productos']);
+            // $existencias = new CTConnect;
+            // $data['existencias'] = $existencias->existencias($data['productos']);
         }
         $data['categorias'] = Categoria::distinct('nombre')->orderBy('nombre')->get();
         $data['marcas'] = Marca::distinct('nombre')->orderBy('nombre')->get();
@@ -127,6 +128,27 @@ class PreciosController extends Controller{
                         'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
                     ]
                 );
+                if(!empty($productos[$i]['promociones'])){
+                    // dd($productos[$i]['promociones'][0]['vigencia']['inicio']);
+                    // date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio']));
+                    // date('Y-m-d\TH:i:s', $productos[$i]['promociones'][0]['vigencia']['inicio']);
+                    if($productos[$i]['promociones'][0]['tipo']!="porcentaje"){
+                        $promocion = Promocion::updateOrCreate(
+                            ['clave_ct'=>$productos[$i]['clave']],
+                            ['descuento'=>100-($productos[$i]['promociones'][0]['promocion']*100)/$productos[$i]['precio'],
+                            'fecha_inicio'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
+                            'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
+                        );
+                    }else{
+                        $promocion = Promocion::updateOrCreate(
+                            ['clave_ct'=>$productos[$i]['clave']],
+                            ['descuento'=>$productos[$i]['promociones'][0]['promocion'],
+                            'fecha_inicio'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
+                            'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
+                        );
+                    }
+                    // dd($productos[$i]['clave']);
+                }
                 $palabras_clave = explode(",",$productos[$i]['descripcion_corta']);
                 for($j=0;$j<sizeof($palabras_clave);$j++){
                     $producto = Palabras::updateOrCreate(
@@ -134,8 +156,12 @@ class PreciosController extends Controller{
                         'palabra'=>$palabras_clave[$j]]
                     );
                 }
+                // $existencias = new CTConnect;
+                // $existencias->existencias($productos);
             }
         }
+        // $existencias = new CTConnect;
+        //         $existencias->existencias($productos);
         // for($i=0;$i<2;$i++){
         //     if($productos[$i]['idCategoria']!=0){
         //         $palabras_clave = explode(",",$productos[$i]['descripcion_corta']);

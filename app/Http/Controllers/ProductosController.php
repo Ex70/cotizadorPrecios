@@ -30,8 +30,8 @@ class ProductosController extends Controller
                     ->where('productos.estatus','Activo')
                     ->where('productos.existencias','>',0)->get();
             //$productos['data'] = Producto::all();
-            $existencias = new CTConnect;
-            $existencias->existencias($productos['data']);
+            // $existencias = new CTConnect;
+            // $existencias->existencias($productos['data']);
             $data['totalSubCat'] = Producto::where('subcategoria_id',$request->get('filtro2'))->where('estatus','Activo')->sum('existencias');
             $data['totalCat'] = Producto::where('categoria_id',$request->get('filtro1'))->where('estatus','Activo')->sum('existencias');
             $data['totalMarca'] = Producto::where('marca_id',$request->get('filtro3'))->where('estatus','Activo')->sum('existencias');

@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 class PalabrasClaveController extends Controller{
     public function nuevas(){
-        $palabrasClave = Palabras::whereDay('created_at', date('d')-1)->get();
-        dd($palabrasClave);
+        $palabrasClave = Palabras::whereDay('created_at', date('d'))->get();
+        // dd($palabrasClave);
+        return view('palabras-clave.nuevas', compact('palabrasClave'));
     }
 }

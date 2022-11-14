@@ -94,8 +94,10 @@ class PreciosAbasteoController extends Controller
                 $sku="NOEXISTE";
                 print_r($productos[$i]->id);
             }
+            $headers = ['Content-Type' => 'application/json'];
             $url = "https://www.abasteo.mx/api/v0.1/catalog/filter?type=search&id=".$sku;
-            $res = $client->request('GET', $url);
+            $res = $client->request('GET', $url, ['headers'=>$headers,'body']);
+            // $res = $client->request('GET', $url);
             $result = $res->getBody();
             $data = json_decode($result, true);
             $precios[$i]= $data['price'][0];

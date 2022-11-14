@@ -70,6 +70,7 @@ class PreciosController extends Controller{
 
     public function lectura(){
         $products = new ProductosController();
+        $existencia_producto=0;
         $products->limpieza();
         set_time_limit(0);
         $fileExist = Storage::disk('prueba-ftp')->exists('catalogo_xml/productos.json');
@@ -95,9 +96,38 @@ class PreciosController extends Controller{
                         'ean'=>$productos[$i]['ean'],
                         'upc'=>$productos[$i]['upc'],
                         'imagen'=>$productos[$i]['imagen'],
+                        'existencias'=>$existencia_producto,
                         'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
                     ]
                 );
+                if(!empty($productos[$i]['promociones'])){
+                    // dd($productos[$i]['promociones'][0]['vigencia']['inicio']);
+                    // date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio']));
+                    // date('Y-m-d\TH:i:s', $productos[$i]['promociones'][0]['vigencia']['inicio']);
+                    if($productos[$i]['promociones'][0]['tipo']!="porcentaje"){
+                        $promocion = Promocion::updateOrCreate(
+                            ['clave_ct'=>$productos[$i]['clave']],
+                            ['descuento'=>100-($productos[$i]['promociones'][0]['promocion']*100)/$productos[$i]['precio'],
+                            'fecha_inicio'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
+                            'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
+                        );
+                    }else{
+                        $promocion = Promocion::updateOrCreate(
+                            ['clave_ct'=>$productos[$i]['clave']],
+                            ['descuento'=>$productos[$i]['promociones'][0]['promocion'],
+                            'fecha_inicio'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
+                            'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
+                        );
+                    }
+                    // dd($productos[$i]['clave']);
+                }
+                $palabras_clave = explode(",",$productos[$i]['descripcion_corta']);
+                for($j=0;$j<sizeof($palabras_clave);$j++){
+                    $producto = Palabras::updateOrCreate(
+                        ['clave_ct'=>$productos[$i]['clave'],
+                        'palabra'=>$palabras_clave[$j]]
+                    );
+                }
             }
         }
         dd($productos);

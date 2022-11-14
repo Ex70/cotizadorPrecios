@@ -13,6 +13,7 @@ use App\Http\Controllers\MargenesController;
 use App\Http\Controllers\PalabrasClaveController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\PromocionesController;
 use App\Http\Controllers\TopsController;
 use App\Models\Margenes;
 // use Google\Service\Analytics;
@@ -76,6 +77,12 @@ Route::get('/existencias', [ProductosController::class, 'existencias']);
 
 // PALABRAS CLAVE //
 Route::get('/palabras-clave/nuevas', [PalabrasClaveController::class, 'nuevas']);
+Route::get('/productos/gmb', [ProductosController::class, 'google_my_business']);
+
+// PROMOCIONES //
+Route::get('promociones/vigentes', [PromocionesController::class, 'vigentes']);
+Route::get('promociones/mes', [PromocionesController::class, 'delMes']);
+Route::get('promociones', [PromocionesController::class, 'index']);
 Route::get('/productos/gmb', [ProductosController::class, 'google_my_business']);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');

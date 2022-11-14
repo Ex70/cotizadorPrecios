@@ -62,7 +62,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-label">Otros</li>
+                <li class="menu-label">Consultas</li>
                 <li>
                     <li>
                         <a href="{{ url('precios') }}">
@@ -102,7 +102,7 @@
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
                         </div>
-                        <div class="menu-title">Consultas</div>
+                        <div class="menu-title">Márgenes</div>
                     </a>
                     <ul>
                         <li> <a href="{{ url('component-alerts') }}"><i class="bx bx-right-arrow-alt"></i>Mayores al 10%</a>
@@ -112,6 +112,21 @@
                         <li> <a href="{{ url('component-badges') }}"><i class="bx bx-right-arrow-alt"></i>Negativos</a>
                         </li>
                         <li> <a href="{{ url('component-buttons') }}"><i class="bx bx-right-arrow-alt"></i>Todos</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+                        </div>
+                        <div class="menu-title">Promociones</div>
+                    </a>
+                    <ul>
+                        <li> <a href="{{ url('promociones/vigentes') }}"><i class="bx bx-right-arrow-alt"></i>Vigentes</a>
+                        </li>
+                        <li> <a href="{{ url('promociones/mes') }}"><i class="bx bx-right-arrow-alt"></i>Del Mes</a>
+                        </li>
+                        <li> <a href="{{ url('promociones') }}"><i class="bx bx-right-arrow-alt"></i>Todas</a>
                         </li>
                     </ul>
                 </li>

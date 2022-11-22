@@ -80,9 +80,11 @@ Route::get('/palabras-clave/nuevas', [PalabrasClaveController::class, 'nuevas'])
 Route::get('/productos/gmb', [ProductosController::class, 'google_my_business']);
 
 // PROMOCIONES //
+Route::get('promociones/nuevas', [PromocionesController::class, 'nuevas']);
 Route::get('promociones/vigentes', [PromocionesController::class, 'vigentes']);
 Route::get('promociones/mes', [PromocionesController::class, 'delMes']);
 Route::get('promociones', [PromocionesController::class, 'index']);
+Route::get('promociones/vencidas', [PromocionesController::class, 'vencidas']);
 Route::get('/productos/gmb', [ProductosController::class, 'google_my_business']);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');

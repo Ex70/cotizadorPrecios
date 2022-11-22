@@ -122,11 +122,15 @@
                         <div class="menu-title">Promociones</div>
                     </a>
                     <ul>
+                        <li> <a href="{{ url('promociones/nuevas') }}"><i class="bx bx-right-arrow-alt"></i>Nuevas</a>
+                        </li>
                         <li> <a href="{{ url('promociones/vigentes') }}"><i class="bx bx-right-arrow-alt"></i>Vigentes</a>
                         </li>
                         <li> <a href="{{ url('promociones/mes') }}"><i class="bx bx-right-arrow-alt"></i>Del Mes</a>
                         </li>
                         <li> <a href="{{ url('promociones') }}"><i class="bx bx-right-arrow-alt"></i>Todas</a>
+                        </li>
+                        <li> <a href="{{ url('promociones/vencidas') }}"><i class="bx bx-right-arrow-alt"></i>Vencidas</a>
                         </li>
                     </ul>
                 </li>

@@ -77,13 +77,25 @@ class PromocionesController extends Controller
         //
     }
 
+    public function nuevas(){
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        // dd($fecha);
+        $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+            ->where('productos.estatus','Activo')
+            ->whereDate('promociones.created_at','=',$fecha)
+            // ->whereMonth('promociones.fecha_fin','>=', date('d'))
+            // ->whereDay('promociones.fecha_fin','>=', date('m'))
+            ->orderBy("promociones.fecha_fin","desc")
+            ->get();
+        return view('promociones.vigentes', compact('promociones'));
+    }
+
     public function vigentes(){
         $fecha = date('Y')."-".date('m')."-".date('d');
         // dd($fecha);
         $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
             ->where('productos.estatus','Activo')
-            ->whereDate('promociones.fecha_fin','>=',$fecha)
-            ->whereDate('promociones.created_at','>=',$fecha)
+            ->whereBetween('promociones.fecha_fin',[today(), '2022-11-30'])
             // ->whereMonth('promociones.fecha_fin','>=', date('d'))
             // ->whereDay('promociones.fecha_fin','>=', date('m'))
             ->orderBy("promociones.fecha_fin","desc")
@@ -98,4 +110,15 @@ class PromocionesController extends Controller
             ->get();
         return view('promociones.vigentes', compact('promociones'));
     }
+
+    public function vencidas(){
+        $fecha = date('Y')."-".date('m')."-".date('d')-1;
+        //dd($fecha);
+        $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+            ->where('productos.estatus','Activo')
+            ->whereDate('promociones.fecha_fin','=', $fecha)
+            ->get();
+        return view('promociones.vigentes', compact('promociones'));
+    }
+
 }

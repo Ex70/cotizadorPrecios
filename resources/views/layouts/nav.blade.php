@@ -122,7 +122,7 @@
                         <div class="menu-title">Promociones</div>
                     </a>
                     <ul>
-                        <li> <a href="{{ url('promociones/nuevas') }}"><i class="bx bx-right-arrow-alt"></i>Nuevas</a>
+                    <li> <a href="{{ url('promociones/nuevas') }}"><i class="bx bx-right-arrow-alt"></i>Nuevas</a>
                         </li>
                         <li> <a href="{{ url('promociones/vigentes') }}"><i class="bx bx-right-arrow-alt"></i>Vigentes</a>
                         </li>

@@ -117,6 +117,17 @@
                 </li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                        </div>
+                        <div class="menu-title">Palabras Clave</div>
+                    </a>
+                    <ul>
+                        <li> <a href="{{ url('palabras-clave/nuevas') }}"><i class="bx bx-right-arrow-alt"></i>Nuevas</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
                         </div>
                         <div class="menu-title">Promociones</div>

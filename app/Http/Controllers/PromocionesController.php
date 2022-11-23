@@ -95,7 +95,8 @@ class PromocionesController extends Controller
         // dd($fecha);
         $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
             ->where('productos.estatus','Activo')
-            ->whereBetween('promociones.fecha_fin',[today(), '2022-11-30'])
+            //->whereBetween('promociones.fecha_fin',[today(), '2022-11-30'])
+            ->whereDate('promociones.fecha_fin','>=',$fecha)
             // ->whereMonth('promociones.fecha_fin','>=', date('d'))
             // ->whereDay('promociones.fecha_fin','>=', date('m'))
             ->orderBy("promociones.fecha_fin","desc")

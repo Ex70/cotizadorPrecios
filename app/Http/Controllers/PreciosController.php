@@ -59,8 +59,8 @@ class PreciosController extends Controller{
             $data['zegucom'] = $preciosZegucom->cotizar($data['productos']);
             $data['categoria'] = $request->get('filtro1');
             $data['subcategoria'] = $request->get('filtro2');
-            $existencias = new CTConnect;
-            $data['existencias'] = $existencias->existencias($data['productos']);
+            // $existencias = new CTConnect;
+            // $data['existencias'] = $existencias->existencias($data['productos']);
         }
         $data['categorias'] = Categoria::distinct('nombre')->orderBy('nombre')->get();
         $data['marcas'] = Marca::distinct('nombre')->orderBy('nombre')->get();

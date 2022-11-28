@@ -291,7 +291,7 @@ class PreciosController extends Controller{
                         'ean'=>$productos[$i]['ean'],
                         'upc'=>$productos[$i]['upc'],
                         'imagen'=>$productos[$i]['imagen'],
-                        //'existencias'=>$existencia_producto,
+                        'existencias'=>$existencia_producto,
                         'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
                     ]
                 );

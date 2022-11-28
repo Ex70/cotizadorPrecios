@@ -141,8 +141,8 @@ class PreciosController extends Controller{
         // dd(storage_path() . "/app/public/productos.json");
         // dd($productos);
         set_time_limit(0);
-        // for($i=0;$i<sizeof($productos);$i++){
-        for($i=1;$i<5;$i++){
+        for($i=0;$i<sizeof($productos);$i++){
+        // for($i=1;$i<5;$i++){
             $existencia_producto=0;
             if($productos[$i]['idCategoria']!=0){
                 // PRUEBA EXISTENCIAS

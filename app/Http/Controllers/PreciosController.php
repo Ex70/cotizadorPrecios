@@ -136,13 +136,14 @@ class PreciosController extends Controller{
     public function lecturaLocal (){
         $products = new ProductosController();
         $existencia_producto=0;
-         $products->limpieza();
+        $products->limpieza();
         $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
         // dd(storage_path() . "/app/public/productos.json");
         // dd($productos);
         set_time_limit(0);
-        //for($i=0;$i<sizeof($productos);$i++){
-        for($i=0;$i<5;$i++){
+        // for($i=0;$i<sizeof($productos);$i++){
+        for($i=1;$i<5;$i++){
+            $existencia_producto=0;
             if($productos[$i]['idCategoria']!=0){
                 // PRUEBA EXISTENCIAS
                 if(!empty($productos[$i]['existencia']['DFA'])){
@@ -156,6 +157,7 @@ class PreciosController extends Controller{
                     }
                     if(!empty($productos[$i]['existencia']['GDL'])){
                     $existencia_producto += $productos[$i]['existencia']['GDL'];
+                    // dd($productos[$i]['existencia']['GDL'].$productos[$i]['clave']);
                     }
                     if(!empty($productos[$i]['existencia']['ZAC'])){
                     $existencia_producto += $productos[$i]['existencia']['ZAC'];

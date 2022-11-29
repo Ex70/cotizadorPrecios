@@ -151,12 +151,12 @@ class ProductosController extends Controller
 
     public function google_my_business(){
         $data['productos'] = Producto::join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
-            ->join('tops_mensuales','tops_mensuales.clave_ct','=','productos.clave_ct')
+            //->join('tops_mensuales','tops_mensuales.clave_ct','=','productos.clave_ct')
             ->where('productos.estatus','Activo')
-            ->where('tops_mensuales.mes',date('m')-1)
+            ->where('productos.existencias','>','100')
             ->orderBy('productos.clave_ct')
             ->get([
-                'tops_mensuales.clave_ct',
+                'productos.clave_ct',
                 'subcategorias.nombre as subcategoria',
                 'productos.nombre',
                 'productos.descripcion_corta',

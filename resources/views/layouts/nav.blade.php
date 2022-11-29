@@ -62,6 +62,17 @@
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                        </div>
+                        <div class="menu-title">Google My Business</div>
+                    </a>
+                    <ul>
+                    <li> <a href="{{ url('productos/gmb') }}"><i class="bx bx-right-arrow-alt"></i>Consultar GMB</a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="menu-label">Consultas</li>
                 <li>
                     <li>

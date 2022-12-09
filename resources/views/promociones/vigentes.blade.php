@@ -26,19 +26,25 @@
 						<table id="example2" class="table table-striped table-bordered">
 							<thead>
 								<tr>
+									<th>Categoria</th>
+									<th>Subcategoria</th>
 									<th>Clave CT</th>
 									<th>SKU</th>
 									<th>Descuento</th>
 									<th>Vigencia</th>
+									<th>Actualizado en</th>
 								</tr>
 							</thead>
 							<tbody>
 								@foreach ($promociones as $promocion)
 									<tr>
+										<td>{{$promocion->categoria}}</td>
+										<td>{{$promocion->subcategoria}}</td>
 										<td>{{$promocion->clave_ct}}</td>
 										<td>{{$promocion->sku}}</td>
 										<td>{{$promocion->descuento}}%</td>
 										<td>{{$promocion->fecha_fin}}</td>
+										<td>{{$promocion->updated_at}}</td>
 									</tr>
 								@endforeach
 							</tbody>

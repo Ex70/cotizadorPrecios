@@ -81,12 +81,25 @@ class PromocionesController extends Controller
         $fecha = date('Y')."-".date('m')."-".date('d');
         // dd($fecha);
         $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+            ->join('categorias','categorias.id','=','productos.categoria_id')
+            ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
             ->where('productos.estatus','Activo')
-            ->whereDate('promociones.created_at','=',$fecha)
-            // ->whereMonth('promociones.fecha_fin','>=', date('d'))
-            // ->whereDay('promociones.fecha_fin','>=', date('m'))
+            ->whereNull('promociones.consulta')
+            ->whereDate('promociones.updated_at','=',$fecha)
             ->orderBy("promociones.fecha_fin","desc")
-            ->get();
+            ->get([
+                'productos.clave_ct',
+                'productos.sku',
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'promociones.descuento',
+                'promociones.fecha_fin'
+            ]);
+            // dd($promociones);
+        Promocion::whereNull('consulta')->update([
+            'consulta' => $fecha
+        ]);
+        Promocion::whereMonth('updated_at','<',date('m'))->whereYear('created_at',date('Y'))->delete();
         return view('promociones.vigentes', compact('promociones'));
     }
 
@@ -99,7 +112,7 @@ class PromocionesController extends Controller
             ->whereDate('promociones.fecha_fin','>=',$fecha)
             // ->whereMonth('promociones.fecha_fin','>=', date('d'))
             // ->whereDay('promociones.fecha_fin','>=', date('m'))
-            ->orderBy("promociones.fecha_fin","desc")
+            ->orderBy("promociones.created_at","desc")
             ->get();
         return view('promociones.vigentes', compact('promociones'));
     }

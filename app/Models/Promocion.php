@@ -13,6 +13,7 @@ class Promocion extends Model
     protected $fillable = [
         'clave_ct',
         'descuento',
+        'consulta',
         'fecha_inicio',
         'fecha_fin'
     ];

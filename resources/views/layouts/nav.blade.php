@@ -139,6 +139,17 @@
                 </li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                        </div>
+                        <div class="menu-title">Productos Nuevos</div>
+                    </a>
+                    <ul>
+                    <li> <a href="{{ url('productos/imagen') }}"><i class="bx bx-right-arrow-alt"></i>Imagenes Nuevas</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
                         </div>
                         <div class="menu-title">Promociones</div>

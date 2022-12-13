@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Categoria;
 use App\Models\Marca;
 use App\Models\Producto;
+use App\Models\fmd;
 use App\Models\Subcategoria;
 use Illuminate\Http\Request;
 
@@ -164,5 +165,13 @@ class ProductosController extends Controller
             ]);
             // dd($data['productos']);
         return view('reportes.google-my-business', compact('data'));
+    }
+
+    public function imagen(){
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        $data['productos'] = Producto::
+                whereDay('created_at', date('d'))->whereMonth('created_at', date('m'))->get();
+            // dd($data['productos']);
+        return view('reportes.fmd', compact('data'));
     }
 }

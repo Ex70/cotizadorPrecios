@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Promocion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PromocionesController extends Controller
 {
@@ -80,7 +81,7 @@ class PromocionesController extends Controller
     public function nuevas(){
         $fecha = date('Y')."-".date('m')."-".date('d');
         // dd($fecha);
-        $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+        /*$promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
             ->join('categorias','categorias.id','=','productos.categoria_id')
             ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
             ->where('productos.estatus','Activo')
@@ -94,8 +95,10 @@ class PromocionesController extends Controller
                 'subcategorias.nombre as subcategoria',
                 'promociones.descuento',
                 'promociones.fecha_fin'
-            ]);
-            // dd($promociones);
+            ]);*/
+        $promociones = DB::select("SELECT productos.clave_ct, productos.sku, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, promociones.descuento, promociones.fecha_fin, promociones.updated_at FROM promociones INNER JOIN productos ON promociones.clave_ct = productos.clave_ct INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id WHERE productos.estatus = 'Activo' AND (promociones.consulta = NULL OR promociones.consulta = '".$fecha."') AND EXTRACT(DAY FROM promociones.updated_at)= '".date('d')."';");
+        //dd($promociones);
+        
         Promocion::whereNull('consulta')->update([
             'consulta' => $fecha
         ]);

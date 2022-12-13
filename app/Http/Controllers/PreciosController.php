@@ -146,139 +146,6 @@ class PreciosController extends Controller{
             $existencia_producto=0;
             if($productos[$i]['idCategoria']!=0){
                 // PRUEBA EXISTENCIAS
-                if(!empty($productos[$i]['existencia']['DFA'])){
-                    $existencia_producto += $productos[$i]['existencia']['DFA'];
-                    }
-                    if(!empty($productos[$i]['existencia']['D2A'])){
-                    $existencia_producto += $productos[$i]['existencia']['D2A'];
-                    }
-                    if(!empty($productos[$i]['existencia']['CAM'])){
-                    $existencia_producto += $productos[$i]['existencia']['CAM'];
-                    }
-                    if(!empty($productos[$i]['existencia']['GDL'])){
-                    $existencia_producto += $productos[$i]['existencia']['GDL'];
-                    // dd($productos[$i]['existencia']['GDL'].$productos[$i]['clave']);
-                    }
-                    if(!empty($productos[$i]['existencia']['ZAC'])){
-                    $existencia_producto += $productos[$i]['existencia']['ZAC'];
-                    }
-                    if(!empty($productos[$i]['existencia']['ACA'])){
-                    $existencia_producto += $productos[$i]['existencia']['ACA'];
-                    }
-                    if(!empty($productos[$i]['existencia']['QRO'])){
-                    $existencia_producto += $productos[$i]['existencia']['QRO'];
-                    }
-                    if(!empty($productos[$i]['existencia']['COL'])){
-                    $existencia_producto += $productos[$i]['existencia']['COL'];
-                    }
-                    if(!empty($productos[$i]['existencia']['HMO'])){
-                    $existencia_producto += $productos[$i]['existencia']['HMO'];
-                    }
-                    if(!empty($productos[$i]['existencia']['LMO'])){
-                    $existencia_producto += $productos[$i]['existencia']['LMO'];
-                    }
-                    if(!empty($productos[$i]['existencia']['CLN'])){
-                    $existencia_producto += $productos[$i]['existencia']['CLN'];
-                    }
-                    if(!empty($productos[$i]['existencia']['CHI'])){
-                    $existencia_producto += $productos[$i]['existencia']['CHI'];
-                    }
-                    if(!empty($productos[$i]['existencia']['MOR'])){
-                    $existencia_producto += $productos[$i]['existencia']['MOR'];
-                    }
-                    if(!empty($productos[$i]['existencia']['VER'])){
-                    $existencia_producto += $productos[$i]['existencia']['VER'];
-                    }
-                    if(!empty($productos[$i]['existencia']['CTZ'])){
-                    $existencia_producto += $productos[$i]['existencia']['CTZ'];
-                    }
-                    if(!empty($productos[$i]['existencia']['TAM'])){
-                    $existencia_producto += $productos[$i]['existencia']['TAM'];
-                    }
-                    if(!empty($productos[$i]['existencia']['PUE'])){
-                    $existencia_producto += $productos[$i]['existencia']['PUE'];
-                    }
-                    if(!empty($productos[$i]['existencia']['VHA'])){
-                    $existencia_producto += $productos[$i]['existencia']['VHA'];
-                    }
-                    if(!empty($productos[$i]['existencia']['TUX'])){
-                    $existencia_producto += $productos[$i]['existencia']['TUX'];
-                    }
-                    if(!empty($productos[$i]['existencia']['MTY'])){
-                    $existencia_producto += $productos[$i]['existencia']['MTY'];
-                    }
-                    if(!empty($productos[$i]['existencia']['MID'])){
-                    $existencia_producto += $productos[$i]['existencia']['MID'];
-                    }
-                    if(!empty($productos[$i]['existencia']['MAZ'])){
-                    $existencia_producto += $productos[$i]['existencia']['MAZ'];
-                    }
-                    if(!empty($productos[$i]['existencia']['CUE'])){
-                    $existencia_producto += $productos[$i]['existencia']['CUE'];
-                    }
-                    if(!empty($productos[$i]['existencia']['CUN'])){
-                    $existencia_producto += $productos[$i]['existencia']['CUN'];
-                    }
-                    if(!empty($productos[$i]['existencia']['DFP'])){
-                    $existencia_producto += $productos[$i]['existencia']['DFP'];
-                    }
-                    if(!empty($productos[$i]['existencia']['ACX'])){
-                    $existencia_producto += $productos[$i]['existencia']['ACX'];
-                    }
-                    if(!empty($productos[$i]['existencia']['CEL'])){
-                    $existencia_producto += $productos[$i]['existencia']['CEL'];
-                    }
-                    if(!empty($productos[$i]['existencia']['OBR'])){
-                    $existencia_producto += $productos[$i]['existencia']['OBR'];
-                    }
-                    if(!empty($productos[$i]['existencia']['DGO'])){
-                    $existencia_producto += $productos[$i]['existencia']['DGO'];
-                    }
-                    if(!empty($productos[$i]['existencia']['TRN'])){
-                    $existencia_producto += $productos[$i]['existencia']['TRN'];
-                    }
-                    if(!empty($productos[$i]['existencia']['AGS'])){
-                    $existencia_producto += $productos[$i]['existencia']['AGS'];
-                    }
-                    if(!empty($productos[$i]['existencia']['SLP'])){
-                    $existencia_producto += $productos[$i]['existencia']['SLP'];
-                    }
-                    if(!empty($productos[$i]['existencia']['XLP'])){
-                    $existencia_producto += $productos[$i]['existencia']['XLP'];
-                    }
-                    if(!empty($productos[$i]['existencia']['DFT'])){
-                    $existencia_producto += $productos[$i]['existencia']['DFT'];
-                    }
-                    if(!empty($productos[$i]['existencia']['CDV'])){
-                    $existencia_producto += $productos[$i]['existencia']['CDV'];
-                    }
-                    if(!empty($productos[$i]['existencia']['SLT'])){
-                    $existencia_producto += $productos[$i]['existencia']['SLT'];
-                    }
-                    if(!empty($productos[$i]['existencia']['TPC'])){
-                    $existencia_producto += $productos[$i]['existencia']['TPC'];
-                    }
-                    if(!empty($productos[$i]['existencia']['TOL'])){
-                    $existencia_producto += $productos[$i]['existencia']['TOL'];
-                    }
-                    if(!empty($productos[$i]['existencia']['PAC'])){
-                    $existencia_producto += $productos[$i]['existencia']['PAC'];
-                    }
-                    if(!empty($productos[$i]['existencia']['IRA'])){
-                    $existencia_producto += $productos[$i]['existencia']['IRA'];
-                    }
-                    if(!empty($productos[$i]['existencia']['OAX'])){
-                    $existencia_producto += $productos[$i]['existencia']['OAX'];
-                    }
-                    if(!empty($productos[$i]['existencia']['DFC'])){
-                    $existencia_producto += $productos[$i]['existencia']['DFC'];
-                    }
-                    if(!empty($productos[$i]['existencia']['TXL'])){
-                    $existencia_producto += $productos[$i]['existencia']['TXL'];
-                    }
-                    if(!empty($productos[$i]['existencia']['URP'])){
-                    $existencia_producto += $productos[$i]['existencia']['URP'];
-                    }
                 // dd($existencia_producto);
                 $producto = Producto::updateOrCreate(
                     ['clave_ct'=>$productos[$i]['clave']],
@@ -343,5 +210,141 @@ class PreciosController extends Controller{
         //     }
         // }
         dd($productos);
+    }
+
+    public function existencias (){
+        if(!empty($productos[$i]['existencia']['DFA'])){
+            $existencia_producto += $productos[$i]['existencia']['DFA'];
+            }
+            if(!empty($productos[$i]['existencia']['D2A'])){
+            $existencia_producto += $productos[$i]['existencia']['D2A'];
+            }
+            if(!empty($productos[$i]['existencia']['CAM'])){
+            $existencia_producto += $productos[$i]['existencia']['CAM'];
+            }
+            if(!empty($productos[$i]['existencia']['GDL'])){
+            $existencia_producto += $productos[$i]['existencia']['GDL'];
+            // dd($productos[$i]['existencia']['GDL'].$productos[$i]['clave']);
+            }
+            if(!empty($productos[$i]['existencia']['ZAC'])){
+            $existencia_producto += $productos[$i]['existencia']['ZAC'];
+            }
+            if(!empty($productos[$i]['existencia']['ACA'])){
+            $existencia_producto += $productos[$i]['existencia']['ACA'];
+            }
+            if(!empty($productos[$i]['existencia']['QRO'])){
+            $existencia_producto += $productos[$i]['existencia']['QRO'];
+            }
+            if(!empty($productos[$i]['existencia']['COL'])){
+            $existencia_producto += $productos[$i]['existencia']['COL'];
+            }
+            if(!empty($productos[$i]['existencia']['HMO'])){
+            $existencia_producto += $productos[$i]['existencia']['HMO'];
+            }
+            if(!empty($productos[$i]['existencia']['LMO'])){
+            $existencia_producto += $productos[$i]['existencia']['LMO'];
+            }
+            if(!empty($productos[$i]['existencia']['CLN'])){
+            $existencia_producto += $productos[$i]['existencia']['CLN'];
+            }
+            if(!empty($productos[$i]['existencia']['CHI'])){
+            $existencia_producto += $productos[$i]['existencia']['CHI'];
+            }
+            if(!empty($productos[$i]['existencia']['MOR'])){
+            $existencia_producto += $productos[$i]['existencia']['MOR'];
+            }
+            if(!empty($productos[$i]['existencia']['VER'])){
+            $existencia_producto += $productos[$i]['existencia']['VER'];
+            }
+            if(!empty($productos[$i]['existencia']['CTZ'])){
+            $existencia_producto += $productos[$i]['existencia']['CTZ'];
+            }
+            if(!empty($productos[$i]['existencia']['TAM'])){
+            $existencia_producto += $productos[$i]['existencia']['TAM'];
+            }
+            if(!empty($productos[$i]['existencia']['PUE'])){
+            $existencia_producto += $productos[$i]['existencia']['PUE'];
+            }
+            if(!empty($productos[$i]['existencia']['VHA'])){
+            $existencia_producto += $productos[$i]['existencia']['VHA'];
+            }
+            if(!empty($productos[$i]['existencia']['TUX'])){
+            $existencia_producto += $productos[$i]['existencia']['TUX'];
+            }
+            if(!empty($productos[$i]['existencia']['MTY'])){
+            $existencia_producto += $productos[$i]['existencia']['MTY'];
+            }
+            if(!empty($productos[$i]['existencia']['MID'])){
+            $existencia_producto += $productos[$i]['existencia']['MID'];
+            }
+            if(!empty($productos[$i]['existencia']['MAZ'])){
+            $existencia_producto += $productos[$i]['existencia']['MAZ'];
+            }
+            if(!empty($productos[$i]['existencia']['CUE'])){
+            $existencia_producto += $productos[$i]['existencia']['CUE'];
+            }
+            if(!empty($productos[$i]['existencia']['CUN'])){
+            $existencia_producto += $productos[$i]['existencia']['CUN'];
+            }
+            if(!empty($productos[$i]['existencia']['DFP'])){
+            $existencia_producto += $productos[$i]['existencia']['DFP'];
+            }
+            if(!empty($productos[$i]['existencia']['ACX'])){
+            $existencia_producto += $productos[$i]['existencia']['ACX'];
+            }
+            if(!empty($productos[$i]['existencia']['CEL'])){
+            $existencia_producto += $productos[$i]['existencia']['CEL'];
+            }
+            if(!empty($productos[$i]['existencia']['OBR'])){
+            $existencia_producto += $productos[$i]['existencia']['OBR'];
+            }
+            if(!empty($productos[$i]['existencia']['DGO'])){
+            $existencia_producto += $productos[$i]['existencia']['DGO'];
+            }
+            if(!empty($productos[$i]['existencia']['TRN'])){
+            $existencia_producto += $productos[$i]['existencia']['TRN'];
+            }
+            if(!empty($productos[$i]['existencia']['AGS'])){
+            $existencia_producto += $productos[$i]['existencia']['AGS'];
+            }
+            if(!empty($productos[$i]['existencia']['SLP'])){
+            $existencia_producto += $productos[$i]['existencia']['SLP'];
+            }
+            if(!empty($productos[$i]['existencia']['XLP'])){
+            $existencia_producto += $productos[$i]['existencia']['XLP'];
+            }
+            if(!empty($productos[$i]['existencia']['DFT'])){
+            $existencia_producto += $productos[$i]['existencia']['DFT'];
+            }
+            if(!empty($productos[$i]['existencia']['CDV'])){
+            $existencia_producto += $productos[$i]['existencia']['CDV'];
+            }
+            if(!empty($productos[$i]['existencia']['SLT'])){
+            $existencia_producto += $productos[$i]['existencia']['SLT'];
+            }
+            if(!empty($productos[$i]['existencia']['TPC'])){
+            $existencia_producto += $productos[$i]['existencia']['TPC'];
+            }
+            if(!empty($productos[$i]['existencia']['TOL'])){
+            $existencia_producto += $productos[$i]['existencia']['TOL'];
+            }
+            if(!empty($productos[$i]['existencia']['PAC'])){
+            $existencia_producto += $productos[$i]['existencia']['PAC'];
+            }
+            if(!empty($productos[$i]['existencia']['IRA'])){
+            $existencia_producto += $productos[$i]['existencia']['IRA'];
+            }
+            if(!empty($productos[$i]['existencia']['OAX'])){
+            $existencia_producto += $productos[$i]['existencia']['OAX'];
+            }
+            if(!empty($productos[$i]['existencia']['DFC'])){
+            $existencia_producto += $productos[$i]['existencia']['DFC'];
+            }
+            if(!empty($productos[$i]['existencia']['TXL'])){
+            $existencia_producto += $productos[$i]['existencia']['TXL'];
+            }
+            if(!empty($productos[$i]['existencia']['URP'])){
+            $existencia_producto += $productos[$i]['existencia']['URP'];
+            }
     }
 }

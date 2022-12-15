@@ -79,7 +79,9 @@
                             <thead>
                                 <tr>
                                     <th>Clave CT</th>
+                                    <th>Subcategoria</th>
                                     <th>Nombre</th>
+                                    <th>Descripción Corta</th>
                                     <th>Enlace de Imagen</th>
                                     <th>Fecha de Creación</th>
                                 </tr>
@@ -89,7 +91,9 @@
                                 @foreach ($data['productos'] as $producto)
                                     <tr>
                                         <td>{{$producto->clave_ct}}</td>
+                                        <td>{{$producto->subcategoria}}</td>
                                         <td>{{$producto->nombre}}</td>
+                                        <td>{{$producto->descripcion_corta}}</td>
                                         <td>{{$producto->imagen}}</td>
                                         <td>{{$producto->created_at}}</td>
                                     </tr>

@@ -14,8 +14,10 @@ class FMD extends Model
 
     protected $fillable = [
         'clave_ct',
+        'subcategoria',
         'nombre',
         'imagen',
+        'descripcion_corta',
         'created_at'
     ];
 }

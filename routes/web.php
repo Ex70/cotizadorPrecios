@@ -77,7 +77,10 @@ Route::get('/existencias', [ProductosController::class, 'existencias']);
 
 // PALABRAS CLAVE //
 Route::get('/palabras-clave/nuevas', [PalabrasClaveController::class, 'nuevas']);
+
+//GOOGLE MY BUSINESS
 Route::get('/productos/gmb', [ProductosController::class, 'google_my_business']);
+Route::get('/productos/gmb-nuevos', [ProductosController::class, 'nuevos_gmb']);
 
 //IMAGENES NUEVAS//
 Route::get('productos/imagen', [ProductosController::class, 'imagen']);

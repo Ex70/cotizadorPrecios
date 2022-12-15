@@ -169,8 +169,37 @@ class ProductosController extends Controller
 
     public function imagen(){
         $fecha = date('Y')."-".date('m')."-".date('d');
-        $data['productos'] = Producto::
-                whereDay('created_at', date('d'))->whereMonth('created_at', date('m'))->get();
+        $data['productos'] = Producto::join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
+        ->whereDay('productos.created_at', date('d'))->whereMonth('productos.created_at', date('m'))
+        ->where('productos.estatus','Activo')
+        ->orderBy('productos.clave_ct')
+        ->get([
+            'productos.clave_ct',
+            'subcategorias.nombre as subcategoria',
+            'productos.nombre',
+            'productos.descripcion_corta',
+            'productos.imagen',
+            'productos.created_at'
+        ]);
+            // dd($data['productos']);
+        return view('reportes.fmd', compact('data'));
+    }
+
+    public function nuevos_gmb(){
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        $data['productos'] = Producto::join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
+        ->whereDay('productos.created_at', date('d'))->whereMonth('productos.created_at', date('m'))
+        ->where('productos.estatus','Activo')
+        ->where('productos.existencias','>','100')
+        ->orderBy('productos.clave_ct')
+        ->get([
+            'productos.clave_ct',
+            'subcategorias.nombre as subcategoria',
+            'productos.nombre',
+            'productos.descripcion_corta',
+            'productos.enlace',
+            'productos.created_at'
+        ]);
             // dd($data['productos']);
         return view('reportes.fmd', compact('data'));
     }

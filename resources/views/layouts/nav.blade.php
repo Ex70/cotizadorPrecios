@@ -71,6 +71,8 @@
                     <ul>
                     <li> <a href="{{ url('productos/gmb') }}"><i class="bx bx-right-arrow-alt"></i>Consultar GMB</a>
                         </li>
+                    <li> <a href="{{ url('productos/gmb-nuevos') }}"><i class="bx bx-right-arrow-alt"></i>Nuevos</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="menu-label">Consultas</li>

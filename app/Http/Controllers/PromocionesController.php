@@ -122,6 +122,8 @@ class PromocionesController extends Controller
 
     public function delMes(){
         $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+            ->join('categorias','categorias.id','=','productos.categoria_id')
+            ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
             ->where('productos.estatus','Activo')
             ->whereMonth('promociones.fecha_fin','>=', date('m'))
             ->get();
@@ -131,10 +133,7 @@ class PromocionesController extends Controller
     public function vencidas(){
         $fecha = date('Y')."-".date('m')."-".date('d')-1;
         //dd($fecha);
-        $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
-            ->where('productos.estatus','Activo')
-            ->whereDate('promociones.fecha_fin','=', $fecha)
-            ->get();
+        $promociones = DB::select("SELECT productos.clave_ct, productos.sku, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, promociones.descuento, promociones.fecha_fin, promociones.updated_at FROM promociones INNER JOIN productos ON promociones.clave_ct = productos.clave_ct INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id WHERE productos.estatus = 'Activo' AND promociones.fecha_fin = '".$fecha."';");
         return view('promociones.vigentes', compact('promociones'));
     }
 

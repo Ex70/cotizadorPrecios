@@ -10,6 +10,7 @@ class Subcategoria extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'categoria_id',
         'nombre'
     ];

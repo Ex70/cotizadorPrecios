@@ -198,9 +198,8 @@ class ProductosController extends Controller
             'productos.nombre',
             'productos.descripcion_corta',
             'productos.enlace',
-            'productos.created_at'
         ]);
             // dd($data['productos']);
-        return view('reportes.fmd', compact('data'));
+        return view('reportes.google-my-business', compact('data'));
     }
 }

@@ -83,6 +83,29 @@ class PreciosController extends Controller{
         set_time_limit(0);
         for($i=0;$i<sizeof($productos);$i++){
             if($productos[$i]['idCategoria']!=0){
+
+                $marca_nueva = Marca::updateOrCreate(
+                    ['id'=>$productos[$i]['idMarca']],
+                    [
+                        'id'=>$productos[$i]['idMarca'],
+                        'nombre'=>$productos[$i]['marca']
+                    ]
+                );
+                $categoria_nueva = Categoria::updateOrCreate(
+                    ['id'=>$productos[$i]['idCategoria']],
+                    [
+                        'id'=>$productos[$i]['idCategoria'],
+                        'nombre'=>$productos[$i]['categoria']
+                    ]
+                );
+                $subcategoria_nueva = Subcategoria::updateOrCreate(
+                    ['id'=>$productos[$i]['idSubCategoria']],
+                    [
+                        'id'=>$productos[$i]['idSubCategoria'],
+                        'categoria_id'=>$productos[$i]['idCategoria'],
+                        'nombre'=>$productos[$i]['subcategoria']
+                    ]
+                );
                 $producto = Producto::updateOrCreate(
                     ['clave_ct'=>$productos[$i]['clave']],
                     [
@@ -148,7 +171,29 @@ class PreciosController extends Controller{
                 // PRUEBA EXISTENCIAS
                 $existencia_producto = $this->existencias($productos[$i]);
                 
-                //dd($existencia_producto);
+                $marca_nueva = Marca::updateOrCreate(
+                    ['id'=>$productos[$i]['idMarca']],
+                    [
+                        'id'=>$productos[$i]['idMarca'],
+                        'nombre'=>$productos[$i]['marca']
+                    ]
+                );
+                $categoria_nueva = Categoria::updateOrCreate(
+                    ['id'=>$productos[$i]['idCategoria']],
+                    [
+                        'id'=>$productos[$i]['idCategoria'],
+                        'nombre'=>$productos[$i]['categoria']
+                    ]
+                );
+                $subcategoria_nueva = Subcategoria::updateOrCreate(
+                    ['id'=>$productos[$i]['idSubCategoria']],
+                    [
+                        'id'=>$productos[$i]['idSubCategoria'],
+                        'categoria_id'=>$productos[$i]['idCategoria'],
+                        'nombre'=>$productos[$i]['subcategoria']
+                    ]
+                );
+                    
                 $producto = Producto::updateOrCreate(
                     ['clave_ct'=>$productos[$i]['clave']],
                     [

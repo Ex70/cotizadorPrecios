@@ -9,6 +9,7 @@ use App\Http\Controllers\MiPCController;
 use App\Http\Controllers\ZegucomController;
 use App\Http\Controllers\ScraperController;
 use App\Http\Controllers\GrupoDecmeController;
+use App\Http\Controllers\ImagenesController;
 use App\Http\Controllers\MargenesController;
 use App\Http\Controllers\PalabrasClaveController;
 use App\Http\Controllers\ProductosController;
@@ -84,6 +85,10 @@ Route::get('/productos/gmb-nuevos', [ProductosController::class, 'nuevos_gmb']);
 
 //IMAGENES NUEVAS//
 Route::get('productos/imagen', [ProductosController::class, 'imagen']);
+
+//CRAWLER IMAGENES//
+Route::get('imagenes', [ImagenesController::class, 'obtener']);
+
 
 // PROMOCIONES //
 Route::get('promociones/nuevas', [PromocionesController::class, 'nuevas']);

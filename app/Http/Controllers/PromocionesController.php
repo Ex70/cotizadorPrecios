@@ -14,7 +14,19 @@ class PromocionesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')->get();
+        $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+        ->join('categorias','categorias.id','=','productos.categoria_id')
+        ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
+        ->get(
+            [
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'promociones.clave_ct',
+                'productos.sku',
+                'promociones.descuento',
+                'promociones.fecha_fin'
+                ]
+        );
         return view('promociones.vigentes', compact('promociones'));
     }
 
@@ -110,13 +122,24 @@ class PromocionesController extends Controller
         $fecha = date('Y')."-".date('m')."-".date('d');
         // dd($fecha);
         $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+            ->join('categorias','categorias.id','=','productos.categoria_id')
+            ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
             ->where('productos.estatus','Activo')
             //->whereBetween('promociones.fecha_fin',[today(), '2022-11-30'])
             ->whereDate('promociones.fecha_fin','>=',$fecha)
             // ->whereMonth('promociones.fecha_fin','>=', date('d'))
             // ->whereDay('promociones.fecha_fin','>=', date('m'))
             ->orderBy("promociones.created_at","desc")
-            ->get();
+            ->get(
+                [
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'promociones.clave_ct',
+                'productos.sku',
+                'promociones.descuento',
+                'promociones.fecha_fin'
+                ]
+            );
         return view('promociones.vigentes', compact('promociones'));
     }
 
@@ -126,14 +149,36 @@ class PromocionesController extends Controller
             ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
             ->where('productos.estatus','Activo')
             ->whereMonth('promociones.fecha_fin','>=', date('m'))
-            ->get();
+            ->get([
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'promociones.clave_ct',
+                'productos.sku',
+                'promociones.descuento',
+                'promociones.fecha_fin'
+                ]
+            );
         return view('promociones.vigentes', compact('promociones'));
     }
 
     public function vencidas(){
         $fecha = date('Y')."-".date('m')."-".date('d')-1;
         //dd($fecha);
-        $promociones = DB::select("SELECT productos.clave_ct, productos.sku, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, promociones.descuento, promociones.fecha_fin, promociones.updated_at FROM promociones INNER JOIN productos ON promociones.clave_ct = productos.clave_ct INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id WHERE productos.estatus = 'Activo' AND promociones.fecha_fin = '".$fecha."';");
+        $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+        ->join('categorias','categorias.id','=','productos.categoria_id')
+        ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
+        //->where('productos.estatus','Activo')
+        ->whereDate('promociones.fecha_fin','<=', $fecha)
+        //->whereDay('promociones.fecha_fin','<', date('d'))
+        ->get([
+            'categorias.nombre as categoria',
+            'subcategorias.nombre as subcategoria',
+            'promociones.clave_ct',
+            'productos.sku',
+            'promociones.descuento',
+            'promociones.fecha_fin'
+            ]
+        );
         return view('promociones.vigentes', compact('promociones'));
     }
 

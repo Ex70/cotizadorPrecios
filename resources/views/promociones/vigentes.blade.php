@@ -32,7 +32,6 @@
 									<th>SKU</th>
 									<th>Descuento</th>
 									<th>Vigencia</th>
-									<th>Actualizado en</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -44,7 +43,6 @@
 										<td>{{$promocion->sku}}</td>
 										<td>{{$promocion->descuento}}%</td>
 										<td>{{$promocion->fecha_fin}}</td>
-										<td>{{$promocion->updated_at}}</td>
 									</tr>
 								@endforeach
 							</tbody>

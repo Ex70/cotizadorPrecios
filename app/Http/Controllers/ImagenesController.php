@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Goutte\Client;
+use GuzzleHttp\Client;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -86,33 +87,49 @@ class ImagenesController extends Controller
     }
 
     public function obtener(){
+        set_time_limit(0);
         $sku = "SKU001";
-        $url = "http://www.google.co.in/intl/en_com/images/srpr/logo1w.png";
+        $url = "https://images.barcodelookup.com/56172/561726884-1.jpg";
         $contents = file_get_contents($url);
-        // $name = $sku;
         $datos = pathinfo($url);
         $nombre = $sku.".".$datos['extension'];
+        $ruta = 'productos/'.$nombre;
+        Storage::put($ruta, $contents);
+        // $nombre = $sku.".".$datos['extension'];
         // dd($nombre);
-        // dd($datos['extension']);
-        // dd(pathinfo($url));
-        // dd(substr($url, $sku.$datos['extension']));
-        // $name = 'productos/'.substr($url, strrpos($url, '/') + 1);
-        // dd($name);
-        Storage::put('productos/'.$nombre, $contents);
-        dd($nombre);
 
+        $productos = json_decode(file_get_contents(storage_path() . "/app/public/barcode.json"), true);
+        dd($productos);
+        // $client = new Client();
+        // $headers = ['Content-Type' => 'application/json'];
+        // $url = "https://api.barcodelookup.com/v3/products?barcode=4710886162469&key=u30gi6v08sqi3qw0gstd7ovk3fqfrb";
+        // $res = $client->request('GET', $url, ['headers' => [
+        //     'Accept' => 'application/json',
+        //     'Content-Type' => 'application/json',
+        //     'User-Agent' => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+        // ]]);
+        // $result = $res->getBody();
+        // $data = json_decode($result, true);
 
+        for($i=0;$i<sizeof($data['products'][0]['images']);$i++){
+            $urlImagen = $data['products'][0]['images'][$i];
+            $contents = file_get_contents($urlImagen);
+            $datos = pathinfo($urlImagen);
+            $nombre = $sku."-".$i.".".$datos['extension'];
+            $ruta = 'productos/'.$nombre;
+            Storage::put($ruta, $contents);
+        }
+        dd(sizeof($data['products'][0]['images']));
 
-        set_time_limit(0);
         $remove = array(" ","  ","   ","    ", "(", ")", "$", "*", "/",",","IVA","Incluido");
         $client = new Client();
-        for($i=0;$i<2;$i++){
+        for($i=0;$i<1;$i++){
             // $sku = $productos[$i]->sku;
             // $clave_ct = $productos[$i]->clave_ct;
             // if($sku==""){
             //     $sku="NOEXISTE";
             // }
-            $website = $client->request('GET', 'https://www.barcodelookup.com/4710886162469');
+            $website = $client->request('GET', 'https://api.barcodelookup.com/v3/products?barcode=4710886162469&key=u30gi6v08sqi3qw0gstd7ovk3fqfrb');
             // $website = $client->request('GET', 'https://www.zegucom.com.mx/?cons='.$sku.'&mod=search&reg=1');
             $result = $website->filter('body')->first();
             dd($result->text());

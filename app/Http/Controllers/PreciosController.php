@@ -230,7 +230,6 @@ class PreciosController extends Controller{
                             'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
                         );
                     }
-                    // dd($productos[$i]['clave']);
                 }
                 $palabras_clave = explode(",",$productos[$i]['descripcion_corta']);
                 for($j=0;$j<sizeof($palabras_clave);$j++){

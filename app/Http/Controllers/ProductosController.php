@@ -202,4 +202,11 @@ class ProductosController extends Controller
             // dd($data['productos']);
         return view('reportes.google-my-business', compact('data'));
     }
+
+    public function cartas(Request $request){
+        $clave = $request->clavect;
+        if ($request->has('clavect')) {
+        }
+        return view('productos.cartaProductos');
+    }
 }

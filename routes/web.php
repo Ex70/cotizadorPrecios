@@ -89,6 +89,9 @@ Route::get('productos/imagen', [ProductosController::class, 'imagen']);
 //CRAWLER IMAGENES//
 Route::get('imagenes', [ImagenesController::class, 'obtener']);
 
+//CARTAS PRODUCTOS
+Route::get('/productos/cartas',[ProductosController::class, 'cartas']);
+Route::post('/productos/cartas',[ProductosController::class, 'cartas']);
 
 // PROMOCIONES //
 Route::get('promociones/nuevas', [PromocionesController::class, 'nuevas']);

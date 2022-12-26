@@ -205,8 +205,26 @@ class ProductosController extends Controller
 
     public function cartas(Request $request){
         $clave = $request->clavect;
+        $data['productos'] = Producto::join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+                ->join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+                ->join('marcas', 'marcas.id', '=', 'productos.marca_id')
+                ->where('productos.clave_ct', '=', $clave)
+                ->where('productos.estatus', 'Activo')
+                ->get(
+                    [
+                    'productos.clave_ct',
+                    'productos.nombre',
+                    'categorias.nombre as categoria',
+                    'subcategorias.nombre as subcategoria',
+                    'marcas.nombre as marca',
+                    'productos.enlace',
+                    'productos.imagen',
+                    'productos.existencias'
+                ]
+            );
         if ($request->has('clavect')) {
         }
-        return view('productos.cartaProductos');
+        return view('productos.cartaProductos', compact('data'));
     }
 }
+

@@ -1,40 +1,36 @@
 @extends("layouts.app")
 
-@section("style")
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-@endsection
 
 @section("wrapper")
-<div class="page-wrapper">
-<div class="page-content">
-    <div class="container box" style="width: 18rem;">
-    <h1>Productos</h1>
-    <div lass="form-group">
+<div class="page-wrapper" align="center">
+  <div class="page-content">
+    <div class="container box w-50" >
+      <h1>Productos</h1>
+      <div class="form-group">
         <form action="/productos/cartas" method="post">
-        @csrf
-        <input type="text" name="clavect"  id="country_name" class="form-control" placeholder="Clave CT"><br/>
-        <button type="submit">Buscar</button>
-        </form>
+          @csrf
+          <input type="text" name="clavect"  id="country_name" class="form-control" placeholder="Clave CT"><br/>
+          <button type="submit">Buscar</button>
+        </form></div><br>
         @if($data['productos'])
-				@foreach ($data['productos'] as $producto)
-        <div class="card" style="width: 18rem;">
-        <img src="" class="card-img-top" alt="...">
-    <div class="card-header">
-        {{$producto->clave_ct}}
+          @foreach ($data['productos'] as $producto)
+            <div class="card">
+              <img src="http://grupoehs.com/img/productos/{{$producto->clave_ct}}.jpg" class="card-img-top" alt="...">
+              <div class="card-header">
+                <h4 class="card-title">Clave CT</h4>{{$producto->clave_ct}}
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Nombre: </strong>{{$producto->nombre}}</li>
+                <li class="list-group-item"><strong>Categoria: </strong>{{$producto->categoria}}</li>
+                <li class="list-group-item"><strong>Subcategoria: </strong>{{$producto->subcategoria}}</li>
+                <li class="list-group-item"><strong>Marca: </strong>{{$producto->marca}}</li>
+                <li class="list-group-item"><strong>Enlace: </strong><a href="{{$producto->enlace}}">{{$producto->enlace}}</a></li>
+                <li class="list-group-item"><strong>Existencias:</strong>{{$producto->existencias}}</li>
+              </ul>
+            </div>
+          @endforeach
+        @endif
     </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">Nombre: {{$producto->nombre}}</li>
-        <li class="list-group-item">Categoria: {{$producto->categoria}}</li>
-        <li class="list-group-item">Subcategoria: {{$producto->subcategoria}}</li>
-        <li class="list-group-item">Marca: {{$producto->marca}}</li>
-        <li class="list-group-item">Enlace: {{$producto->enlace}}></li>
-        <li class="list-group-item">Existencias: {{$producto->existencias}}</li>
-    </div>
-    @endforeach
-		@endif
-    </div>
-    </div>
+  </div>
 </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 @endsection

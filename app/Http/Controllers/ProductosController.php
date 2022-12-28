@@ -222,6 +222,7 @@ class ProductosController extends Controller
                     'productos.existencias'
                 ]
             );
+        //dd($data['productos']);
         if ($request->has('clavect')) {
         }
         return view('productos.cartaProductos', compact('data'));

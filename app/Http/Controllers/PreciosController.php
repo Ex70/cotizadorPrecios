@@ -165,12 +165,11 @@ class PreciosController extends Controller{
         //dd($productos);
         set_time_limit(0);
         for($i=0;$i<sizeof($productos);$i++){
-        //for($i=1;$i<50;$i++){
+        // for($i=1;$i<4;$i++){
             $existencia_producto=0;
             if($productos[$i]['idCategoria']!=0){
                 // PRUEBA EXISTENCIAS
                 $existencia_producto = $this->existencias($productos[$i]);
-                
                 $marca_nueva = Marca::updateOrCreate(
                     ['id'=>$productos[$i]['idMarca']],
                     [
@@ -193,7 +192,6 @@ class PreciosController extends Controller{
                         'nombre'=>$productos[$i]['subcategoria']
                     ]
                 );
-                    
                 $producto = Producto::updateOrCreate(
                     ['clave_ct'=>$productos[$i]['clave']],
                     [

@@ -88,6 +88,8 @@ Route::get('productos/imagen', [ProductosController::class, 'imagen']);
 
 //CRAWLER IMAGENES//
 Route::get('imagenes', [ImagenesController::class, 'obtener']);
+Route::get('obtener/{filename}', [ImagenesController::class, 'getFile'])->name('getfile');
+
 
 //CARTAS PRODUCTOS
 Route::get('/productos/cartas',[ProductosController::class, 'cartas']);

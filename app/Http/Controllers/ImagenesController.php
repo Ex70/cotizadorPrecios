@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -98,8 +101,8 @@ class ImagenesController extends Controller
         // $nombre = $sku.".".$datos['extension'];
         // dd($nombre);
 
-        $productos = json_decode(file_get_contents(storage_path() . "/app/public/barcode.json"), true);
-        dd($productos);
+        $dataImg = json_decode(file_get_contents(storage_path() . "/app/public/barcodeAPI.json"), true);
+        // dd($dataImg);
         // $client = new Client();
         // $headers = ['Content-Type' => 'application/json'];
         // $url = "https://api.barcodelookup.com/v3/products?barcode=4710886162469&key=u30gi6v08sqi3qw0gstd7ovk3fqfrb";
@@ -109,17 +112,53 @@ class ImagenesController extends Controller
         //     'User-Agent' => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
         // ]]);
         // $result = $res->getBody();
-        // $data = json_decode($result, true);
+        // $dataImg = json_decode($result, true);
 
-        for($i=0;$i<sizeof($data['products'][0]['images']);$i++){
-            $urlImagen = $data['products'][0]['images'][$i];
+        for($i=0;$i<sizeof($dataImg['products'][0]['images']);$i++){
+            $urlImagen = $dataImg['products'][0]['images'][$i];
             $contents = file_get_contents($urlImagen);
             $datos = pathinfo($urlImagen);
             $nombre = $sku."-".$i.".".$datos['extension'];
             $ruta = 'productos/'.$nombre;
+            // $urlImagen->move(public_path('/',$nombre));
+            Storage::disk('public')->put($ruta, $contents);
             Storage::put($ruta, $contents);
+            $data=$nombre;
+            // dd(Storage::get($data));
+            // dd($data);
         }
+        return view('productos.pruebaImagen', compact('data'));
+        // if($data['products'][0]['category']){
+        //     dd($data['products'][0]['category']);
+        //     $producto = Producto::updateOrCreate(
+        //         ['clave_ct'=>$clave_ct],
+        //         [
+        //             'marca_id'=>$productos[$i]['idMarca'],
+        //             'subcategoria_id'=>$productos[$i]['idSubCategoria'],
+        //             'categoria_id'=>$productos[$i]['idCategoria'],
+        //             'nombre'=>$productos[$i]['nombre'],
+        //             'descripcion_corta'=>$productos[$i]['descripcion_corta'],
+        //             'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
+        //             'sku'=>ltrim($productos[$i]['numParte']),
+        //             'ean'=>$productos[$i]['ean'],
+        //             'upc'=>$productos[$i]['upc'],
+        //             'imagen'=>$productos[$i]['imagen'],
+        //             'existencias'=>$existencia_producto,
+        //             'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
+        //         ]
+        //     );
+        // }
         dd(sizeof($data['products'][0]['images']));
+
+        // for($i=0;$i<sizeof($data['products'][0]['images']);$i++){
+        //     $urlImagen = $data['products'][0]['images'][$i];
+        //     $contents = file_get_contents($urlImagen);
+        //     $datos = pathinfo($urlImagen);
+        //     $nombre = $sku."-".$i.".".$datos['extension'];
+        //     $ruta = 'productos/'.$nombre;
+        //     Storage::put($ruta, $contents);
+        // }
+        // dd(sizeof($data['products'][0]['images']));
 
         $remove = array(" ","  ","   ","    ", "(", ")", "$", "*", "/",",","IVA","Incluido");
         $client = new Client();
@@ -143,5 +182,12 @@ class ImagenesController extends Controller
         }
         // dd($imagenes);
         return $imagenes;
+    }
+
+    public function getFile($filename){
+        // return $filename;
+        $file=Storage::disk('productos')->get($filename);
+        return (new Response($file, 200))
+            ->header('Content-Type', 'image/jpeg');
     }
 }

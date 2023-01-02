@@ -92,21 +92,22 @@ class PromocionesController extends Controller
 
     public function nuevas(){
         $fecha = date('Y')."-".date('m')."-".date('d');
+        //dd($fecha);
         // dd($fecha);
         /*$promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
-            ->join('categorias','categorias.id','=','productos.categoria_id')
-            ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
-            ->where('productos.estatus','Activo')
-            ->whereNull('promociones.consulta')
-            ->whereDate('promociones.updated_at','=',$fecha)
-            ->orderBy("promociones.fecha_fin","desc")
-            ->get([
-                'productos.clave_ct',
-                'productos.sku',
-                'categorias.nombre as categoria',
-                'subcategorias.nombre as subcategoria',
-                'promociones.descuento',
-                'promociones.fecha_fin'
+        ->join('categorias','categorias.id','=','productos.categoria_id')
+        ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
+        ->where('productos.estatus','Activo')
+        ->whereNull('promociones.consulta')
+        ->whereDate('promociones.updated_at','=',$fecha)
+        ->orderBy("promociones.fecha_fin","desc")
+        ->get([
+            'productos.clave_ct',
+            'productos.sku',
+            'categorias.nombre as categoria',
+            'subcategorias.nombre as subcategoria',
+            'promociones.descuento',
+            'promociones.fecha_fin'
             ]);*/
         $promociones = DB::select("SELECT productos.clave_ct, productos.sku, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, promociones.descuento, promociones.fecha_fin, promociones.updated_at FROM promociones INNER JOIN productos ON promociones.clave_ct = productos.clave_ct INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id WHERE productos.estatus = 'Activo' AND (promociones.consulta = NULL OR promociones.consulta = '".$fecha."') AND EXTRACT(DAY FROM promociones.updated_at)= '".date('d')."';");
         //dd($promociones);
@@ -114,7 +115,9 @@ class PromocionesController extends Controller
         Promocion::whereNull('consulta')->update([
             'consulta' => $fecha
         ]);
-        Promocion::whereMonth('updated_at','<',date('m'))->whereYear('created_at',date('Y'))->delete();
+        Promocion::whereYear('created_at','<', date('Y'))->delete();
+
+        Promocion::whereMonth('updated_at','<',date('m'))->whereYear('created_at', date('Y'))->delete();
         return view('promociones.vigentes', compact('promociones'));
     }
 
@@ -144,12 +147,13 @@ class PromocionesController extends Controller
     }
 
     public function delMes(){
+        //dd(date('Y'));
         $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
             ->join('categorias','categorias.id','=','productos.categoria_id')
             ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
             ->where('productos.estatus','Activo')
-            ->whereYear('promociones.fecha_fin','=', date('y'))
-            ->whereMonth('promociones.fecha_fin','>=', date('m'))
+            ->whereYear('promociones.fecha_fin','=', date('Y'))
+            ->whereMonth('promociones.fecha_fin','=', date('m'))
             ->get([
                 'categorias.nombre as categoria',
                 'subcategorias.nombre as subcategoria',

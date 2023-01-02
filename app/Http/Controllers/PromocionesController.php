@@ -148,6 +148,7 @@ class PromocionesController extends Controller
             ->join('categorias','categorias.id','=','productos.categoria_id')
             ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
             ->where('productos.estatus','Activo')
+            ->whereYear('promociones.fecha_fin','=', date('y'))
             ->whereMonth('promociones.fecha_fin','>=', date('m'))
             ->get([
                 'categorias.nombre as categoria',

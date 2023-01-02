@@ -124,8 +124,10 @@ class ImagenesController extends Controller
             Storage::disk('public')->put($ruta, $contents);
             Storage::put($ruta, $contents);
             $data=$nombre;
+
+            list($width, $height, $type, $attr) = getimagesize($dataImg['products'][0]['images'][$i]);
             // dd(Storage::get($data));
-            // dd($data);
+            dd($attr);
         }
         return view('productos.pruebaImagen', compact('data'));
         // if($data['products'][0]['category']){

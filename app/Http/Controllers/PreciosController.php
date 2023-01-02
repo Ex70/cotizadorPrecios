@@ -9,6 +9,7 @@ use App\Http\Controllers\CyberPuertaController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use App\Models\Categoria;
+use App\Models\imagenProducto;
 use App\Models\Marca;
 use App\Models\Palabras;
 use App\Models\Subcategoria;
@@ -229,6 +230,19 @@ class PreciosController extends Controller{
                         );
                     }
                 }
+                // $url = $productos[$i]['imagen'];
+                // $contents = file_get_contents($url);
+                // $datos = pathinfo($url);
+                // $nombre = $productos[$i]['numParte']."-0.".$datos['extension'];
+                // list($width, $height, $type, $attr) = getimagesize($url);
+                // if($productos[$i]['clave']!="CAMDAH3650"){
+                //     $imagenes = imagenProducto::updateOrCreate(
+                //         ['clave_ct'=>$productos[$i]['clave'],
+                //         'imagen'=>$nombre],
+                //         ['largo'=>$width,
+                //         'ancho'=>$height]
+                //     );
+                // }
                 $palabras_clave = explode(",",$productos[$i]['descripcion_corta']);
                 for($j=0;$j<sizeof($palabras_clave);$j++){
                     $producto = Palabras::updateOrCreate(

@@ -115,7 +115,7 @@ class PromocionesController extends Controller
         //dd($promociones);
         $fechaR = date('d')."-".date('m')."-".date('Y');
         $data['titulo'] = "EHS - Nuevas Ofertas (".$fechaR.")";
-        //dd($promociones['titulo']);
+        //dd($data['titulo']);
         Promocion::whereNull('consulta')->update([
             'consulta' => $fecha
         ]);

@@ -25,11 +25,10 @@
     <link rel="stylesheet" href="/assets/css/dark-theme.css" />
     <link rel="stylesheet" href="/assets/css/semi-dark.css" />
     <link rel="stylesheet" href="/assets/css/header-colors.css" />
-    @if(!empty($data['titulo'])){
+    @if(!empty($data['titulo']))
         <title>{{$data['titulo']}}</title>
-    }
     @else
-    <title>EHS - Tecnologías</title>
+     <title>EHS - Tecnologías</title>
     @endif
     
 </head>

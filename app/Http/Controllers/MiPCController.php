@@ -64,20 +64,39 @@ class MiPCController extends Controller{
                         }
                     }else{
                         if(count($data)==3){
-                            if(strpos(str_replace($remove, "", strip_tags($data[2]['price'])), "PrecioEspecial") !== false){
-                                $string = str_replace($remove, "", strip_tags($data[2]['price']));
-                                $start = 'PrecioEspecial';
-                                $end = 'PrecioRegular';
-                                $startpos = strpos($string, $start) + strlen($start);
-                                if (strpos($string, $start) !== false) {
-                                    $endpos = strpos($string, $end, $startpos);
-                                    if (strpos($string, $end, $startpos) !== false) {
-                                        $precios[$i] = substr($string, $startpos, $endpos - $startpos);
+                            if(!empty($data[2]['price'] )){
+                                if(strpos(str_replace($remove, "", strip_tags($data[2]['price'])), "PrecioEspecial") !== false){
+                                    $string = str_replace($remove, "", strip_tags($data[2]['price']));
+                                    $start = 'PrecioEspecial';
+                                    $end = 'PrecioRegular';
+                                    $startpos = strpos($string, $start) + strlen($start);
+                                    if (strpos($string, $start) !== false) {
+                                        $endpos = strpos($string, $end, $startpos);
+                                        if (strpos($string, $end, $startpos) !== false) {
+                                            $precios[$i] = substr($string, $startpos, $endpos - $startpos);
+                                        }
                                     }
+                                } else{
+                                    $precios[$i] = str_replace($remove, "", strip_tags($data[2]['price']));
                                 }
-                            } else{
-                                $precios[$i] = str_replace($remove, "", strip_tags($data[2]['price']));
+                            }else{
+                                if(strpos(str_replace($remove, "", strip_tags($data[1]['price'])), "PrecioEspecial") !== false){
+                                    $string = str_replace($remove, "", strip_tags($data[1]['price']));
+                                    $start = 'PrecioEspecial';
+                                    $end = 'PrecioRegular';
+                                    $startpos = strpos($string, $start) + strlen($start);
+                                    if (strpos($string, $start) !== false) {
+                                        $endpos = strpos($string, $end, $startpos);
+                                        if (strpos($string, $end, $startpos) !== false) {
+                                            $precios[$i] = substr($string, $startpos, $endpos - $startpos);
+                                        }
+                                    }
+                                } else{
+                                    $precios[$i] = str_replace($remove, "", strip_tags($data[1]['price']));
+                                }
+                                
                             }
+                            
                         }else{
                             if(count($data)==2){
                                 if(strpos(str_replace($remove, "", strip_tags($data[1]['price'])), "PrecioEspecial") !== false){

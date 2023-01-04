@@ -31,7 +31,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($palabrasClave as $palabraClave)
+								@foreach ($data['palabrasClave'] as $palabraClave)
 									<tr>
 										<td>{{$palabraClave->clave_ct}}</td>
 										<td>{{$palabraClave->palabra}}</td>

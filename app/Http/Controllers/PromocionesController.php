@@ -14,7 +14,7 @@ class PromocionesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+        $data['promociones'] = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
         ->join('categorias','categorias.id','=','productos.categoria_id')
         ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
         ->get(
@@ -27,7 +27,9 @@ class PromocionesController extends Controller
                 'promociones.fecha_fin'
                 ]
         );
-        return view('promociones.vigentes', compact('promociones'));
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - Todas las Ofertas (".$fechaR.")";
+        return view('promociones.vigentes', compact('data'));
     }
 
     /**
@@ -109,22 +111,26 @@ class PromocionesController extends Controller
             'promociones.descuento',
             'promociones.fecha_fin'
             ]);*/
-        $promociones = DB::select("SELECT productos.clave_ct, productos.sku, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, promociones.descuento, promociones.fecha_fin, promociones.updated_at FROM promociones INNER JOIN productos ON promociones.clave_ct = productos.clave_ct INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id WHERE productos.estatus = 'Activo' AND (promociones.consulta = NULL OR promociones.consulta = '".$fecha."') AND EXTRACT(DAY FROM promociones.updated_at)= '".date('d')."';");
+        $data['promociones'] = DB::select("SELECT productos.clave_ct, productos.sku, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, promociones.descuento, promociones.fecha_fin, promociones.updated_at FROM promociones INNER JOIN productos ON promociones.clave_ct = productos.clave_ct INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id WHERE productos.estatus = 'Activo' AND (promociones.consulta = NULL OR promociones.consulta = '".$fecha."') AND EXTRACT(DAY FROM promociones.updated_at)= '".date('d')."';");
         //dd($promociones);
-        
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - Nuevas Ofertas (".$fechaR.")";
+        //dd($promociones['titulo']);
         Promocion::whereNull('consulta')->update([
             'consulta' => $fecha
         ]);
+        //dd($promociones[0]);
         Promocion::whereYear('created_at','<', date('Y'))->delete();
 
         Promocion::whereMonth('updated_at','<',date('m'))->whereYear('created_at', date('Y'))->delete();
-        return view('promociones.vigentes', compact('promociones'));
+
+        return view('promociones.vigentes', compact('data'));
     }
 
     public function vigentes(){
         $fecha = date('Y')."-".date('m')."-".date('d');
         // dd($fecha);
-        $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+        $data['promociones'] = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
             ->join('categorias','categorias.id','=','productos.categoria_id')
             ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
             ->where('productos.estatus','Activo')
@@ -143,12 +149,14 @@ class PromocionesController extends Controller
                 'promociones.fecha_fin'
                 ]
             );
-        return view('promociones.vigentes', compact('promociones'));
+            $fechaR = date('d')."-".date('m')."-".date('Y');
+            $data['titulo'] = "EHS - Ofertas Vigentes (".$fechaR.")";
+        return view('promociones.vigentes', compact('data'));
     }
 
     public function delMes(){
         //dd(date('Y'));
-        $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+        $data['promociones'] = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
             ->join('categorias','categorias.id','=','productos.categoria_id')
             ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
             ->where('productos.estatus','Activo')
@@ -163,13 +171,15 @@ class PromocionesController extends Controller
                 'promociones.fecha_fin'
                 ]
             );
-        return view('promociones.vigentes', compact('promociones'));
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - Ofertas del Mes (".$fechaR.")";
+        return view('promociones.vigentes', compact('data'));
     }
 
     public function vencidas(){
         $fecha = date('Y')."-".date('m')."-".date('d')-1;
         //dd($fecha);
-        $promociones = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+        $data['promociones'] = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
         ->join('categorias','categorias.id','=','productos.categoria_id')
         ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
         //->where('productos.estatus','Activo')
@@ -184,7 +194,9 @@ class PromocionesController extends Controller
             'promociones.fecha_fin'
             ]
         );
-        return view('promociones.vigentes', compact('promociones'));
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - Ofertas Vencidas (".$fechaR.")";
+        return view('promociones.vigentes', compact('data'));
     }
 
 }

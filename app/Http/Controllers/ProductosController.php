@@ -164,6 +164,8 @@ class ProductosController extends Controller
                 'productos.enlace'
             ]);
             // dd($data['productos']);
+            $fechaR = date('d')."-".date('m')."-".date('Y');
+            $data['titulo'] = "EHS - Productos Googble My Bussiness (".$fechaR.")";
         return view('reportes.google-my-business', compact('data'));
     }
 
@@ -181,6 +183,8 @@ class ProductosController extends Controller
             'productos.imagen',
             'productos.created_at'
         ]);
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - Imagenes Nuevas (".$fechaR.")";
             // dd($data['productos']);
         return view('reportes.fmd', compact('data'));
     }
@@ -200,6 +204,8 @@ class ProductosController extends Controller
             'productos.enlace',
         ]);
             // dd($data['productos']);
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - Productos Nuevos GMB (".$fechaR.")";
         return view('reportes.google-my-business', compact('data'));
     }
 

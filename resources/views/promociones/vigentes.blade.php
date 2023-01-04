@@ -35,7 +35,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($promociones as $promocion)
+								@foreach ($data['promociones'] as $promocion)
 									<tr>
 										<td>{{$promocion->categoria}}</td>
 										<td>{{$promocion->subcategoria}}</td>
@@ -55,7 +55,7 @@
 @endsection
 
 @section("script")
-	<script src="/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="/assets/plugins/datatable/js/jquery.dataTables.min.js"></scr>
 	<script src="/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
 	<script>
 		$(document).ready(function() {

@@ -19,6 +19,8 @@ class MargenesController extends Controller
             // $data['margenes'][$key] = $this->margenes(860,862,236,17186);
             // dd($data['margenes'][$key]);
         }
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - Margenes de Utilidad (".$fechaR.")";
         return view('margenes.index', compact('data'));
     }
 

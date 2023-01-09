@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Margenes;
 use App\Models\Producto;
+use Google\Service\FirebaseManagement\AndroidApp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -90,4 +91,58 @@ class MargenesController extends Controller
         );
         return $margenesTotales/$existencias;
     }
-}
+
+    public function cartaMargenes1(){
+        $data['productos'] = Producto::join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+                ->join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+                ->join('marcas', 'marcas.id', '=', 'productos.marca_id')
+                ->join('margenes', 'margenes.categoria_id', '=', 'productos.categoria_id')
+                //->join('margenes as m2', 'm2.subcategoria_id', '=', 'productos.subcategoria_id')
+                //->join('margenes as m3', 'm3.marca_id', '=', 'productos.marca_id')
+                ->where('productos.estatus', 'Activo')
+                ->where('productos.existencias', '>', 0)
+                ->where('margenes.margen_utilidad', '>', 10)
+                //->where('margenes.marca_id', '=', 'productos.marca_id')
+                ->get(
+                    [
+                    'productos.clave_ct',
+                    'productos.nombre',
+                    'categorias.nombre as categoria',
+                    'subcategorias.nombre as subcategoria',
+                    'marcas.nombre as marca',
+                    'productos.enlace',
+                    'productos.imagen',
+                    'productos.existencias',
+                    'margenes.margen_utilidad as margen'
+                    ]
+                );
+            return view('margenes.cartaMargenes', compact('data'));
+        }
+
+        public function cartaMargenes2(){
+            $data['productos'] = Producto::join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+                    ->join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+                    ->join('marcas', 'marcas.id', '=', 'productos.marca_id')
+                    //join('margenes as m1', 'm1.categoria_id', '=', 'productos.categoria_id')
+                    //join('margenes as m2', 'm2.subcategoria_id', '=', 'productos.subcategoria_id')
+                    ->join('margenes as m3', 'm3.marca_id', '=', 'productos.marca_id')
+                    ->where('productos.estatus', 'Activo')
+                    ->where('productos.existencias', '>', 100)
+                    ->where('m3.margen_utilidad', '>', 0)
+                    ->where('m3.margen_utilidad', '<=', 10)
+                    ->get(
+                        [
+                        'productos.clave_ct',
+                        'productos.nombre',
+                        'categorias.nombre as categoria',
+                        'subcategorias.nombre as subcategoria',
+                        'marcas.nombre as marca',
+                        'productos.enlace',
+                        'productos.imagen',
+                        'productos.existencias',
+                        'm3.margen_utilidad as margen'
+                        ]
+                    );
+                return view('margenes.cartaMargenes', compact('data'));
+            }
+    }

@@ -95,6 +95,10 @@ Route::get('obtener/{filename}', [ImagenesController::class, 'getFile'])->name('
 Route::get('/productos/cartas',[ProductosController::class, 'cartas']);
 Route::post('/productos/cartas',[ProductosController::class, 'cartas']);
 
+//CARTAS MARGENES
+Route::get('/margenes/cartas1',[MargenesController::class, 'cartaMargenes1']);
+Route::get('/margenes/cartas2',[MargenesController::class, 'cartaMargenes2']);
+
 // PROMOCIONES //
 Route::get('promociones/nuevas', [PromocionesController::class, 'nuevas']);
 Route::get('promociones/vigentes', [PromocionesController::class, 'vigentes']);

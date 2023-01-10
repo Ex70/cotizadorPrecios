@@ -23,8 +23,8 @@
                                             <li class="list-group-item"><strong>Subcategoria: </strong>{{$producto->subcategoria}}</li>
                                             <li class="list-group-item"><strong>Marca: </strong>{{$producto->marca}}</li>
                                             <li class="list-group-item"><strong>Enlace: </strong><a href="{{$producto->enlace}}">{{$producto->enlace}}</a></li>
-                                            <li class="list-group-item"><strong>Existencias:</strong>{{$producto->existencias}}</li>
-                                            <li class="list-group-item"><strong>Margen de Utilidad:</strong>{{$producto->margen}}</li>
+                                            <li class="list-group-item"><strong>Existencias: </strong>{{$producto->existencias}}</li>
+                                            <li class="list-group-item"><strong>Margen de Utilidad: </strong>{{$producto->margen*100}}%</li>
                                         </ul>
                                     </div>
                                 </div>

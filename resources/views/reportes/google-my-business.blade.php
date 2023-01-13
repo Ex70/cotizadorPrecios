@@ -83,6 +83,7 @@
 										<th>Nombre</th>
 										<th>Descripción Corta</th>
 										<th>Enlace</th>
+										<th>Imagen</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -94,6 +95,7 @@
 											<td>{{$producto->nombre}}</td>
 											<td>{{$producto->descripcion_corta}}</td>
 											<td>{{$producto->enlace}}</td>
+											<td>{{$producto->imagen}}</td>
 										</tr>
 									@endforeach
 									@endif

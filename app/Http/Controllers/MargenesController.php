@@ -8,6 +8,7 @@ use Google\Service\FirebaseManagement\AndroidApp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
 class MargenesController extends Controller
 {
     public function index(){
@@ -93,12 +94,49 @@ class MargenesController extends Controller
     }
 
     public function cartaMargenes1(){
-        $data['productos'] = DB::select("SELECT productos.clave_ct, productos.nombre, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, marcas.nombre AS marca, productos.enlace, productos.imagen, productos.existencias, margenes.margen_utilidad AS margen FROM productos INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id INNER JOIN marcas ON productos.marca_id = marcas.id INNER JOIN margenes ON (productos.categoria_id = margenes.categoria_id AND productos.subcategoria_id = margenes.subcategoria_id AND productos.marca_id = margenes.marca_id) WHERE productos.estatus = 'Activo' AND margenes.margen_utilidad > 0.1 AND productos.existencias > 0;");
-            return view('margenes.cartaMargenes', compact('data'));
+        $data['productos'] = Producto::Join('margenes', function ($margenes) {
+            $margenes->on('productos.categoria_id', '=', 'margenes.categoria_id')
+                ->on('productos.subcategoria_id', '=', 'margenes.subcategoria_id')
+                ->on('productos.marca_id', '=', 'margenes.marca_id')
+                ;
+        })
+            //addSelect(Margenes::get('margenes.categoria_id', 'margenes.subcategoria_id', 'margenes.marca_id', 'margenes.margen_utilidad'))
+            //get(Margenes::get('margenes.categoria_id', 'margenes.subcategoria_id', 'margenes.marca_id', 'margenes.margen_utilidad'))
+            ->join('categorias', 'productos.categoria_id', '=', 'categorias.id')
+            ->join('subcategorias', 'productos.subcategoria_id', '=', 'subcategorias.id')
+            ->join('marcas', 'productos.marca_id', '=', 'marcas.id')
+            // ->join('margenes m2', 'm2.subcategoria_id', '=', 'productos.subcategoria_id')
+            //->join('margenes m3 ', 'm3.categoria_id', '=', 'productos.categoria_id')
+            // ->where('margenes.categoria_id', '=', 'productos.categoria_id')
+            // ->where('margenes.subcategoria_id', '=', 'productos.subcategoria_id')
+            // ->where('margenes.marca_id', '=', 'productos.marca_id') 
+            ->where('productos.estatus', 'Activo')
+            ->where('productos.existencias', '>', 0)
+            ->where('margenes.margen_utilidad', 5.8346)
+            // ->where('margenes.marca_id', 6)
+            // ->groupBy('margenes.categoria_id', 'margenes.subcategoria_id', 'margenes.marca_id','productos.clave_ct','productos.nombre')
+            ->get(
+                [
+                    'productos.clave_ct',
+                    'productos.nombre',
+                    'categorias.nombre as categoria',
+                    'subcategorias.nombre as subcategoria',
+                    'marcas.nombre as marca',
+                    'productos.enlace',
+                    'productos.imagen',
+                    'productos.existencias',
+                    'margenes.margen_utilidad as margen'
+                ]
+            );
+        // dd(($data['productos']));
+
+
+        //DB::select("SELECT productos.clave_ct, productos.nombre, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, marcas.nombre AS marca, productos.enlace, productos.imagen, productos.existencias, margenes.margen_utilidad AS margen FROM productos INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id INNER JOIN marcas ON productos.marca_id = marcas.id INNER JOIN margenes ON (productos.categoria_id = margenes.categoria_id AND productos.subcategoria_id = margenes.subcategoria_id AND productos.marca_id = margenes.marca_id) WHERE productos.estatus = 'Activo' AND margenes.margen_utilidad > 0.1 AND productos.existencias > 0 LIMIT 0,20;"); 
+        return view('margenes.cartaMargenes', compact('data'));
         }
 
         public function cartaMargenes2(){
-            $data['productos'] = DB::select("SELECT productos.clave_ct, productos.nombre, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, marcas.nombre AS marca, productos.enlace, productos.imagen, productos.existencias, margenes.margen_utilidad AS margen FROM productos INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id INNER JOIN marcas ON productos.marca_id = marcas.id INNER JOIN margenes ON (productos.categoria_id = margenes.categoria_id AND productos.subcategoria_id = margenes.subcategoria_id AND productos.marca_id = margenes.marca_id) WHERE productos.estatus = 'Activo' AND margenes.margen_utilidad > 0 AND margenes.margen_utilidad  <= 0.1 AND productos.existencias > 0;");
+            $data['productos'] = DB::select("SELECT productos.clave_ct, productos.nombre, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, marcas.nombre AS marca, productos.enlace, productos.imagen, productos.existencias, margenes.margen_utilidad AS margen FROM productos INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id INNER JOIN marcas ON productos.marca_id = marcas.id INNER JOIN margenes ON (productos.categoria_id = margenes.categoria_id AND productos.subcategoria_id = margenes.subcategoria_id AND productos.marca_id = margenes.marca_id) WHERE productos.estatus = 'Activo' AND margenes.margen_utilidad > 0 AND margenes.margen_utilidad  <= 0.1 AND productos.existencias > 0 LIMIT 0,20;");
                 return view('margenes.cartaMargenes', compact('data'));
             }
-    }
+        }

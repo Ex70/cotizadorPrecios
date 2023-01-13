@@ -155,13 +155,15 @@ class ProductosController extends Controller
             //->join('tops_mensuales','tops_mensuales.clave_ct','=','productos.clave_ct')
             ->where('productos.estatus','Activo')
             ->where('productos.existencias','>','100')
+            //->whereDate('productos.created_at','>=','2022-11-30')
             ->orderBy('productos.clave_ct')
             ->get([
                 'productos.clave_ct',
                 'subcategorias.nombre as subcategoria',
                 'productos.nombre',
                 'productos.descripcion_corta',
-                'productos.enlace'
+                'productos.enlace',
+                'productos.imagen'
             ]);
             // dd($data['productos']);
             $fechaR = date('d')."-".date('m')."-".date('Y');

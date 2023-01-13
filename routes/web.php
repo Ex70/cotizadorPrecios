@@ -96,7 +96,7 @@ Route::get('/productos/cartas',[ProductosController::class, 'cartas']);
 Route::post('/productos/cartas',[ProductosController::class, 'cartas']);
 
 //CARTAS MARGENES
-Route::get('/margenes/Mayor10',[MargenesController::class, 'cartaMargenes1']);
+Route::get('/margenes/Mayor10', [MargenesController::class, 'cartaMargenes1']);
 Route::get('/margenes/Menor10',[MargenesController::class, 'cartaMargenes2']);
 
 // PROMOCIONES //

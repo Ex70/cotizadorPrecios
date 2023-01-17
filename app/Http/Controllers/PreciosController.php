@@ -159,6 +159,7 @@ class PreciosController extends Controller{
 
     public function lecturaLocal (){
         $products = new ProductosController();
+        $imagenes = new ImagenesController();
         $existencia_producto=0;
         $products->limpieza();
         $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
@@ -166,9 +167,12 @@ class PreciosController extends Controller{
         //dd($productos);
         set_time_limit(0);
         for($i=0;$i<sizeof($productos);$i++){
-        // for($i=1;$i<4;$i++){
+        // for($i=0;$i<4;$i++){
             $existencia_producto=0;
             if($productos[$i]['idCategoria']!=0){
+                // if($i>=0){
+                //     $imagenes->obtener($productos[$i]);
+                // }
                 // PRUEBA EXISTENCIAS
                 $existencia_producto = $this->existencias($productos[$i]);
                 $marca_nueva = Marca::updateOrCreate(
@@ -267,10 +271,12 @@ class PreciosController extends Controller{
         //         }
         //     }
         // }
-        dd($productos);
+        // dd($productos);
+        dd("Archivo cargado");
     }
 
-    public function existencias ($productos){ 
+    public function existencias ($productos){
+        set_time_limit(0);
         //dd($productos);
             $existencia_producto=0;
             if(!empty($productos['existencia']['DFA'])){
@@ -408,6 +414,5 @@ class PreciosController extends Controller{
             }
             //dd($existencia_producto);
             return $existencia_producto;
-        
     }
 }

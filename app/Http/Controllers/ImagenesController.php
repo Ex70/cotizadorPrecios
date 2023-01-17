@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+
+use function PHPUnit\Framework\isNull;
 
 class ImagenesController extends Controller
 {
@@ -89,40 +92,112 @@ class ImagenesController extends Controller
         //
     }
 
-    public function obtener(){
+    public function obtener($producto){
         set_time_limit(0);
-        $sku = "SKU001";
-        $url = "https://images.barcodelookup.com/56172/561726884-1.jpg";
-        $contents = file_get_contents($url);
-        $datos = pathinfo($url);
-        $nombre = $sku.".".$datos['extension'];
-        $ruta = 'productos/'.$nombre;
-        Storage::put($ruta, $contents);
+        // dd($producto);
+        // dd(strlen($producto['ean']));
+        if(strlen($producto['ean']>0)){
+            $busqueda = $producto['ean'];
+        }else{
+            $busqueda = $producto['upc'];
+        }
+        // $sku = $producto['numParte'];
+        // $url = "https://images.barcodelookup.com/56172/561726884-1.jpg";
+        // $contents = file_get_contents($url);
+        // $datos = pathinfo($url);
         // $nombre = $sku.".".$datos['extension'];
-        // dd($nombre);
+        // $ruta = 'productos/'.$nombre;
+        // Storage::put($ruta, $contents);
+        // dd($busqueda);
+        // $nombre = $sku.".".$datos['extension'];
+        // dd($busqueda);
 
-        $dataImg = json_decode(file_get_contents(storage_path() . "/app/public/barcodeAPI.json"), true);
+        // LEER JSON LOCAL
+        // $dataImg = json_decode(file_get_contents(storage_path() . "/app/public/barcodeAPI.json"), true);
+
         // dd($dataImg);
-        // $client = new Client();
-        // $headers = ['Content-Type' => 'application/json'];
-        // $url = "https://api.barcodelookup.com/v3/products?barcode=4710886162469&key=u30gi6v08sqi3qw0gstd7ovk3fqfrb";
+        $client = new Client();
+        $headers = ['Content-Type' => 'application/json'];
+        $url = "https://api.barcodelookup.com/v3/products?barcode=".$busqueda."&key=iw56g6qzhmcws5ogog6b70gktb93fb";
+        // dd($url);
+        try {
+            //code...
+            $res = $client->request('GET', $url, ['headers' => [
+                'Accept' => 'application/json',
+                'http_errors' => false,
+                'Content-Type' => 'application/json',
+                'User-Agent' => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+            ]]);
+            // dd($res->getStatusCode());
+            $result = $res->getBody();
+            $dataImg = json_decode($result, true);
+
+            // $valor = "UPC-A 731304206828, EAN-13 0731304206828";
+            $valor = $dataImg['products'][0]['barcode_formats'];
+            $stringSeparado = explode(",",$valor);
+            for($j=0;$j<count($stringSeparado);$j++){
+                $pos=strpos($stringSeparado[$j],"UPC-A");
+                if(is_int($pos)){
+                    $datos['upc']=str_replace(" ","",str_replace("UPC-A","",$stringSeparado[$j]));
+                }else{
+                    $pos=strpos($stringSeparado[$j],"EAN-13");
+                    if($pos>=0){
+                        $datos['ean']=str_replace(" ","",str_replace("EAN-13","",$stringSeparado[$j]));
+                    }
+                }
+            }
+            $producto = Producto::updateOrCreate(
+                ['clave_ct'=>$producto['clave']],
+                [
+                    'ean'=>$datos['ean'],
+                    'upc'=>$datos['upc'],
+                    'google_cat'=>$dataImg['products'][0]['category'],
+                    'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
+                ]
+            );
+        } catch (BadResponseException $th) {
+            //throw $th;
+            dd($th);
+        }
         // $res = $client->request('GET', $url, ['headers' => [
         //     'Accept' => 'application/json',
+        //     'http_errors' => false,
         //     'Content-Type' => 'application/json',
         //     'User-Agent' => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
         // ]]);
+        // dd($res->getStatusCode());
         // $result = $res->getBody();
         // $dataImg = json_decode($result, true);
+        // dd($dataImg['products'][0]['barcode_formats']);
+
+        // $valor = "UPC-A 731304206828, EAN-13 0731304206828";
+        $valor = $dataImg['products'][0]['barcode_formats'];
+        $stringSeparado = explode(",",$valor);
+        for($j=0;$j<count($stringSeparado);$j++){
+            $pos=strpos($stringSeparado[$j],"UPC-A");
+            if(is_int($pos)){
+                $datos['upc']=str_replace(" ","",str_replace("UPC-A","",$stringSeparado[$j]));
+            }else{
+                $pos=strpos($stringSeparado[$j],"EAN-13");
+                if($pos>=0){
+                    $datos['ean']=str_replace(" ","",str_replace("EAN-13","",$stringSeparado[$j]));
+                }
+            }
+        }
+        // dd($datos);
 
         for($i=0;$i<sizeof($dataImg['products'][0]['images']);$i++){
             $urlImagen = $dataImg['products'][0]['images'][$i];
             $contents = file_get_contents($urlImagen);
             $datos = pathinfo($urlImagen);
-            $nombre = $sku."-".$i.".".$datos['extension'];
+            $nombre = $producto['clave']."-".$i.".".$datos['extension'];
+            $nombreJSON = $producto['clave'].".json";
             $ruta = 'productos/'.$nombre;
             // $urlImagen->move(public_path('/',$nombre));
             Storage::disk('public')->put($ruta, $contents);
             Storage::put($ruta, $contents);
+            $newJsonString = json_encode($dataImg, JSON_PRETTY_PRINT);
+            Storage::disk('json')->put($nombreJSON, $newJsonString);
             $data=$nombre;
 
             list($width, $height, $type, $attr) = getimagesize($dataImg['products'][0]['images'][$i]);

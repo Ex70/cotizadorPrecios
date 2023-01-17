@@ -23,17 +23,16 @@
                                         <li class="list-group-item"><strong>Enlace: </strong><a href="{{$producto['enlace']}}">{{$producto['enlace']}}</a></li>
                                         <li class="list-group-item"><strong>Existencias: </strong>{{$producto['existencias']}}</li>
                                         <li class="list-group-item"><strong>Margen de Utilidad: </strong>{{$producto['margen']*100}}%</li>
-                                        
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 @endif
+                {!!$data->links() !!}
             </div>
         </div>
     </div>
-    {!!$data->links() !!}
 </div>
 @endsection
 

@@ -113,13 +113,27 @@ class ImagenesController extends Controller
         // dd($busqueda);
 
         // LEER JSON LOCAL
-        // $dataImg = json_decode(file_get_contents(storage_path() . "/app/public/barcodeAPI.json"), true);
+        $dataImg = json_decode(file_get_contents(storage_path() . "/app/public/productos-json/ACCACT110.json"), true);
+        $valor = $dataImg['products'][0]['barcode_formats'];
+        $stringSeparado = explode(",",$valor);
+        for($j=0;$j<count($stringSeparado);$j++){
+            $pos=strpos($stringSeparado[$j],"UPC-A");
+            if(is_int($pos)){
+                $datos['upc']=str_replace(" ","",str_replace("UPC-A","",$stringSeparado[$j]));
+            }else{
+                $pos=strpos($stringSeparado[$j],"EAN-13");
+                if($pos>=0){
+                    $datos['ean']=str_replace(" ","",str_replace("EAN-13","",$stringSeparado[$j]));
+                }
+            }
+        }
+        dd($dataImg);
 
-        // dd($dataImg);
+        // LEER DESDE API
         $client = new Client();
         $headers = ['Content-Type' => 'application/json'];
         $url = "https://api.barcodelookup.com/v3/products?barcode=".$busqueda."&key=iw56g6qzhmcws5ogog6b70gktb93fb";
-        // dd($url);
+
         try {
             //code...
             $res = $client->request('GET', $url, ['headers' => [
@@ -131,6 +145,9 @@ class ImagenesController extends Controller
             // dd($res->getStatusCode());
             $result = $res->getBody();
             $dataImg = json_decode($result, true);
+            $nombreJSON = $producto['clave'].".json";
+            $newJsonString = json_encode($dataImg, JSON_PRETTY_PRINT);
+            Storage::disk('json')->put($nombreJSON, $newJsonString);
 
             // $valor = "UPC-A 731304206828, EAN-13 0731304206828";
             $valor = $dataImg['products'][0]['barcode_formats'];
@@ -191,13 +208,10 @@ class ImagenesController extends Controller
             $contents = file_get_contents($urlImagen);
             $datos = pathinfo($urlImagen);
             $nombre = $producto['clave']."-".$i.".".$datos['extension'];
-            $nombreJSON = $producto['clave'].".json";
             $ruta = 'productos/'.$nombre;
             // $urlImagen->move(public_path('/',$nombre));
             Storage::disk('public')->put($ruta, $contents);
             Storage::put($ruta, $contents);
-            $newJsonString = json_encode($dataImg, JSON_PRETTY_PRINT);
-            Storage::disk('json')->put($nombreJSON, $newJsonString);
             $data=$nombre;
 
             list($width, $height, $type, $attr) = getimagesize($dataImg['products'][0]['images'][$i]);
@@ -266,5 +280,23 @@ class ImagenesController extends Controller
         $file=Storage::disk('productos')->get($filename);
         return (new Response($file, 200))
             ->header('Content-Type', 'image/jpeg');
+    }
+
+    public function ejemploImagenes(){
+        set_time_limit(0);
+        // LEER JSON LOCAL
+        $dataImg = json_decode(file_get_contents(storage_path() . "/app/public/productos-json/ACCACT110.json"), true);
+        for($i=0;$i<sizeof($dataImg['products'][0]['images']);$i++){
+            $urlImagen = $dataImg['products'][0]['images'][$i];
+            $contents = file_get_contents($urlImagen);
+            $datos = pathinfo($urlImagen);
+            $nombre = "ACCACT110-".$i.".".$datos['extension'];
+            $ruta = 'productos/'.$nombre;
+            Storage::disk('public')->put($ruta, $contents);
+            Storage::put($ruta, $contents);
+            $data=$nombre;
+            list($width, $height, $type, $attr) = getimagesize($dataImg['products'][0]['images'][$i]);
+        }
+        return view('productos.pruebaImagen', compact('data'));
     }
 }

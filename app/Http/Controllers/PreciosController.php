@@ -161,18 +161,18 @@ class PreciosController extends Controller{
         $products = new ProductosController();
         $imagenes = new ImagenesController();
         $existencia_producto=0;
-        $products->limpieza();
+        // $products->limpieza();
         $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
         // dd(storage_path() . "/app/public/productos.json");
         //dd($productos);
         set_time_limit(0);
-        for($i=0;$i<sizeof($productos);$i++){
-        // for($i=0;$i<4;$i++){
+        // for($i=0;$i<sizeof($productos);$i++){
+        for($i=0;$i<4;$i++){
             $existencia_producto=0;
             if($productos[$i]['idCategoria']!=0){
-                // if($i>=0){
-                //     $imagenes->obtener($productos[$i]);
-                // }
+                if($i>=0){
+                    $imagenes->obtener($productos[$i]);
+                }
                 // PRUEBA EXISTENCIAS
                 $existencia_producto = $this->existencias($productos[$i]);
                 $marca_nueva = Marca::updateOrCreate(

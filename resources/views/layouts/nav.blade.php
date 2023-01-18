@@ -118,9 +118,9 @@
                         <div class="menu-title">Márgenes</div>
                     </a>
                     <ul>
-                        <li> <a href="{{ url('/margenes/Mayor10') }}"><i class="bx bx-right-arrow-alt"></i>Mayores al 10%</a>
+                        <li> <a href="{{ url('Margenes/Mayor') }}"><i class="bx bx-right-arrow-alt"></i>Mayores al 10%</a>
                         </li>
-                        <li> <a href="{{ url('/margenes/Menor10') }}"><i class="bx bx-right-arrow-alt"></i>Del 0% al 10%</a>
+                        <li> <a href="{{ url('Margenes/Menor') }}"><i class="bx bx-right-arrow-alt"></i>Del 0% al 10%</a>
                         </li>
                         <!--
                         <li> <a href="{{ url('component-badges') }}"><i class="bx bx-right-arrow-alt"></i>Negativos</a>

@@ -96,8 +96,8 @@ Route::get('/productos/cartas',[ProductosController::class, 'cartas']);
 Route::post('/productos/cartas',[ProductosController::class, 'cartas']);
 
 //CARTAS MARGENES
-Route::get('/margenes/Mayor10', [MargenesController::class, 'cartaMargenes1']);
-Route::get('/margenes/Menor10',[MargenesController::class, 'cartaMargenes2']);
+Route::get('Margenes/Mayor', [MargenesController::class, 'cartaMayor']);
+Route::get('Margenes/Menor',[MargenesController::class, 'cartaMenor']);
 // PROMOCIONES //
 Route::get('promociones/nuevas', [PromocionesController::class, 'nuevas']);
 Route::get('promociones/vigentes', [PromocionesController::class, 'vigentes']);
@@ -105,6 +105,9 @@ Route::get('promociones/mes', [PromocionesController::class, 'delMes']);
 Route::get('promociones', [PromocionesController::class, 'index']);
 Route::get('promociones/vencidas', [PromocionesController::class, 'vencidas']);
 Route::get('/productos/gmb', [ProductosController::class, 'google_my_business']);
+
+//CARTA PROMOCIONES
+Route::get('Promociones/Cartas', [PromocionesController::class, 'cartaPromociones']);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');
 Route::resource('projects', ProjectController::class);

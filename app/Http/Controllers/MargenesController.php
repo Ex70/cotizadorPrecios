@@ -95,23 +95,19 @@ class MargenesController extends Controller
         return $margenesTotales/$existencias;
     }
 
-    public function cartaMargenes1(){
+    public function cartaMayor(){
         $data = Producto::Join('margenes', function ($margenes) {
             $margenes->on('productos.categoria_id', '=', 'margenes.categoria_id')
                 ->on('productos.subcategoria_id', '=', 'margenes.subcategoria_id')
                 ->on('productos.marca_id', '=', 'margenes.marca_id');
-        })
+            })
             ->join('categorias', 'productos.categoria_id', '=', 'categorias.id')
             ->join('subcategorias', 'productos.subcategoria_id', '=', 'subcategorias.id')
             ->join('marcas', 'productos.marca_id', '=', 'marcas.id')
-            // ->join('margenes m2', 'm2.subcategoria_id', '=', 'productos.subcategoria_id')
-            //->join('margenes m3 ', 'm3.categoria_id', '=', 'productos.categoria_id')
-            // ->where('margenes.categoria_id', '=', 'productos.categoria_id')
-            // ->where('margenes.subcategoria_id', '=', 'productos.subcategoria_id')
-            // ->where('margenes.marca_id', '=', 'productos.marca_id') 
             ->where('productos.estatus', 'Activo')
             ->where('productos.existencias', '>', 0)
             ->where('margenes.margen_utilidad', '>', 0.1)
+            ->orderBy('margenes.margen_utilidad', 'desc')
             ->get([
                 'productos.clave_ct',
                 'productos.nombre',
@@ -125,22 +121,48 @@ class MargenesController extends Controller
             ])
             ->toArray();
         $data = $this->paginate($data, 20);
-        $data->withPath('/margenes/Mayor10');
+        $data->withPath('/Margenes/Mayor');
 
-            //dd($data);
+        //dd($data);
 
             
         //DB::select("SELECT productos.clave_ct, productos.nombre, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, marcas.nombre AS marca, productos.enlace, productos.imagen, productos.existencias, margenes.margen_utilidad AS margen FROM productos INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id INNER JOIN marcas ON productos.marca_id = marcas.id INNER JOIN margenes ON (productos.categoria_id = margenes.categoria_id AND productos.subcategoria_id = margenes.subcategoria_id AND productos.marca_id = margenes.marca_id) WHERE productos.estatus = 'Activo' AND margenes.margen_utilidad > 0.1 AND productos.existencias > 0 LIMIT 0,20;"); 
-        return view('margenes.cartaMargenes', compact('data'));
+        return view('cartas.cartas', compact('data'));
         }
 
-        public function cartaMargenes2(){
-        $data['productos'] = DB::select("SELECT productos.clave_ct, productos.nombre, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, marcas.nombre AS marca, productos.enlace, productos.imagen, productos.existencias, margenes.margen_utilidad AS margen FROM productos INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id INNER JOIN marcas ON productos.marca_id = marcas.id INNER JOIN margenes ON (productos.categoria_id = margenes.categoria_id AND productos.subcategoria_id = margenes.subcategoria_id AND productos.marca_id = margenes.marca_id) WHERE productos.estatus = 'Activo' AND margenes.margen_utilidad > 0 AND margenes.margen_utilidad  <= 0.1 AND productos.existencias > 0 LIMIT 0,21;");
-            return view('margenes.cartaMargenes', compact('data'));  
-    }
+        public function cartaMenor(){
+            $data = Producto::Join('margenes', function ($margenes) {
+                $margenes->on('productos.categoria_id', '=', 'margenes.categoria_id')
+                    ->on('productos.subcategoria_id', '=', 'margenes.subcategoria_id')
+                    ->on('productos.marca_id', '=', 'margenes.marca_id');
+                })
+                ->join('categorias', 'productos.categoria_id', '=', 'categorias.id')
+                ->join('subcategorias', 'productos.subcategoria_id', '=', 'subcategorias.id')
+                ->join('marcas', 'productos.marca_id', '=', 'marcas.id')
+                ->where('productos.estatus', 'Activo')
+                ->where('productos.existencias', '>', 0)
+                ->where('margenes.margen_utilidad', '>', 0)
+                ->where('margenes.margen_utilidad', '<', 0.1)
+                ->orderBy('margenes.margen_utilidad', 'desc')
+                ->get([
+                    'productos.clave_ct',
+                    'productos.nombre',
+                    'categorias.nombre as categoria',
+                    'subcategorias.nombre as subcategoria',
+                    'marcas.nombre as marca',
+                    'productos.enlace',
+                    'productos.imagen',
+                    'productos.existencias',
+                    'margenes.margen_utilidad as margen'
+                ])
+                ->toArray();
+            $data = $this->paginate($data, 20);
+            $data->withPath('/Margenes/Menor');
+            //$data['productos'] = DB::select("SELECT productos.clave_ct, productos.nombre, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, marcas.nombre AS marca, productos.enlace, productos.imagen, productos.existencias, margenes.margen_utilidad AS margen FROM productos INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id INNER JOIN marcas ON productos.marca_id = marcas.id INNER JOIN margenes ON (productos.categoria_id = margenes.categoria_id AND productos.subcategoria_id = margenes.subcategoria_id AND productos.marca_id = margenes.marca_id) WHERE productos.estatus = 'Activo' AND margenes.margen_utilidad > 0 AND margenes.margen_utilidad  <= 0.1 AND productos.existencias > 0 LIMIT 0,21;");
+            return view('cartas.cartas', compact('data'));  
+        }
 
-    public function paginate($items, $perPage = 20, $page = null)
-    {
+    public function paginate($items, $perPage = 20, $page = null){
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $total = count($items);
         $currentpage = $page;

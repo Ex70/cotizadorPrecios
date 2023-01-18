@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Promocion;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PromocionesController extends Controller
 {
@@ -199,4 +202,40 @@ class PromocionesController extends Controller
         return view('promociones.vigentes', compact('data'));
     }
 
+    public function cartaPromociones(){
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        $prom = Producto::Join('promociones', 'productos.clave_ct', '=', 'promociones.clave_ct') 
+            ->join('categorias', 'productos.categoria_id', '=', 'categorias.id')
+            ->join('subcategorias', 'productos.subcategoria_id', '=', 'subcategorias.id')
+            ->join('marcas', 'productos.marca_id', '=', 'marcas.id')
+            ->where('productos.estatus', 'Activo')
+            ->where('productos.existencias', '>', 0)
+            ->where('promociones.fecha_fin', '>=', $fecha)
+            ->orderBy('promociones.descuento', 'desc')
+            ->get([
+                'productos.clave_ct',
+                'productos.nombre',
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'marcas.nombre as marca',
+                'productos.enlace',
+                'productos.imagen',
+                'productos.existencias',
+                'promociones.descuento as descuento',
+                'promociones.fecha_fin as fecha_fin'
+            ])
+            ->toArray();
+        $prom = $this->paginate($prom, 20);
+        $prom->withPath('/Promociones/Cartas');
+        return view('cartas.cartas', compact('prom'));  
+    }
+
+    public function paginate($items, $perPage = 20, $page = null){
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $total = count($items);
+        $currentpage = $page;
+        $offset = ($currentpage * $perPage) - $perPage ;
+        $itemstoshow = array_slice($items , $offset , $perPage);
+        return new LengthAwarePaginator($itemstoshow ,$total ,$perPage);
+    }
 }

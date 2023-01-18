@@ -18,6 +18,7 @@
                         <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3"> 
                             <div class="card">
                                 <div class="card-header">
+                                    <img src="./../../storage/app/public/productos/ACCACO010.jpg" class="card-img-top" alt="...">
                                     <img src="http://grupoehs.com/img/productos/{{$producto['clave_ct']}}.jpg" class="card-img-top" alt="...">
                                     <h4 class="card-title">Clave CT</h4>{{$producto['clave_ct']}}
                                 </div>

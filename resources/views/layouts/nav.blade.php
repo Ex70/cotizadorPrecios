@@ -48,6 +48,92 @@
                         </li>
                     </ul>
                 </li>
+                <li class="menu-label">Marketing</li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                        </div>
+                        <div class="menu-title">Margenes</div>
+                    </a>
+                    <ul>
+                        <li> 
+                            <a href="{{ url('margenes/mayor') }}"><i class="bx bx-right-arrow-alt"></i>Mayores al 10%</a>
+                        </li>
+                        <li> 
+                            <a href="{{ url('margenes/menor') }}"><i class="bx bx-right-arrow-alt"></i>Menores al 10%</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                        </div>
+                        <div class="menu-title">Ofertas</div>
+                    </a>
+                    <ul>
+                        <li> 
+                            <a href="{{ url('promociones/cartas') }}"><i class="bx bx-right-arrow-alt"></i>Promociones Vigentes</a>
+                        </li>
+                        <li> 
+                            <a href="{{ url('promociones/flash') }}"><i class="bx bx-right-arrow-alt"></i>Promociones Flash</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-label">Márgenes</li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+                        </div>
+                        <div class="menu-title">Promociones</div>
+                    </a>
+                    <ul>
+                    <li> <a href="{{ url('promociones/nuevas') }}"><i class="bx bx-right-arrow-alt"></i>Nuevas</a>
+                        </li>
+                        <li> <a href="{{ url('promociones/vigentes') }}"><i class="bx bx-right-arrow-alt"></i>Vigentes</a>
+                        </li>
+                        <li> <a href="{{ url('promociones/mes') }}"><i class="bx bx-right-arrow-alt"></i>Del Mes</a>
+                        </li>
+                        <li> <a href="{{ url('promociones') }}"><i class="bx bx-right-arrow-alt"></i>Todas</a>
+                        </li>
+                        <li> <a href="{{ url('promociones/vencidas') }}"><i class="bx bx-right-arrow-alt"></i>Vencidas</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                        </div>
+                        <div class="menu-title">Cálculos</div>
+                    </a>
+                    <ul>
+                        <li> <a href="{{ url('margenes') }}"><i class="bx bx-right-arrow-alt"></i>Márgenes</a>
+                        </li>
+                        <li> <a href="{{ url('existencias') }}"><i class="bx bx-right-arrow-alt"></i>Existencias</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                        </div>
+                        <div class="menu-title">Palabras Clave</div>
+                    </a>
+                    <ul>
+                        <li> <a href="{{ url('palabras-clave/nuevas') }}"><i class="bx bx-right-arrow-alt"></i>Nuevas</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i></div>
+                        <div class="menu-title">Productos Nuevos</div>
+                    </a>
+                    <ul>
+                        <li> 
+                            <a href="{{ url('productos/imagen') }}"><i class="bx bx-right-arrow-alt"></i>Imagenes Nuevas</a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="menu-label">CT Online</li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
@@ -97,99 +183,7 @@
                         </a>
                     </li>
                 </li>
-                <li class="menu-label">Márgenes</li>
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
-                        </div>
-                        <div class="menu-title">Cálculos</div>
-                    </a>
-                    <ul>
-                        <li> <a href="{{ url('margenes') }}"><i class="bx bx-right-arrow-alt"></i>Márgenes</a>
-                        </li>
-                        <li> <a href="{{ url('existencias') }}"><i class="bx bx-right-arrow-alt"></i>Existencias</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
-                        </div>
-                        <div class="menu-title">Márgenes</div>
-                    </a>
-                    <ul>
-                        <li> <a href="{{ url('Margenes/Mayor') }}"><i class="bx bx-right-arrow-alt"></i>Mayores al 10%</a>
-                        </li>
-                        <li> <a href="{{ url('Margenes/Menor') }}"><i class="bx bx-right-arrow-alt"></i>Del 0% al 10%</a>
-                        </li>
-                        <!--
-                        <li> <a href="{{ url('component-badges') }}"><i class="bx bx-right-arrow-alt"></i>Negativos</a>
-                        </li>
-                        <li> <a href="{{ url('component-buttons') }}"><i class="bx bx-right-arrow-alt"></i>Todos</a>
-                        </li>-->
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
-                        </div>
-                        <div class="menu-title">Palabras Clave</div>
-                    </a>
-                    <ul>
-                        <li> <a href="{{ url('palabras-clave/nuevas') }}"><i class="bx bx-right-arrow-alt"></i>Nuevas</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i></div>
-                        <div class="menu-title">Productos Nuevos</div>
-                    </a>
-                    <ul>
-                        <li> 
-                            <a href="{{ url('productos/imagen') }}"><i class="bx bx-right-arrow-alt"></i>Imagenes Nuevas</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
-                        </div>
-                        <div class="menu-title">Promociones</div>
-                    </a>
-                    <ul>
-                    <li> <a href="{{ url('promociones/nuevas') }}"><i class="bx bx-right-arrow-alt"></i>Nuevas</a>
-                        </li>
-                        <li> <a href="{{ url('promociones/vigentes') }}"><i class="bx bx-right-arrow-alt"></i>Vigentes</a>
-                        </li>
-                        <li> <a href="{{ url('promociones/mes') }}"><i class="bx bx-right-arrow-alt"></i>Del Mes</a>
-                        </li>
-                        <li> <a href="{{ url('promociones') }}"><i class="bx bx-right-arrow-alt"></i>Todas</a>
-                        </li>
-                        <li> <a href="{{ url('promociones/vencidas') }}"><i class="bx bx-right-arrow-alt"></i>Vencidas</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class='bx bx-bookmark-heart'></i></div>
-                        <div class="menu-title">Marketing</div>
-                    </a>
-                    <ul>
-                        <li> 
-                            <a href="{{ url('promociones/cartas') }}"><i class="bx bx-right-arrow-alt"></i>Promociones Vigentes</a>
-                        </li>
-                        <li> 
-                            <a href="{{ url('promociones/flash') }}"><i class="bx bx-right-arrow-alt"></i>Promociones Flash</a>
-                        </li>
-                        <li> 
-                            <a href="{{ url('margenes/mayor') }}"><i class="bx bx-right-arrow-alt"></i>Margenes mayores a 10%</a>
-                        </li>
-                        <li> 
-                            <a href="{{ url('margenes/menor') }}"><i class="bx bx-right-arrow-alt"></i>Margenes menores a 10%</a>
-                        </li>
-                    </ul>
-                </li>
+
                 <li class="menu-label">UI Elements</li>
                 <li>
                     <a href="{{ url('widgets') }}">

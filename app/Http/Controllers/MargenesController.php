@@ -121,7 +121,7 @@ class MargenesController extends Controller
             ])
             ->toArray();
         $data = $this->paginate($data, 20);
-        $data->withPath('/Margenes/Mayor');
+        $data->withPath('/margenes/mayor');
 
         //dd($data);
 
@@ -157,7 +157,7 @@ class MargenesController extends Controller
                 ])
                 ->toArray();
             $data = $this->paginate($data, 20);
-            $data->withPath('/Margenes/Menor');
+            $data->withPath('/margenes/menor');
             //$data['productos'] = DB::select("SELECT productos.clave_ct, productos.nombre, categorias.nombre AS categoria, subcategorias.nombre AS subcategoria, marcas.nombre AS marca, productos.enlace, productos.imagen, productos.existencias, margenes.margen_utilidad AS margen FROM productos INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategorias.id INNER JOIN marcas ON productos.marca_id = marcas.id INNER JOIN margenes ON (productos.categoria_id = margenes.categoria_id AND productos.subcategoria_id = margenes.subcategoria_id AND productos.marca_id = margenes.marca_id) WHERE productos.estatus = 'Activo' AND margenes.margen_utilidad > 0 AND margenes.margen_utilidad  <= 0.1 AND productos.existencias > 0 LIMIT 0,21;");
             return view('cartas.cartas', compact('data'));  
         }

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 
 class PromocionesController extends Controller
 {
@@ -238,4 +240,11 @@ class PromocionesController extends Controller
         $itemstoshow = array_slice($items , $offset , $perPage);
         return new LengthAwarePaginator($itemstoshow ,$total ,$perPage);
     }
+    public function getFile($filename){
+        // return $filename;
+        $file=Storage::disk('productos')->get($filename);
+        return (new Response($file, 200))
+            ->header('Content-Type', 'image/jpeg');
+    }
 }
+

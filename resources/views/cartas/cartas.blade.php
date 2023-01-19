@@ -13,13 +13,13 @@
                 ?>
             @endif
             <div class="row">
+                <div class="row">
                 @if(isset($data))
-                    @foreach ($data as $producto)
-                        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3"> 
+                    @foreach ($data as $key=>$producto) 
+                    <div class="col-xs-12 col-lg-3">
                             <div class="card">
                                 <div class="card-header">
-                                    <img src="./../../storage/app/public/productos/ACCACO010.jpg" class="card-img-top" alt="...">
-                                    <img src="http://grupoehs.com/img/productos/{{$producto['clave_ct']}}.jpg" class="card-img-top" alt="...">
+                                    <img src="{{route('getfile',$producto['clave_ct'].".jpg")}}" class="card-img-top" alt="...">
                                     <h4 class="card-title">Clave CT</h4>{{$producto['clave_ct']}}
                                 </div>
                                 <div class="card-body">
@@ -34,18 +34,27 @@
                                             <li class="list-group-item"><strong>Descuento: </strong>{{$producto['descuento']}}%</li>
                                             <li class="list-group-item"><strong>Fecha Fin: </strong>{{$producto['fecha_fin']}}</li>
                                         @else
-                                            <li class="list-group-item"><strong>Margen de Utilidad: </strong>{{$producto['margen']*100}}%</li>
-                                        @endif
+                                            <li class="list-group-item"><strong>Margen de Utilidad: </strong>{{$producto['margen']*100}}%</li>                                            
+                                        @endif                                            
                                     </ul>
-                                </div>
+                                </div>     
                             </div>
                         </div>
+                            @if (($key+1)%4==0 && $key<sizeof($data))
+                                </div>
+                                <div class="row">
+                            @endif
+                            
+                            @if ($key+1==sizeof($data))
+                                </div>
+                                hola
+                            @endif
                     @endforeach
                 @endif
-                {!!$data->links() !!}
             </div>
         </div>
     </div>
+    {!!$data->links() !!}
 </div>
 @endsection
 

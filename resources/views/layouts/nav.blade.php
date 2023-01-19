@@ -142,12 +142,12 @@
                 </li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
-                        </div>
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i></div>
                         <div class="menu-title">Productos Nuevos</div>
                     </a>
                     <ul>
-                    <li> <a href="{{ url('productos/imagen') }}"><i class="bx bx-right-arrow-alt"></i>Imagenes Nuevas</a>
+                        <li> 
+                            <a href="{{ url('productos/imagen') }}"><i class="bx bx-right-arrow-alt"></i>Imagenes Nuevas</a>
                         </li>
                     </ul>
                 </li>
@@ -167,6 +167,26 @@
                         <li> <a href="{{ url('promociones') }}"><i class="bx bx-right-arrow-alt"></i>Todas</a>
                         </li>
                         <li> <a href="{{ url('promociones/vencidas') }}"><i class="bx bx-right-arrow-alt"></i>Vencidas</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-bookmark-heart'></i></div>
+                        <div class="menu-title">Marketing</div>
+                    </a>
+                    <ul>
+                        <li> 
+                            <a href="{{ url('promociones/cartas') }}"><i class="bx bx-right-arrow-alt"></i>Promociones Vigentes</a>
+                        </li>
+                        <li> 
+                            <a href="{{ url('promociones/flash') }}"><i class="bx bx-right-arrow-alt"></i>Promociones Flash</a>
+                        </li>
+                        <li> 
+                            <a href="{{ url('margenes/mayor') }}"><i class="bx bx-right-arrow-alt"></i>Margenes mayores a 10%</a>
+                        </li>
+                        <li> 
+                            <a href="{{ url('margenes/menor') }}"><i class="bx bx-right-arrow-alt"></i>Margenes menores a 10%</a>
                         </li>
                     </ul>
                 </li>

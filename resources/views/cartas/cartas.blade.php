@@ -7,10 +7,14 @@
             @if (isset($data))
                 <h1>Margenes</h1>
             @else
-                <h1>Promociones</h1>
-                <?php
-                    $data = $prom
-                ?>
+                @if (isset($prom))
+                    <h1>Promociones</h1>
+                    <?php
+                        $data = $prom
+                    ?>  
+                @else
+                    <h1>NO EXISTEN PRODUCTOS PARA MOSTRAR</h1>
+                @endif
             @endif
             <div class="row">
                 <div class="row">
@@ -47,14 +51,13 @@
                             
                             @if ($key+1==sizeof($data))
                                 </div>
-                                hola
                             @endif
                     @endforeach
+                    {!!$data->links() !!}
                 @endif
             </div>
         </div>
     </div>
-    {!!$data->links() !!}
 </div>
 @endsection
 

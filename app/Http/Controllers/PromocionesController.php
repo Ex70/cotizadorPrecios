@@ -228,8 +228,37 @@ class PromocionesController extends Controller
             ])
             ->toArray();
         $prom = $this->paginate($prom, 20);
-        $prom->withPath('/Promociones/Cartas');
+        $prom->withPath('/promociones/cartas');
         return view('cartas.cartas', compact('prom'));  
+    }
+
+    public function cartaFlash(){
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        $prom2 = Producto::Join('promociones', 'productos.clave_ct', '=', 'promociones.clave_ct') 
+            ->join('categorias', 'productos.categoria_id', '=', 'categorias.id')
+            ->join('subcategorias', 'productos.subcategoria_id', '=', 'subcategorias.id')
+            ->join('marcas', 'productos.marca_id', '=', 'marcas.id')
+            ->where('productos.estatus', 'Activo')
+            ->where('productos.existencias', '>', 0)
+            ->where('promociones.fecha_fin', '=', $fecha)
+            ->where('promociones.descuento','>', 20)
+            ->orderBy('promociones.descuento', 'desc')
+            ->get([
+                'productos.clave_ct',
+                'productos.nombre',
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'marcas.nombre as marca',
+                'productos.enlace',
+                'productos.imagen',
+                'productos.existencias',
+                'promociones.descuento as descuento',
+                'promociones.fecha_fin as fecha_fin'
+            ])
+            ->toArray();
+        $prom2 = $this->paginate($prom2, 20);
+        $prom2->withPath('/promociones/flash');
+        return view('cartas.cartas', compact('prom2'));  
     }
 
     public function paginate($items, $perPage = 20, $page = null){

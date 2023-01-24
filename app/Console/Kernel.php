@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('json:local')
         ->everyMinute();
 
-        //$schedule->call('\App\Http\Controllers\PreciosController@lecturaLocal')->everyMinute();
+        $schedule->call('\App\Http\Controllers\PreciosController@lectura')->everyMinute();
     }
 
     /**

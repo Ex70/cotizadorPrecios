@@ -80,81 +80,81 @@ class PreciosController extends Controller{
         } else{
             dd("No existe");
         }
-        $productos = json_decode(Storage::get('public/products.json'),true);
-        set_time_limit(0);
-        for($i=0;$i<sizeof($productos);$i++){
-            if($productos[$i]['idCategoria']!=0){
+        //$productos = Storage::get('public/products.json');
+    //     set_time_limit(0);
+    //     for($i=0;$i<sizeof($productos);$i++){
+    //         if($productos[$i]['idCategoria']!=0){
 
-                $marca_nueva = Marca::updateOrCreate(
-                    ['id'=>$productos[$i]['idMarca']],
-                    [
-                        'id'=>$productos[$i]['idMarca'],
-                        'nombre'=>$productos[$i]['marca']
-                    ]
-                );
-                $categoria_nueva = Categoria::updateOrCreate(
-                    ['id'=>$productos[$i]['idCategoria']],
-                    [
-                        'id'=>$productos[$i]['idCategoria'],
-                        'nombre'=>$productos[$i]['categoria']
-                    ]
-                );
-                $subcategoria_nueva = Subcategoria::updateOrCreate(
-                    ['id'=>$productos[$i]['idSubCategoria']],
-                    [
-                        'id'=>$productos[$i]['idSubCategoria'],
-                        'categoria_id'=>$productos[$i]['idCategoria'],
-                        'nombre'=>$productos[$i]['subcategoria']
-                    ]
-                );
-                $producto = Producto::updateOrCreate(
-                    ['clave_ct'=>$productos[$i]['clave']],
-                    [
-                        'marca_id'=>$productos[$i]['idMarca'],
-                        'subcategoria_id'=>$productos[$i]['idSubCategoria'],
-                        'categoria_id'=>$productos[$i]['idCategoria'],
-                        'nombre'=>$productos[$i]['nombre'],
-                        'descripcion_corta'=>$productos[$i]['descripcion_corta'],
-                        'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
-                        'sku'=>ltrim($productos[$i]['numParte']),
-                        'ean'=>$productos[$i]['ean'],
-                        'upc'=>$productos[$i]['upc'],
-                        'imagen'=>$productos[$i]['imagen'],
-                        'existencias'=>$existencia_producto,
-                        'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
-                    ]
-                );
-                if(!empty($productos[$i]['promociones'])){
-                    // dd($productos[$i]['promociones'][0]['vigencia']['inicio']);
-                    // date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio']));
-                    // date('Y-m-d\TH:i:s', $productos[$i]['promociones'][0]['vigencia']['inicio']);
-                    if($productos[$i]['promociones'][0]['tipo']!="porcentaje"){
-                        $promocion = Promocion::updateOrCreate(
-                            ['clave_ct'=>$productos[$i]['clave']],
-                            ['descuento'=>100-($productos[$i]['promociones'][0]['promocion']*100)/$productos[$i]['precio'],
-                            'fecha_inicio'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
-                            'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
-                        );
-                    }else{
-                        $promocion = Promocion::updateOrCreate(
-                            ['clave_ct'=>$productos[$i]['clave']],
-                            ['descuento'=>$productos[$i]['promociones'][0]['promocion'],
-                            'fecha_inicio'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
-                            'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
-                        );
-                    }
-                    // dd($productos[$i]['clave']);
-                }
-                $palabras_clave = explode(",",$productos[$i]['descripcion_corta']);
-                for($j=0;$j<sizeof($palabras_clave);$j++){
-                    $producto = Palabras::updateOrCreate(
-                        ['clave_ct'=>$productos[$i]['clave'],
-                        'palabra'=>$palabras_clave[$j]]
-                    );
-                }
-            }
-        }
-        dd($productos);
+    //             $marca_nueva = Marca::updateOrCreate(
+    //                 ['id'=>$productos[$i]['idMarca']],
+    //                 [
+    //                     'id'=>$productos[$i]['idMarca'],
+    //                     'nombre'=>$productos[$i]['marca']
+    //                 ]
+    //             );
+    //             $categoria_nueva = Categoria::updateOrCreate(
+    //                 ['id'=>$productos[$i]['idCategoria']],
+    //                 [
+    //                     'id'=>$productos[$i]['idCategoria'],
+    //                     'nombre'=>$productos[$i]['categoria']
+    //                 ]
+    //             );
+    //             $subcategoria_nueva = Subcategoria::updateOrCreate(
+    //                 ['id'=>$productos[$i]['idSubCategoria']],
+    //                 [
+    //                     'id'=>$productos[$i]['idSubCategoria'],
+    //                     'categoria_id'=>$productos[$i]['idCategoria'],
+    //                     'nombre'=>$productos[$i]['subcategoria']
+    //                 ]
+    //             );
+    //             $producto = Producto::updateOrCreate(
+    //                 ['clave_ct'=>$productos[$i]['clave']],
+    //                 [
+    //                     'marca_id'=>$productos[$i]['idMarca'],
+    //                     'subcategoria_id'=>$productos[$i]['idSubCategoria'],
+    //                     'categoria_id'=>$productos[$i]['idCategoria'],
+    //                     'nombre'=>$productos[$i]['nombre'],
+    //                     'descripcion_corta'=>$productos[$i]['descripcion_corta'],
+    //                     'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
+    //                     'sku'=>ltrim($productos[$i]['numParte']),
+    //                     'ean'=>$productos[$i]['ean'],
+    //                     'upc'=>$productos[$i]['upc'],
+    //                     'imagen'=>$productos[$i]['imagen'],
+    //                     'existencias'=>$existencia_producto,
+    //                     'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
+    //                 ]
+    //             );
+    //             if(!empty($productos[$i]['promociones'])){
+    //                 // dd($productos[$i]['promociones'][0]['vigencia']['inicio']);
+    //                 // date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio']));
+    //                 // date('Y-m-d\TH:i:s', $productos[$i]['promociones'][0]['vigencia']['inicio']);
+    //                 if($productos[$i]['promociones'][0]['tipo']!="porcentaje"){
+    //                     $promocion = Promocion::updateOrCreate(
+    //                         ['clave_ct'=>$productos[$i]['clave']],
+    //                         ['descuento'=>100-($productos[$i]['promociones'][0]['promocion']*100)/$productos[$i]['precio'],
+    //                         'fecha_inicio'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
+    //                         'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
+    //                     );
+    //                 }else{
+    //                     $promocion = Promocion::updateOrCreate(
+    //                         ['clave_ct'=>$productos[$i]['clave']],
+    //                         ['descuento'=>$productos[$i]['promociones'][0]['promocion'],
+    //                         'fecha_inicio'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
+    //                         'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
+    //                     );
+    //                 }
+    //                 // dd($productos[$i]['clave']);
+    //             }
+    //             $palabras_clave = explode(",",$productos[$i]['descripcion_corta']);
+    //             for($j=0;$j<sizeof($palabras_clave);$j++){
+    //                 $producto = Palabras::updateOrCreate(
+    //                     ['clave_ct'=>$productos[$i]['clave'],
+    //                     'palabra'=>$palabras_clave[$j]]
+    //                 );
+    //             }
+    //         }
+    //     }
+    //     dd($productos);
     }
 
     public function lecturaLocal (){
@@ -162,17 +162,18 @@ class PreciosController extends Controller{
         $imagenes = new ImagenesController();
         $existencia_producto=0;
         // $products->limpieza();
-        $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
-        // dd(storage_path() . "/app/public/productos.json");
+        
+        $productos = storage_path() . "/app/public/productos.json";
+        dd(filesize($productos));// dd(storage_path() . "/app/public/productos.json");
         //dd($productos);
         set_time_limit(0);
-        for($i=0;$i<sizeof($productos);$i++){
-        //for($i=0;$i<4;$i++){
+        //for($i=0;$i<sizeof($productos);$i++){
+        for($i=0;$i<3;$i++){
             $existencia_producto=0;
             if($productos[$i]['idCategoria']!=0){
-                if($i>=0){
-                    $imagenes->obtener($productos[$i]);
-                }
+                // if($i>=0){
+                //     $imagenes->obtener($productos[$i]);
+                // }
                 // PRUEBA EXISTENCIAS
                 $existencia_producto = $this->existencias($productos[$i]);
                 $marca_nueva = Marca::updateOrCreate(
@@ -304,7 +305,7 @@ class PreciosController extends Controller{
             if(!empty($productos['existencia']['COL'])){
             $existencia_producto += $productos['existencia']['COL'];
             }
-            if(!empty($producto['existencia']['HMO'])){
+            if(!empty($productos['existencia']['HMO'])){
             $existencia_producto += $productos['existencia']['HMO'];
             }
             if(!empty($productos['existencia']['LMO'])){

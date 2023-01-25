@@ -31,7 +31,7 @@ class jsonLocal extends Command
         //return 0;
         
         //$this->call('\App\Http\Controllers\PreciosController@lecturaLocal');
-        $productos = "/public/productos.json";
+        $productos = "app/public/productos.json";
         //$productos = Storage::get('public/products.json');
         $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "] Tamaño: " .filesize($productos);
         //$texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "] Tamaño: ";

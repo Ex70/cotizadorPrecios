@@ -121,12 +121,21 @@ class ImagenesController extends Controller
             if(is_int($pos)){
                 $datos['upc']=str_replace(" ","",str_replace("UPC-A","",$stringSeparado[$j]));
             }else{
+                $datos['upc'] = NULL;
                 $pos=strpos($stringSeparado[$j],"EAN-13");
                 if($pos>=0){
                     $datos['ean']=str_replace(" ","",str_replace("EAN-13","",$stringSeparado[$j]));
                 }
             }
         }
+        $producto = Producto::updateOrCreate(
+            ['clave_ct'=>$producto['clave']],
+            [
+                'upc'=>(is_null($producto['upc'])) ? $datos['upc'] : $datos['upc'],
+                'ean'=>$datos['ean'],
+                'google_cat'=>$dataImg['products'][0]['category']
+            ]
+        );
         dd($dataImg);
 
         // LEER DESDE API
@@ -276,7 +285,6 @@ class ImagenesController extends Controller
     }
 
     public function getFile($filename){
-        // return $filename;
         $file=Storage::disk('productos')->get($filename);
         return (new Response($file, 200))
             ->header('Content-Type', 'image/jpeg');

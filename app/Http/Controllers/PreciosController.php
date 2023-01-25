@@ -72,7 +72,7 @@ class PreciosController extends Controller{
     public function lectura(){
         $products = new ProductosController();
         $existencia_producto=0;
-        $products->limpieza();
+        // $products->limpieza();
         set_time_limit(0);
         $fileExist = Storage::disk('prueba-ftp')->exists('catalogo_xml/productos.json');
         if ($fileExist){
@@ -158,17 +158,18 @@ class PreciosController extends Controller{
     }
 
     public function lecturaLocal (){
+        set_time_limit(0);
         $products = new ProductosController();
         $imagenes = new ImagenesController();
         $existencia_producto=0;
-        // $products->limpieza();
-        
-        $productos = storage_path() . "/app/public/productos.json";
-        dd(filesize($productos));// dd(storage_path() . "/app/public/productos.json");
+        $products->limpieza();
+        // $productos = storage_path() . "/app/public/productos.json";
+        $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
+        // dd(filesize($productos));
+        // dd(storage_path() . "/app/public/productos.json");
         //dd($productos);
-        set_time_limit(0);
-        //for($i=0;$i<sizeof($productos);$i++){
-        for($i=0;$i<3;$i++){
+        for($i=0;$i<sizeof($productos);$i++){
+        // for($i=0;$i<3;$i++){
             $existencia_producto=0;
             if($productos[$i]['idCategoria']!=0){
                 // if($i>=0){

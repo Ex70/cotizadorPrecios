@@ -35,7 +35,7 @@ class jsonLocal extends Command
         //$productos = Storage::get('public/products.json');
         $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "] Tamaño: " .filesize($productos);
         //$texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "] Tamaño: ";
-        Storage::disk('local')->append("RegistroJson.txt", $texto);
+        //Storage::disk('local')->append("RegistroJson.txt", $texto);
         Storage::append("RegistroJson.txt", $texto);
     }
 }

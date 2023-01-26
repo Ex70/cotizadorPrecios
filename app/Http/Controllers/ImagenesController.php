@@ -92,15 +92,88 @@ class ImagenesController extends Controller
         //
     }
 
-    public function obtener($producto){
+    public function obtener(){
+        // public function obtener($producto){
         set_time_limit(0);
+        $faltantes = "";
+        $producto=Producto::where('estatus','Activo')->orderBy('existencias','desc')->take(10)->get();
         // dd($producto);
         // dd(strlen($producto['ean']));
-        if(strlen($producto['ean']>0)){
-            $busqueda = $producto['ean'];
-        }else{
-            $busqueda = $producto['upc'];
+        for($i=0;$i<sizeof($producto);$i++){
+            if(strlen($producto[$i]['ean']>0)){
+                $busqueda = $producto[$i]['ean'];
+            }else{
+                if(strlen($producto[$i]['upc']>0)){
+                    $busqueda = $producto[$i]['upc'];
+                }else{
+                    $busqueda="HOLA";
+                    // break;
+                }
+            }
+            // dd($busqueda);
+            if($busqueda!="HOLA"){
+                    // LEER DESDE API
+                $client = new Client();
+                // dd($busqueda);
+                $headers = ['Content-Type' => 'application/json'];
+                $url = "https://api.barcodelookup.com/v3/products?barcode=".$busqueda."&key=lh8ix2sc20q5x4jr81pi6fqek0t65r";
+                try {
+                    $res = $client->request('GET', $url, ['headers' => [
+                        'Accept' => 'application/json',
+                        'http_errors' => false,
+                        'Content-Type' => 'application/json',
+                        'User-Agent' => "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+                    ]]);
+                    $result = $res->getBody();
+                    $dataImg = json_decode($result, true);
+                    $nombreJSON = $producto[$i]['clave_ct'].".json";
+                    $newJsonString = json_encode($dataImg, JSON_PRETTY_PRINT);
+                    Storage::disk('json')->put($nombreJSON, $newJsonString);
+                    $valor = $dataImg['products'][0]['barcode_formats'];
+                    $stringSeparado = explode(",",$valor);
+                    for($j=0;$j<count($stringSeparado);$j++){
+                        $pos=strpos($stringSeparado[$j],"UPC-A");
+                        if(is_int($pos)){
+                            $datos['upc']=str_replace(" ","",str_replace("UPC-A","",$stringSeparado[$j]));
+                        }else{
+                            $datos['upc'] = (!isset($datos['upc'])) ? NULL : $datos['upc'];
+                            // $datos['upc'] = NULL;
+                            $pos=strpos($stringSeparado[$j],"EAN-13");
+                            if($pos>=0){
+                                $datos['ean']=str_replace(" ","",str_replace("EAN-13","",$stringSeparado[$j]));
+                            }
+                        }
+                    }
+                    $productoAPI = Producto::updateOrCreate(
+                        ['clave_ct'=>$producto[$i]['clave_ct']],
+                        [
+                            'upc'=>(is_null($producto[$i]['upc'])) ? $datos['upc'] : $datos['upc'],
+                            'ean'=>(is_null($producto[$i]['ean'])) ? $datos['ean'] : $datos['ean'],
+                            'google_cat'=>$dataImg['products'][0]['category']
+                        ]
+                    );
+                    for($h=0;$h<sizeof($dataImg['products'][0]['images']);$h++){
+                        $urlImagen = $dataImg['products'][0]['images'][$h];
+                        $contents = file_get_contents($urlImagen);
+                        $datos = pathinfo($urlImagen);
+                        $nombre = $producto[$i]['clave_ct']."-".$h.".".$datos['extension'];
+                        $ruta = 'productos/'.$nombre;
+                        // $urlImagen->move(public_path('/',$nombre));
+                        Storage::disk('public')->put($ruta, $contents);
+                        Storage::put($ruta, $contents);
+                        $data=$nombre;
+                        list($width, $height, $type, $attr) = getimagesize($dataImg['products'][0]['images'][$h]);
+                        // dd(Storage::get($data));
+                        // dd($attr);
+                    }
+                } catch (BadResponseException $th) {
+                    Storage::append("BarcodeLookUp-Fallos.txt", $producto[$i]['clave_ct']);
+                    // $faltantes += $faltantes."_".$busqueda;
+                    // dd($faltantes);
+                }
+            }
         }
+        dd($producto);
         // $sku = $producto['numParte'];
         // $url = "https://images.barcodelookup.com/56172/561726884-1.jpg";
         // $contents = file_get_contents($url);
@@ -128,15 +201,7 @@ class ImagenesController extends Controller
                 }
             }
         }
-        $producto = Producto::updateOrCreate(
-            ['clave_ct'=>$producto['clave']],
-            [
-                'upc'=>(is_null($producto['upc'])) ? $datos['upc'] : $datos['upc'],
-                'ean'=>$datos['ean'],
-                'google_cat'=>$dataImg['products'][0]['category']
-            ]
-        );
-        dd($dataImg);
+        dd("Acabaste los 5 archivos");
 
         // LEER DESDE API
         $client = new Client();
@@ -225,7 +290,7 @@ class ImagenesController extends Controller
 
             list($width, $height, $type, $attr) = getimagesize($dataImg['products'][0]['images'][$i]);
             // dd(Storage::get($data));
-            dd($attr);
+            // dd($attr);
         }
         return view('productos.pruebaImagen', compact('data'));
         // if($data['products'][0]['category']){

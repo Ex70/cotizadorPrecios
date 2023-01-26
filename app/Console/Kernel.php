@@ -20,10 +20,13 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('json:local')
-        ->everyMinute();
+            ->everyMinute();
+            //->hourlyAt([02,17,32,47]);
 
-        $schedule->call('\App\Http\Controllers\PreciosController@lectura')->everyMinute();
+        //$schedule->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
+
     }
+
 
     /**
      * Register the commands for the application.

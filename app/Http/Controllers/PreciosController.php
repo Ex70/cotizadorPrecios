@@ -233,6 +233,7 @@ class PreciosController extends Controller{
                             ['descuento'=>$productos[$i]['promociones'][0]['promocion'],
                             'fecha_inicio'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
                             'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
+                        
                         );
                     }
                 }
@@ -416,5 +417,94 @@ class PreciosController extends Controller{
             }
             //dd($existencia_producto);
             return $existencia_producto;
+    }
+
+    public function lecturaPrueba(){
+        $products = new ProductosController();
+        $existencia_producto=0;
+        // $products->limpieza();
+        set_time_limit(0);
+        $fileExist = Storage::disk('prueba-ftp')->exists('catalogo_xml/productos.json');
+        if ($fileExist){
+            $size = storage_path('catalogo_xml/productos.json');
+            //Storage::disk('local')->put('public/products.json',Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json'));
+            Storage::disk('local')->put('public/products-'.filesize($size).'.json',Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json'));
+        } else{
+            dd("No existe");
+        }
+    //     set_time_limit(0);
+    //     for($i=0;$i<sizeof($productos);$i++){
+    //         if($productos[$i]['idCategoria']!=0){
+
+    //             $marca_nueva = Marca::updateOrCreate(
+    //                 ['id'=>$productos[$i]['idMarca']],
+    //                 [
+    //                     'id'=>$productos[$i]['idMarca'],
+    //                     'nombre'=>$productos[$i]['marca']
+    //                 ]
+    //             );
+    //             $categoria_nueva = Categoria::updateOrCreate(
+    //                 ['id'=>$productos[$i]['idCategoria']],
+    //                 [
+    //                     'id'=>$productos[$i]['idCategoria'],
+    //                     'nombre'=>$productos[$i]['categoria']
+    //                 ]
+    //             );
+    //             $subcategoria_nueva = Subcategoria::updateOrCreate(
+    //                 ['id'=>$productos[$i]['idSubCategoria']],
+    //                 [
+    //                     'id'=>$productos[$i]['idSubCategoria'],
+    //                     'categoria_id'=>$productos[$i]['idCategoria'],
+    //                     'nombre'=>$productos[$i]['subcategoria']
+    //                 ]
+    //             );
+    //             $producto = Producto::updateOrCreate(
+    //                 ['clave_ct'=>$productos[$i]['clave']],
+    //                 [
+    //                     'marca_id'=>$productos[$i]['idMarca'],
+    //                     'subcategoria_id'=>$productos[$i]['idSubCategoria'],
+    //                     'categoria_id'=>$productos[$i]['idCategoria'],
+    //                     'nombre'=>$productos[$i]['nombre'],
+    //                     'descripcion_corta'=>$productos[$i]['descripcion_corta'],
+    //                     'precio_unitario'=>$productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio']*$productos[$i]['tipoCambio'])*1.16),2,'.',''):number_format(($productos[$i]['precio']*1.16),2,'.',''),
+    //                     'sku'=>ltrim($productos[$i]['numParte']),
+    //                     'ean'=>$productos[$i]['ean'],
+    //                     'upc'=>$productos[$i]['upc'],
+    //                     'imagen'=>$productos[$i]['imagen'],
+    //                     'existencias'=>$existencia_producto,
+    //                     'estatus'=>$productos[$i]['activo']==1 ? 'Activo':'Descontinuado'
+    //                 ]
+    //             );
+    //             if(!empty($productos[$i]['promociones'])){
+    //                 // dd($productos[$i]['promociones'][0]['vigencia']['inicio']);
+    //                 // date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio']));
+    //                 // date('Y-m-d\TH:i:s', $productos[$i]['promociones'][0]['vigencia']['inicio']);
+    //                 if($productos[$i]['promociones'][0]['tipo']!="porcentaje"){
+    //                     $promocion = Promocion::updateOrCreate(
+    //                         ['clave_ct'=>$productos[$i]['clave']],
+    //                         ['descuento'=>100-($productos[$i]['promociones'][0]['promocion']*100)/$productos[$i]['precio'],
+    //                         'fecha_inicio'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
+    //                         'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
+    //                     );
+    //                 }else{
+    //                     $promocion = Promocion::updateOrCreate(
+    //                         ['clave_ct'=>$productos[$i]['clave']],
+    //                         ['descuento'=>$productos[$i]['promociones'][0]['promocion'],
+    //                         'fecha_inicio'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
+    //                         'fecha_fin'=>date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))]
+    //                     );
+    //                 }
+    //                 // dd($productos[$i]['clave']);
+    //             }
+    //             $palabras_clave = explode(",",$productos[$i]['descripcion_corta']);
+    //             for($j=0;$j<sizeof($palabras_clave);$j++){
+    //                 $producto = Palabras::updateOrCreate(
+    //                     ['clave_ct'=>$productos[$i]['clave'],
+    //                     'palabra'=>$palabras_clave[$j]]
+    //                 );
+    //             }
+    //         }
+    //     }
+    //     dd($productos);
     }
 }

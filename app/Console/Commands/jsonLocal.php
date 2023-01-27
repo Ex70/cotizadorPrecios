@@ -34,7 +34,8 @@ class jsonLocal extends Command
             $texto = "Archivo Existe [" . date("Y-m-d H:i:s") . "]";
             Storage::append("RegistroJson.txt", $texto);
             $size = Storage::disk('prueba-ftp')->get("catalogo_xml/productos.json");
-            Storage::append("RegistroJson.txt", filesize($size));
+            $texto2 = "Archivo Existe [" . date("Y-m-d H:i:s") . filesize($size);
+            Storage::append("RegistroJson.txt", $texto2);
             // $fsize = filesize($size);
             // $texto2 = "El Tamaño del archivo es:" . $fsize;
             // Storage::append("RegistroJson.txt", $texto2);

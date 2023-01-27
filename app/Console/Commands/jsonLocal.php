@@ -78,6 +78,7 @@ class jsonLocal extends Command
                 break;
             default:
                 // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
+                Storage::disk('local')->put('public/products-1.json', $docSize);
                 $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "] Tamaño [" .filesize($docSize) . "] Sin Errores";
                 break;
         }

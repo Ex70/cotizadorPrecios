@@ -28,9 +28,9 @@ class jsonLocal extends Command
      */
     public function handle()
     {
-        dd("hola");
+        //dd("hola");
         $fileExist = Storage::disk('prueba-ftp')->exists('catalogo_xml/productos.json');
-        dd($fileExist);
+        //dd($fileExist);
         if ($fileExist) {
             $size = storage_path('catalogo_xml/productos.json');
             //Storage::disk('local')->put('public/products.json',Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json'));

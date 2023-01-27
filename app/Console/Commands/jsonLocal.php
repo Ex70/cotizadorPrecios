@@ -33,8 +33,8 @@ class jsonLocal extends Command
         //dd($fileExist);
         if ($fileExist) {
             $size = storage_path('catalogo_xml/productos.json');
-            //Storage::disk('local')->put('public/products.json',Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json'));
-            Storage::disk('local')->put('public/products-' . filesize($size) . '.json', Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json'));
+            Storage::disk('local')->put('public/products.json',Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json'));
+            //Storage::disk('local')->put('public/products-' . filesize($size) . '.json', Storage::disk('prueba-ftp')->get('catalogo_xml/productos.json'));
         } else {
             dd("No existe");
         }

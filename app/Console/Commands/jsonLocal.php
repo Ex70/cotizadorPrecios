@@ -43,6 +43,18 @@ class jsonLocal extends Command
                 Storage::disk('local')->put("public/products-". filesize($docSize) .".json", Storage::get('public/products.json'));
                 $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "], Error 655360";;
                 break;
+            case 720896:
+                // sleep(600);
+                // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
+                Storage::disk('local')->put("public/products-". filesize($docSize) .".json", Storage::get('public/products.json'));
+                $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "], Error 720896";;
+                break;
+            case 1081344:
+                // sleep(600);
+                // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
+                Storage::disk('local')->put("public/products-". filesize($docSize) .".json", Storage::get('public/products.json'));
+                $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "], Error 1081344";;
+                break;
             case 1310720:
                 // sleep(540);
                 // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
@@ -54,10 +66,22 @@ class jsonLocal extends Command
                 $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "], Error 1966080";
                 Storage::disk('local')->put("public/products-". filesize($docSize) .".json", Storage::get('public/products.json'));
                 break;
+            case 2228224:
+                // sleep(480);
+                // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
+                $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "], Error 2228224";
+                Storage::disk('local')->put("public/products-". filesize($docSize) .".json", Storage::get('public/products.json'));
+                break;
             case 2621440:
                 // sleep(420);
                 // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
                 $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "], Error 2621440";
+                Storage::disk('local')->put("public/products-". filesize($docSize) .".json", Storage::get('public/products.json'));
+                break;
+            case 2818048:
+                // sleep(420);
+                // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
+                $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "], Error 2818048";
                 Storage::disk('local')->put("public/products-". filesize($docSize) .".json", Storage::get('public/products.json'));
                 break;
             case 3276800:
@@ -70,6 +94,12 @@ class jsonLocal extends Command
                 // sleep(300);
                 // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
                 $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "], Error 3637248";
+                Storage::disk('local')->put("public/products-". filesize($docSize) .".json", Storage::get('public/products.json'));
+                break;
+            case 3801088:
+                // sleep(300);
+                // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
+                $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "], Error 3801088";                    
                 Storage::disk('local')->put("public/products-". filesize($docSize) .".json", Storage::get('public/products.json'));
                 break;
             case 3932160:

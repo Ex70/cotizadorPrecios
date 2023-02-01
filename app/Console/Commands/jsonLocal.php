@@ -37,6 +37,18 @@ class jsonLocal extends Command
         }
         $docSize = storage_path("app/public/products.json");
         switch (filesize($docSize)) {
+            case 262144:
+                // sleep(600);
+                // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
+                Storage::disk('local')->put("public/products-". filesize($docSize) .".json", Storage::get('public/products.json'));
+                $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "], Error 262144";;
+                break;
+            case 524288:
+                // sleep(600);
+                // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');
+                Storage::disk('local')->put("public/products-". filesize($docSize) .".json", Storage::get('public/products.json'));
+                $texto = "Archivo Cargado [" . date("Y-m-d H:i:s") . "], Error 524288";;
+                break;
             case 655360:
                 // sleep(600);
                 // $this->call('\App\Http\Controllers\PreciosController@lecturaPrueba');

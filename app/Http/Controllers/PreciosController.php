@@ -170,12 +170,16 @@ class PreciosController extends Controller
         $products = new ProductosController();
         $imagenes = new ImagenesController();
         $existencia_producto = 0;
-        $products->limpieza();
+        //$products->limpieza();
         // $productos = storage_path() . "/app/public/productos.json";
         $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
         // dd(filesize($productos));
         // dd(storage_path() . "/app/public/productos.json");
         //dd($productos);
+        if(date('d')==01){
+            $borrarProm = Promocion::where('id','>',0)->delete();
+            dd('Tabla Borrada');
+        }
         for ($i = 0; $i < sizeof($productos); $i++) {
             // for($i=0;$i<3;$i++){
             $existencia_producto = 0;
@@ -524,25 +528,32 @@ class PreciosController extends Controller
         //     dd($productos);
     }
 
-    public function sitemap($productos)
-    {
+    public function sitemap(){
         set_time_limit(0);
         $remove = array(" ", "  ", "   ", "    ", "(", ")", "$", "*", "/", ",", "IVA", "Incluido");
         $client = new Client2();
-        for ($i = 0; $i < sizeof($productos); $i++) {
-            $sku = $productos[$i]->sku;
-            $clave_ct = $productos[$i]->clave_ct;
-            if ($sku == "") {
-                $sku = "NOEXISTE";
-            }
+        //dd('noexiste');
+        // for ($i = 0; $i < sizeof($productos); $i++) {
+            // $sku = $productos[$i]->sku;
+            // $clave_ct = $productos[$i]->clave_ct;
+            // if ($sku == "") {
+                $sku = "ADDS1600W4G11-S";
+            // }
             $website = $client->request('GET', 'https://ehstecnologias.com.mx/productos?b=' . $sku);
-            $result = $website->filter('.price-text > .result-price-search');
-            $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.price-text > .result-price-search')->first()->text()) : $precios[$i] = 0;
-            $productoZegucom = Zegucom::updateOrCreate(
-                ['sku' => $sku, 'clave_ct' => $clave_ct],
-                ['precio_unitario' => $precios[$i]]
-            );
-        }
+        //dd($website);
+            $result = $website->filter('.content-img > a');
+            //dd($result->attr('href'));
+            $texto = "<url>
+            <loc>".$result->attr('href')."</loc>
+            <changefreq>daily</changefreq>
+            <priority>0.5</priority>
+          </url>
+        </urlset>";
+        Storage::append("sitemapE.xml", $texto);
+            // $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.price-text > .result-price-search')->first()->text()) : $precios[$i] = 0;
+            //$precios = $result->count() ? str_replace($remove, "", $website->filter('.price-text > .result-price-search')->first()->text()) : $precios = 0;
+        // }
+        dd('Link Agregado');
     }
 }
 

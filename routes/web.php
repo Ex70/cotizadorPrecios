@@ -69,6 +69,7 @@ Route::get('getMarca/{id?}/{id2?}', [PreciosController::class,'getMarcas'])->nam
 Route::get("json", [PreciosController::class, "lectura"]);
 Route::get("jsonLocal", [PreciosController::class, "lecturaLocal"]);
 Route::get("token", [CTConnect::class, "token"]);
+Route::get("sitemap", [PreciosController::class, "sitemap"]);
 
 // MÁRGENES //
 Route::get("/margenes", [MargenesController::class, "index"]);

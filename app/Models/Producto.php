@@ -20,6 +20,7 @@ class Producto extends Model
         'ean',
         'upc',
         'imagen',
+        'enlace',
         'precio_unitario',
         'categoria_id',
         'subcategoria_id',

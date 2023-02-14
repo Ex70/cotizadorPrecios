@@ -1628,26 +1628,39 @@ class PreciosController extends Controller
         $client = new Client2();
         //dd('noexiste');
         $productos = Producto::where('estatus','=','Activo')
-        ->orderBy('enlace')
+        //$productos = Producto::whereNull('enlace')
+        //->where('estatus','=','Activo')
+        //->orderBy('enlace')
         ->get([
             'enlace',
             'sku',
             'clave_ct'
         ]);
+        //dd($productos[0]);
         for ($i = 0; $i < sizeof($productos); $i++) {
+        $texto2 = '';
         //for ($i = 0; $i < 5; $i++) {
             if(($productos[$i]->enlace) == null){
+                $cliente = new Client2();
                 $sku = $productos[$i]->sku;
                 //dd($sku);
                 if($sku==""){
                     $sku="NO EXISTE";
                 }
-                //$website = $client->request('GET', 'https://ehstecnologias.com.mx/productos?b=' . $sku);
-                $website = $client->request('GET', 'https://ctonline.mx/buscar/productos?b=' . $sku);
-                //dd($website);
-                $result = $website->filter('.imagen_centrica > a');
-                $texto2 = "<url><loc>".$result->attr('href')."</loc><changefreq>daily</changefreq><priority>0.5</priority></url>";
-                Storage::append("sitemapE.xml", $texto2);
+                $website2 = $cliente->request('GET', 'https://ehstecnologias.com.mx/productos?b=' . $sku);
+                //$website2 = $cliente->request('GET', 'https://ctonline.mx/buscar/productos?b=' . $sku);
+                //dd('https://ctonline.mx/buscar/productos?b=' . $sku);
+                //$resultado = $website2->filter('.imagen_centrica > a');
+                //dd($website2->filter('.content-img > a')->text());
+                if ($website2->filter('.content-img > a')->count()>0){
+                  $resultado = $website2->filter('.content-img > a');
+                  $texto2 = "<url><loc>".$resultado->attr('href')."</loc><changefreq>daily</changefreq><priority>0.5</priority></url>";
+                  //dd($texto2);
+                  Storage::append("sitemapE.xml", $texto2);
+                }else{
+                  //dd('Producto No Encontrado');
+                }
+                //dd($resultado->attr('href'));
             }else{
                 $enlace = $productos[$i]->enlace;
                 //dd($enlace);
@@ -1658,6 +1671,6 @@ class PreciosController extends Controller
         $texto3 = "</urlset>";
         Storage::append("sitemapE.xml", $texto3);
         dd('Sitemap Creado');
-    }
+  }
 }
 

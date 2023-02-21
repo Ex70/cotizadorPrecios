@@ -110,6 +110,10 @@
                         </li>
                         <li> <a href="{{ url('existencias') }}"><i class="bx bx-right-arrow-alt"></i>Existencias</a>
                         </li>
+                        <li> <a href="{{ url('sitemap') }}"><i class="bx bx-right-arrow-alt"></i>Sitemap</a>
+                        </li>
+                        <li> <a href="{{ url('enlaces') }}"><i class="bx bx-right-arrow-alt"></i>Enlaces</a>
+                        </li>
                     </ul>
                 </li>
                 <li>

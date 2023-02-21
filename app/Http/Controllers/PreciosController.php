@@ -1643,6 +1643,7 @@ class PreciosController extends Controller
             if(($productos[$i]->enlace) == null){
                 $cliente = new Client2();
                 $sku = $productos[$i]->sku;
+                $clavect = $productos[$i]->clave_ct;
                 //dd($sku);
                 if($sku==""){
                     $sku="NO EXISTE";
@@ -1656,6 +1657,14 @@ class PreciosController extends Controller
                   $resultado = $website2->filter('.content-img > a');
                   $texto2 = "<url><loc>".$resultado->attr('href')."</loc><changefreq>daily</changefreq><priority>0.5</priority></url>";
                   //dd($texto2);
+                  $enlaces = Producto::updateOrCreate(
+                    ['clave_ct' => $clavect],
+                    [
+                      'enlace' => $resultado->attr('href'),
+                    ]
+                  )
+                  ->where('clave_ct', '=', $clavect)
+                  ->where('sku', '=', $sku);
                   Storage::append("sitemapE.xml", $texto2);
                 }else{
                   //dd('Producto No Encontrado');
@@ -1671,6 +1680,59 @@ class PreciosController extends Controller
         $texto3 = "</urlset>";
         Storage::append("sitemapE.xml", $texto3);
         dd('Sitemap Creado');
+  }
+
+  public function enlaces(){
+    set_time_limit(0);
+    $remove = array(" ", "  ", "   ", "    ", "(", ")", "$", "*", "/", ",", "IVA", "Incluido");
+    $client = new Client2();
+    //dd('noexiste');
+    //$productos = Producto::where('estatus','=','Activo')
+    $productos = Producto::whereNull('enlace')
+    ->where('estatus','=','Activo')
+    //->orderBy('enlace')
+    ->get([
+      'enlace',
+      'sku',
+      'clave_ct'
+      ]);
+    for ($i = 0; $i < sizeof($productos); $i++) {
+    //for ($i = 0; $i < 5; $i++) {
+      if(($productos[$i]->enlace) == null){
+        $cliente = new Client2();
+        //$sku = $productos[$i]->sku;
+        $sku = 'ES-05002';
+        //dd($sku);
+        if($sku==""){
+          $sku="NO EXISTE";
+        }
+        $website2 = $cliente->request('GET', 'https://ehstecnologias.com.mx/productos?b=' . $sku);
+        //$website2 = $cliente->request('GET', 'https://ctonline.mx/buscar/productos?b=' . $sku);
+        //dd('https://ctonline.mx/buscar/productos?b=' . $sku);
+        //$resultado = $website2->filter('.imagen_centrica > a');
+        //dd($website2->filter('.content-img > a')->text());
+        $clavect = $productos[$i]->clave_ct;
+        if ($website2->filter('.content-img > a')->count()>0){
+          $resultado = $website2->filter('.content-img > a');
+          //dd($resultado->attr('href'));
+          $enlaces = Producto::updateOrCreate(
+            ['clave_ct' => $clavect],
+            [
+              'enlace' => $resultado->attr('href'),
+            ]
+          )
+          ->where('clave_ct', '=', $clavect)
+          ->where('sku', '=', $sku)
+          
+          ;
+        }else{
+          //dd('Producto No Encontrado');
+        }
+        //dd($resultado->attr('href'));
+      }else{
+      }
+    }
+    dd('Enlace Actualizado');
   }
 }
 

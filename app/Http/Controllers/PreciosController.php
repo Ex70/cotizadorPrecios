@@ -1623,7 +1623,7 @@ class PreciosController extends Controller
             <priority>0.5</priority>
           </url>
           <!-- PRODUCTOS ACTIVOS -->';
-        Storage::put('sitemapE.xml', $texto1);
+        Storage::put('sitemap.xml', $texto1);
         $remove = array(" ", "  ", "   ", "    ", "(", ")", "$", "*", "/", ",", "IVA", "Incluido");
         $client = new Client2();
         //dd('noexiste');
@@ -1655,7 +1655,11 @@ class PreciosController extends Controller
                 //dd($website2->filter('.content-img > a')->text());
                 if ($website2->filter('.content-img > a')->count()>0){
                   $resultado = $website2->filter('.content-img > a');
-                  $texto2 = "<url><loc>".$resultado->attr('href')."</loc><changefreq>daily</changefreq><priority>0.5</priority></url>";
+                  $texto2 = "<url>
+                  <loc>".$resultado->attr('href')."</loc>
+                  <changefreq>daily</changefreq>
+                  <priority>0.5</priority>
+                </url>";
                   //dd($texto2);
                   $enlaces = Producto::updateOrCreate(
                     ['clave_ct' => $clavect],
@@ -1665,7 +1669,7 @@ class PreciosController extends Controller
                   )
                   ->where('clave_ct', '=', $clavect)
                   ->where('sku', '=', $sku);
-                  Storage::append("sitemapE.xml", $texto2);
+                  Storage::append("sitemap.xml", $texto2);
                 }else{
                   //dd('Producto No Encontrado');
                 }
@@ -1673,12 +1677,16 @@ class PreciosController extends Controller
             }else{
                 $enlace = $productos[$i]->enlace;
                 //dd($enlace);
-                $texto2 = " <url><loc>".$enlace."</loc><changefreq>daily</changefreq><priority>0.5</priority></url>";
-                Storage::append("sitemapE.xml", $texto2);
+                $texto2 = "<url>
+                <loc>".$enlace."</loc>
+                <changefreq>daily</changefreq>
+                <priority>0.5</priority>
+              </url>";
+                Storage::append("sitemap.xml", $texto2);
             }
             }
         $texto3 = "</urlset>";
-        Storage::append("sitemapE.xml", $texto3);
+        Storage::append("sitemap.xml", $texto3);
         dd('Sitemap Creado');
   }
 

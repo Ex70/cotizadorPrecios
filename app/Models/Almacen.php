@@ -5,16 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Existencias extends Model
+class Almacen extends Model
 {
     use HasFactory;
 
-    protected $table = 'existencias';
+    protected $table = 'almacenes';
     public $timestamps = true;
 
     protected $fillable = [
-        'clave_ct',
-        'almacen_id',
-        'existencias',
+        'nombre',
+        'clave_api',
+        'homoclave',
+        'ciudad',
+        'ciudad',
+        'estado',
+        'telefono',
     ];
 }

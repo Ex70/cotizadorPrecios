@@ -96,8 +96,9 @@ class ImagenesController extends Controller
         // public function obtener($producto){
         set_time_limit(0);
         $faltantes = "";
-        $producto=Producto::where('estatus','Activo')->orderBy('existencias','desc')->take(10)->get();
-        // dd($producto);
+        $producto=Producto::where('estatus','Activo')->where('id','>',40901)->where('id','<',43000)->whereNotNull('upc')->whereNotNull('ean')->orderBy('existencias','desc')->get();
+        // $producto=Producto::where('estatus','Activo')->where('id','>',0)->whereNotNull('upc')->whereNotNull('ean')->where('id','<',5000)->orderBy('existencias','desc')->get();
+        dd(count($producto));
         // dd(strlen($producto['ean']));
         for($i=0;$i<sizeof($producto);$i++){
             if(strlen($producto[$i]['ean']>0)){
@@ -116,7 +117,7 @@ class ImagenesController extends Controller
                 $client = new Client();
                 // dd($busqueda);
                 $headers = ['Content-Type' => 'application/json'];
-                $url = "https://api.barcodelookup.com/v3/products?barcode=".$busqueda."&key=lh8ix2sc20q5x4jr81pi6fqek0t65r";
+                $url = "https://api.barcodelookup.com/v3/products?barcode=".$busqueda."&key=u30gi6v08sqi3qw0gstd7ovk3fqfrb";
                 try {
                     $res = $client->request('GET', $url, ['headers' => [
                         'Accept' => 'application/json',
@@ -162,12 +163,13 @@ class ImagenesController extends Controller
                         Storage::disk('public')->put($ruta, $contents);
                         Storage::put($ruta, $contents);
                         $data=$nombre;
-                        list($width, $height, $type, $attr) = getimagesize($dataImg['products'][0]['images'][$h]);
+                        // list($width, $height, $type, $attr) = getimagesize($dataImg['products'][0]['images'][$h]);
                         // dd(Storage::get($data));
                         // dd($attr);
                     }
                 } catch (BadResponseException $th) {
-                    Storage::append("BarcodeLookUp-Fallos.txt", $producto[$i]['clave_ct']);
+                    $texto = "Fallo [" . date("Y-m-d H:i:s") . "] Clave CT [" .$producto[$i]['clave_ct']. "]";
+                    Storage::append("BarcodeLookUp-Fallos.txt", $texto);
                     // $faltantes += $faltantes."_".$busqueda;
                     // dd($faltantes);
                 }

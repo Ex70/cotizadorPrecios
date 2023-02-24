@@ -15,6 +15,7 @@ use App\Models\Palabras;
 use App\Models\Subcategoria;
 use App\Models\Producto;
 use App\Models\Promocion;
+use App\Models\Existencias;
 use Illuminate\Support\Facades\Storage;
 use Goutte\Client AS Client2; 
 
@@ -169,8 +170,10 @@ class PreciosController extends Controller
         set_time_limit(0);
         $products = new ProductosController();
         $imagenes = new ImagenesController();
+        $existencias = new ExistenciasController();
         $existencia_producto = 0;
-        //$products->limpieza();
+        $products->limpieza();
+        $existencias->limpieza();
         // $productos = storage_path() . "/app/public/productos.json";
         $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
         // dd(filesize($productos));
@@ -178,10 +181,10 @@ class PreciosController extends Controller
         //dd($productos);
         if(date('d')==01){
             $borrarProm = Promocion::where('id','>',0)->delete();
-            dd('Tabla Borrada');
+            //dd('Tabla Borrada');
         }
         for ($i = 0; $i < sizeof($productos); $i++) {
-            // for($i=0;$i<3;$i++){
+          //for($i=0;$i<3;$i++){
             $existencia_producto = 0;
             if ($productos[$i]['idCategoria'] != 0) {
                 // if($i>=0){
@@ -303,137 +306,615 @@ class PreciosController extends Controller
         $existencia_producto = 0;
         if (!empty($productos['existencia']['DFA'])) {
             $existencia_producto += $productos['existencia']['DFA'];
+            $existencias = Existencias::updateOrCreate(
+              ['clave_ct' => $productos['clave'],
+              'almacen_id' => '34'
+            ],
+              [
+              'clave_ct' => $productos['clave'],
+              'almacen_id' => '34',
+              'existencias' => $productos['existencia']['DFA']
+            ]
+            );
         }
         if (!empty($productos['existencia']['D2A'])) {
             $existencia_producto += $productos['existencia']['D2A'];
+            $existencias = Existencias::updateOrCreate(
+              ['clave_ct' => $productos['clave'],
+              'almacen_id' => '48'
+            ],
+              [
+              'clave_ct' => $productos['clave'],
+              'almacen_id' => '48',
+              'existencias' => $productos['existencia']['D2A']
+            ]
+            );
         }
         if (!empty($productos['existencia']['CAM'])) {
             $existencia_producto += $productos['existencia']['CAM'];
+            $existencias = Existencias::updateOrCreate(
+              ['clave_ct' => $productos['clave'],
+              'almacen_id' => '41'
+            ],
+              [
+              'clave_ct' => $productos['clave'],
+              'almacen_id' => '41',
+              'existencias' => $productos['existencia']['CAM']
+            ]
+            );
         }
         if (!empty($productos['existencia']['GDL'])) {
             $existencia_producto += $productos['existencia']['GDL'];
-            // dd($productos['existencia']['GDL'].$productos['clave']);
+            $existencias = Existencias::updateOrCreate(
+              ['clave_ct' => $productos['clave'],
+              'almacen_id' => '12'
+            ],
+              [
+              'clave_ct' => $productos['clave'],
+              'almacen_id' => '12',
+              'existencias' => $productos['existencia']['GDL']
+            ]
+            );
         }
         if (!empty($productos['existencia']['ZAC'])) {
             $existencia_producto += $productos['existencia']['ZAC'];
+            $existencias = Existencias::updateOrCreate(
+              ['clave_ct' => $productos['clave'],
+              'almacen_id' => '35'
+            ],
+              [
+              'clave_ct' => $productos['clave'],
+              'almacen_id' => '35',
+              'existencias' => $productos['existencia']['ZAC']
+            ]
+            );
         }
         if (!empty($productos['existencia']['ACA'])) {
-            $existencia_producto += $productos['existencia']['ACA'];
-        }
-        if (!empty($productos['existencia']['QRO'])) {
-            $existencia_producto += $productos['existencia']['QRO'];
-        }
-        if (!empty($productos['existencia']['COL'])) {
-            $existencia_producto += $productos['existencia']['COL'];
-        }
-        if (!empty($productos['existencia']['HMO'])) {
-            $existencia_producto += $productos['existencia']['HMO'];
-        }
-        if (!empty($productos['existencia']['LMO'])) {
-            $existencia_producto += $productos['existencia']['LMO'];
-        }
-        if (!empty($productos['existencia']['CLN'])) {
-            $existencia_producto += $productos['existencia']['CLN'];
-        }
-        if (!empty($productos['existencia']['CHI'])) {
-            $existencia_producto += $productos['existencia']['CHI'];
-        }
-        if (!empty($productos['existencia']['MOR'])) {
-            $existencia_producto += $productos['existencia']['MOR'];
-        }
-        if (!empty($productos['existencia']['VER'])) {
-            $existencia_producto += $productos['existencia']['VER'];
-        }
-        if (!empty($productos['existencia']['CTZ'])) {
-            $existencia_producto += $productos['existencia']['CTZ'];
-        }
-        if (!empty($productos['existencia']['TAM'])) {
-            $existencia_producto += $productos['existencia']['TAM'];
-        }
-        if (!empty($productos['existencia']['PUE'])) {
-            $existencia_producto += $productos['existencia']['PUE'];
-        }
-        if (!empty($productos['existencia']['VHA'])) {
-            $existencia_producto += $productos['existencia']['VHA'];
-        }
-        if (!empty($productos['existencia']['TUX'])) {
-            $existencia_producto += $productos['existencia']['TUX'];
-        }
-        if (!empty($productos['existencia']['MTY'])) {
-            $existencia_producto += $productos['existencia']['MTY'];
-        }
-        if (!empty($productos['existencia']['MID'])) {
-            $existencia_producto += $productos['existencia']['MID'];
-        }
-        if (!empty($productos['existencia']['MAZ'])) {
-            $existencia_producto += $productos['existencia']['MAZ'];
-        }
-        if (!empty($productos['existencia']['CUE'])) {
-            $existencia_producto += $productos['existencia']['CUE'];
-        }
-        if (!empty($productos['existencia']['CUN'])) {
-            $existencia_producto += $productos['existencia']['CUN'];
-        }
-        if (!empty($productos['existencia']['DFP'])) {
-            $existencia_producto += $productos['existencia']['DFP'];
-        }
-        if (!empty($productos['existencia']['ACX'])) {
-            $existencia_producto += $productos['existencia']['ACX'];
-        }
-        if (!empty($productos['existencia']['CEL'])) {
-            $existencia_producto += $productos['existencia']['CEL'];
-        }
-        if (!empty($productos['existencia']['OBR'])) {
-            $existencia_producto += $productos['existencia']['OBR'];
-        }
-        if (!empty($productos['existencia']['DGO'])) {
-            $existencia_producto += $productos['existencia']['DGO'];
-        }
-        if (!empty($productos['existencia']['TRN'])) {
-            $existencia_producto += $productos['existencia']['TRN'];
-        }
-        if (!empty($productos['existencia']['AGS'])) {
-            $existencia_producto += $productos['existencia']['AGS'];
-        }
-        if (!empty($productos['existencia']['SLP'])) {
-            $existencia_producto += $productos['existencia']['SLP'];
-        }
-        if (!empty($productos['existencia']['XLP'])) {
-            $existencia_producto += $productos['existencia']['XLP'];
-        }
-        if (!empty($productos['existencia']['DFT'])) {
-            $existencia_producto += $productos['existencia']['DFT'];
-        }
-        if (!empty($productos['existencia']['CDV'])) {
-            $existencia_producto += $productos['existencia']['CDV'];
-        }
-        if (!empty($productos['existencia']['SLT'])) {
-            $existencia_producto += $productos['existencia']['SLT'];
-        }
-        if (!empty($productos['existencia']['TPC'])) {
-            $existencia_producto += $productos['existencia']['TPC'];
-        }
-        if (!empty($productos['existencia']['TOL'])) {
-            $existencia_producto += $productos['existencia']['TOL'];
-        }
-        if (!empty($productos['existencia']['PAC'])) {
-            $existencia_producto += $productos['existencia']['PAC'];
-        }
-        if (!empty($productos['existencia']['IRA'])) {
-            $existencia_producto += $productos['existencia']['IRA'];
-        }
-        if (!empty($productos['existencia']['OAX'])) {
-            $existencia_producto += $productos['existencia']['OAX'];
-        }
-        if (!empty($productos['existencia']['DFC'])) {
-            $existencia_producto += $productos['existencia']['DFC'];
-        }
-        if (!empty($productos['existencia']['TXL'])) {
-            $existencia_producto += $productos['existencia']['TXL'];
-        }
-        if (!empty($productos['existencia']['URP'])) {
-            $existencia_producto += $productos['existencia']['URP'];
-        }
+          $existencia_producto += $productos['existencia']['ACA'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '37'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '37',
+            'existencias' => $productos['existencia']['ACA']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['QRO'])) {
+          $existencia_producto += $productos['existencia']['QRO'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '9'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '9',
+            'existencias' => $productos['existencia']['QRO']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['COL'])) {
+          $existencia_producto += $productos['existencia']['COL'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '17'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '17',
+            'existencias' => $productos['existencia']['COL']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['HMO'])) {
+          $existencia_producto += $productos['existencia']['HMO'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '1'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '1',
+            'existencias' => $productos['existencia']['HMO']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['LMO'])) {
+          $existencia_producto += $productos['existencia']['LMO'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '3'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '3',
+            'existencias' => $productos['existencia']['LMO']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['CLN'])) {
+          $existencia_producto += $productos['existencia']['CLN'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '4'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '4',
+            'existencias' => $productos['existencia']['CLN']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['CHI'])) {
+          $existencia_producto += $productos['existencia']['CHI'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '7'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '7',
+            'existencias' => $productos['existencia']['CHI']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['MOR'])) {
+          $existencia_producto += $productos['existencia']['MOR'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '13'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '13',
+            'existencias' => $productos['existencia']['MOR']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['VER'])) {
+          $existencia_producto += $productos['existencia']['VER'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '16'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '16',
+            'existencias' => $productos['existencia']['VER']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['CTZ'])) {
+          $existencia_producto += $productos['existencia']['CTZ'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '18'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '18',
+            'existencias' => $productos['existencia']['CTZ']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['TAM'])) {
+          $existencia_producto += $productos['existencia']['TAM'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '19'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '19',
+            'existencias' => $productos['existencia']['TAM']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['PUE'])) {
+          $existencia_producto += $productos['existencia']['PUE'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '20'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '20',
+            'existencias' => $productos['existencia']['PUE']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['VHA'])) {
+          $existencia_producto += $productos['existencia']['VHA'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '21'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '21',
+            'existencias' => $productos['existencia']['VHA']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['TUX'])) {
+          $existencia_producto += $productos['existencia']['TUX'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '22'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '22',
+            'existencias' => $productos['existencia']['TUX']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['MTY'])) {
+          $existencia_producto += $productos['existencia']['MTY'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '23'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '23',
+            'existencias' => $productos['existencia']['MTY']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['MID'])) {
+          $existencia_producto += $productos['existencia']['MID'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '25'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '25',
+            'existencias' => $productos['existencia']['MID']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['MAZ'])) {
+          $existencia_producto += $productos['existencia']['MAZ'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '27'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '27',
+            'existencias' => $productos['existencia']['MAZ']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['CUE'])) {
+          $existencia_producto += $productos['existencia']['CUE'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '28'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '28',
+            'existencias' => $productos['existencia']['CUE']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['CUN'])) {
+          $existencia_producto += $productos['existencia']['CUN'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '32'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '32',
+            'existencias' => $productos['existencia']['CUN']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['DFP'])) {
+          $existencia_producto += $productos['existencia']['DFP'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '33'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '33',
+            'existencias' => $productos['existencia']['DFP']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['ACX'])) {
+          $existencia_producto += $productos['existencia']['ACX'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '42'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '42',
+            'existencias' => $productos['existencia']['ACX']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['CEL'])) {
+          $existencia_producto += $productos['existencia']['CEL'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '46'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '46',
+            'existencias' => $productos['existencia']['CEL']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['OBR'])) {
+          $existencia_producto += $productos['existencia']['OBR'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '2'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '2',
+            'existencias' => $productos['existencia']['OBR']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['DGO'])) {
+          $existencia_producto += $productos['existencia']['DGO'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '5'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '5',
+            'existencias' => $productos['existencia']['DGO']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['TRN'])) {
+          $existencia_producto += $productos['existencia']['TRN'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '6'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '6',
+            'existencias' => $productos['existencia']['TRN']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['AGS'])) {
+          $existencia_producto += $productos['existencia']['AGS'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '8'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '8',
+            'existencias' => $productos['existencia']['AGS']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['SLP'])) {
+          $existencia_producto += $productos['existencia']['SLP'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '10'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '10',
+            'existencias' => $productos['existencia']['SLP']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['XLP'])) {
+          $existencia_producto += $productos['existencia']['XLP'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '15'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '15',
+            'existencias' => $productos['existencia']['XLP']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['DFT'])) {
+          $existencia_producto += $productos['existencia']['DFT'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '36'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '36',
+            'existencias' => $productos['existencia']['DFT']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['CDV'])) {
+          $existencia_producto += $productos['existencia']['CDV'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '44'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '44',
+            'existencias' => $productos['existencia']['CDV']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['SLT'])) {
+          $existencia_producto += $productos['existencia']['SLT'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '14'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '14',
+            'existencias' => $productos['existencia']['SLT']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['TPC'])) {
+          $existencia_producto += $productos['existencia']['TPC'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '24'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '24',
+            'existencias' => $productos['existencia']['TPC']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['TOL'])) {
+          $existencia_producto += $productos['existencia']['TOL'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '29'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '29',
+            'existencias' => $productos['existencia']['TOL']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['PAC'])) {
+          $existencia_producto += $productos['existencia']['PAC'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '30'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '30',
+            'existencias' => $productos['existencia']['PAC']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['IRA'])) {
+          $existencia_producto += $productos['existencia']['IRA'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '38'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '38',
+            'existencias' => $productos['existencia']['IRA']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['OAX'])) {
+          $existencia_producto += $productos['existencia']['OAX'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '26'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '26',
+            'existencias' => $productos['existencia']['OAX']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['DFC'])) {
+          $existencia_producto += $productos['existencia']['DFC'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '39'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '39',
+            'existencias' => $productos['existencia']['DFC']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['TXL'])) {
+          $existencia_producto += $productos['existencia']['TXL'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '40'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '40',
+            'existencias' => $productos['existencia']['TXL']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['URP'])) {
+          $existencia_producto += $productos['existencia']['URP'];
+          $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '43'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '43',
+            'existencias' => $productos['existencia']['URP']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['CHT'])) {
+        $existencia_producto += $productos['existencia']['CHT'];
+        $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '47'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '47',
+            'existencias' => $productos['existencia']['CHT']
+          ]
+          );
+      }
+      if (!empty($productos['existencia']['LEO'])) {
+        $existencia_producto += $productos['existencia']['LEO'];
+        $existencias = Existencias::updateOrCreate(
+            ['clave_ct' => $productos['clave'],
+            'almacen_id' => '11'
+          ],
+            [
+            'clave_ct' => $productos['clave'],
+            'almacen_id' => '11',
+            'existencias' => $productos['existencia']['LEO']
+          ]
+          );
+      }
+      // if (!empty($productos['existencia']['TXA'])) {
+      //   $existencia_producto += $productos['existencia']['TXA'];
+      //   $existencias = Existencias::updateOrCreate(
+      //       ['clave_ct' => $productos['clave'],
+      //       'almacen_id' => '12'
+      //     ],
+      //       [
+      //       'clave_ct' => $productos['clave'],
+      //       'almacen_id' => '12',
+      //       'existencias' => $productos['existencia']['TXA']
+      //     ]
+      //     );
+      // }
         //dd($existencia_producto);
         return $existencia_producto;
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Existencias;
 
 class ExistenciasController extends Controller
 {
@@ -81,4 +82,11 @@ class ExistenciasController extends Controller
     {
         //
     }
+
+    public function limpieza(){
+        Existencias::where('id','>',0)->update([
+            'existencias' => '0'
+        ]);
+    }
+
 }

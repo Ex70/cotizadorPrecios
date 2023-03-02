@@ -84,16 +84,32 @@ class PcMayoreoController extends Controller
         //
     }
 
-    public function cotizar($productos){
+    public function cotizar(){
         set_time_limit(0);
         $client = new Client();
-        for($i=0;$i<sizeof($productos)-1;$i++){
-            $sku = $productos[$i]->sku;
-            $clave_ct = $productos[$i]->clave_ct;
+        // $ch = curl_init("https://www.pchmayoreo.com/instantsearch/ajax/result/?q=");
+        // curl_setopt($ch, CURLOPT_CAPATH, "C:\xampp\php\cacert.pem");
+
+        // $guzzle = new \GuzzleHttp\Client();
+        // $guzzle->setDefaultOption('verify', 'C:\xampp\php\cacert.pem');
+        
+        //$client->request('GET', '/', ['verify' => true]);
+        //Use a custom SSL certificate on disk.
+        //$client->request('GET', '/', ['verify' => 'C:\xampp\php\cacert.pem']);
+        //Disable validation entirely (don't do this!).
+        //$client->request('GET', '/', ['verify' => false]);
+        
+        //for($i=0;$i<sizeof($productos)-1;$i++){
+        for($i=0;$i<5;$i++){
+            //$sku = $productos[$i]->sku;
+            $sku = "WKGP-002";
+            //$clave_ct = $productos[$i]->clave_ct;
             if($sku==""){
                 $sku="NOEXISTE";
             }
-            $url = "https://www.cyberpuerta.mx/widget.php?cl=cpmobile_ajax&fnc=getSearchSuggest&q=".$sku."&userEmail=&skipSession=1";
+            //$url = "http://www.pchmayoreo.com/instantsearch/ajax/result/?q=".$sku;
+            $url = "http://www.pchmayoreo.com/catalogsearch/result?q=".$sku;
+            //dd($url);
             $res = $client->request('GET', $url);
             $result = $res->getBody();
             $data = json_decode($result, true);
@@ -101,14 +117,16 @@ class PcMayoreoController extends Controller
                 $precios[$i]= 0;
                 $data2 = "";
             }else{
-                $id = $data['results']['articleIds'][0];
-                $url = "https://www.cyberpuerta.mx/widget.php?cl=cpmobile_ajax&fnc=getArticles&skipSession=1&ids%5B%5D=".$id;
-                $res = $client->request('GET', $url);
-                $result = $res->getBody();
-                $data2 = json_decode($result, true);
+                // $id = $data['results']['articleIds'][0];
+                // $url = "https://www.cyberpuerta.mx/widget.php?cl=cpmobile_ajax&fnc=getArticles&skipSession=1&ids%5B%5D=".$id;
+                // $res = $client->request('GET', $url);
+                // $result = $res->getBody();
+                // $data2 = json_decode($result, true);
+                dd('Error');
             }
             if(!empty($data2['articles'])){
                 $precios[$i]= $data2['articles'][0]['price'];
+                dd($precios[$i]);
             }else{
                 $precios[$i]= 0;
             }

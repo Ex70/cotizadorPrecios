@@ -12,6 +12,7 @@ use App\Http\Controllers\GrupoDecmeController;
 use App\Http\Controllers\ImagenesController;
 use App\Http\Controllers\MargenesController;
 use App\Http\Controllers\PalabrasClaveController;
+use App\Http\Controllers\PcMayoreoController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PromocionesController;
@@ -74,6 +75,7 @@ Route::get("enlaces", [PreciosController::class, "enlaces"]);
 
 // MÁRGENES //
 Route::get("/margenes", [MargenesController::class, "index"]);
+Route::get("/pch", [PcMayoreoController::class, "cotizar"]);
 
 // EXISTENCIAS //
 Route::get('/existencias', [ProductosController::class, 'existencias']);

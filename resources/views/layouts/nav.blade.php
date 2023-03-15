@@ -79,6 +79,37 @@
                         </li>
                     </ul>
                 </li>
+                <li class="menu-label">WordPress</li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                        </div>
+                        <div class="menu-title">Productos Xalapa</div>
+                    </a>
+                    <ul>
+                        <li> 
+                            <a href="{{ url('margenes/mayor') }}"><i class="bx bx-right-arrow-alt"></i>Mayores al 10%</a>
+                        </li>
+                        <li> 
+                            <a href="{{ url('margenes/menor') }}"><i class="bx bx-right-arrow-alt"></i>Menores al 10%</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                        </div>
+                        <div class="menu-title">Promociones Xalapa</div>
+                    </a>
+                    <ul>
+                        <li> 
+                            <a href="{{ url('/ofertas_xalapa_nuevas') }}"><i class="bx bx-right-arrow-alt"></i>Nuevas</a>
+                        </li>
+                        <li> 
+                            <a href="{{ url('/ofertas_xalapa_vigentes') }}"><i class="bx bx-right-arrow-alt"></i>Vigentes</a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="menu-label">Márgenes</li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
@@ -187,7 +218,7 @@
                         </a>
                     </li>
                 </li>
-
+                
                 <li class="menu-label">UI Elements</li>
                 <li>
                     <a href="{{ url('widgets') }}">

@@ -17,6 +17,7 @@ use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PromocionesController;
 use App\Http\Controllers\TopsController;
+use App\Http\Controllers\XalapaController;
 use App\Models\Margenes;
 // use Google\Service\Analytics;
 // use Analytics;
@@ -114,6 +115,10 @@ Route::get('/productos/gmb', [ProductosController::class, 'google_my_business'])
 //CARTA PROMOCIONES
 Route::get('promociones/cartas', [PromocionesController::class, 'cartaPromociones']);
 Route::get('promociones/flash', [PromocionesController::class, 'cartaFlash']);
+
+//XALAPA
+Route::get('/ofertas_xalapa_nuevas', [XalapaController::class, 'ofertasnuevas']);
+Route::get('/ofertas_xalapa_vigentes', [XalapaController::class, 'vigentesxalapa']);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');
 Route::resource('projects', ProjectController::class);

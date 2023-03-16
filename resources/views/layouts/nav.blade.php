@@ -108,6 +108,12 @@
                         <li> 
                             <a href="{{ url('/ofertas_xalapa_vigentes') }}"><i class="bx bx-right-arrow-alt"></i>Vigentes</a>
                         </li>
+                        <li> 
+                            <a href="{{ url('/ofertas_xalapa_mes') }}"><i class="bx bx-right-arrow-alt"></i>Del Mes</a>
+                        </li>
+                        <li> 
+                            <a href="{{ url('/ofertas_xalapa_vencidas') }}"><i class="bx bx-right-arrow-alt"></i>Vencidas</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="menu-label">Márgenes</li>

@@ -51,4 +51,53 @@ class XalapaController extends Controller
             $data['titulo'] = "EHS - Ofertas Vigentes (".$fechaR.")";
         return view('promociones.vigentes', compact('data'));
     }
+
+    public function delmesxalapa(){
+        //dd(date('Y'));
+        $data['promociones'] = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+            ->join('categorias','categorias.id','=','productos.categoria_id')
+            ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
+            ->join('existencias','existencias.clave_ct','=','productos.clave_ct')
+            ->where('productos.estatus','Activo')
+            ->where('existencias.almacen_id','=', 15)
+            ->where('existencias.existencias','>=', 5)
+            ->whereYear('promociones.fecha_fin','=', date('Y'))
+            ->whereMonth('promociones.fecha_fin','=', date('m'))
+            ->get([
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'promociones.clave_ct',
+                'productos.sku',
+                'promociones.descuento',
+                'promociones.fecha_fin'
+                ]
+            );
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - Ofertas del Mes (".$fechaR.")";
+        return view('promociones.vigentes', compact('data'));
+    }
+
+    public function vencidasxalapa(){
+        $fecha = date('Y')."-".date('m')."-".date('d')-1;
+        $data['promociones'] = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+        ->join('categorias','categorias.id','=','productos.categoria_id')
+        ->join('subcategorias','subcategorias.id','=','productos.subcategoria_id')
+        ->join('existencias','existencias.clave_ct','=','productos.clave_ct')
+        ->where('existencias.almacen_id','=', 15)
+        ->where('existencias.existencias','>=', 5)
+        ->whereDate('promociones.fecha_fin','<=', $fecha)
+        //->whereDay('promociones.fecha_fin','<', date('d'))
+        ->get([
+            'categorias.nombre as categoria',
+            'subcategorias.nombre as subcategoria',
+            'promociones.clave_ct',
+            'productos.sku',
+            'promociones.descuento',
+            'promociones.fecha_fin'
+            ]
+        );
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - Ofertas Vencidas (".$fechaR.")";
+        return view('promociones.vigentes', compact('data'));
+    }
 }

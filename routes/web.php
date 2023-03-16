@@ -119,6 +119,8 @@ Route::get('promociones/flash', [PromocionesController::class, 'cartaFlash']);
 //XALAPA
 Route::get('/ofertas_xalapa_nuevas', [XalapaController::class, 'ofertasnuevas']);
 Route::get('/ofertas_xalapa_vigentes', [XalapaController::class, 'vigentesxalapa']);
+Route::get('/ofertas_xalapa_mes', [XalapaController::class, 'delmesxalapa']);
+Route::get('/ofertas_xalapa_vencidas', [XalapaController::class, 'vencidasxalapa']);
 
 Route::post('projects/importProject', [ProjectController::class, 'importProject'])->name('importProject');
 Route::resource('projects', ProjectController::class);

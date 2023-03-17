@@ -319,16 +319,16 @@ class PreciosController extends Controller
         }
         if (!empty($productos['existencia']['D2A'])) {
             $existencia_producto += $productos['existencia']['D2A'];
-            // $existencias = Existencias::updateOrCreate(
-            //   ['clave_ct' => $productos['clave'],
-            //   'almacen_id' => '48'
-            // ],
-            //   [
-            //   'clave_ct' => $productos['clave'],
-            //   'almacen_id' => '48',
-            //   'existencias' => $productos['existencia']['D2A']
-            // ]
-            // );
+            $existencias = Existencias::updateOrCreate(
+              ['clave_ct' => $productos['clave'],
+              'almacen_id' => '48'
+            ],
+              [
+              'clave_ct' => $productos['clave'],
+              'almacen_id' => '48',
+              'existencias' => $productos['existencia']['D2A']
+            ]
+            );
         }
         if (!empty($productos['existencia']['CAM'])) {
             $existencia_producto += $productos['existencia']['CAM'];

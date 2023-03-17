@@ -100,4 +100,6 @@ class XalapaController extends Controller
         $data['titulo'] = "EHS - Ofertas Vencidas (".$fechaR.")";
         return view('promociones.vigentes', compact('data'));
     }
+
+    
 }

@@ -86,7 +86,9 @@ class PreciosAbasteoController extends Controller
 
     public function cotizar($productos){
         set_time_limit(0);
-        $client = new Client();
+        $client = new Client(array( 'curl' => array( CURLOPT_SSL_VERIFYPEER => false, ), ));
+        // $guzzleClient = new \GuzzleHttp\Client(array( 'curl' => array( CURLOPT_SSL_VERIFYPEER => false, ), ));
+// $client->setHttpClient($client);
         for($i=0;$i<sizeof($productos);$i++){
             $sku = $productos[$i]->sku;
             $clave_ct = $productos[$i]->clave_ct;

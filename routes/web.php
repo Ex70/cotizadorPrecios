@@ -116,6 +116,7 @@ Route::get('/productos/gmb', [ProductosController::class, 'google_my_business'])
 Route::get('promociones/cartas', [PromocionesController::class, 'cartaPromociones']);
 Route::get('promociones/flash', [PromocionesController::class, 'cartaFlash']);
 
+Route::get('woocommerce', [PreciosController::class, 'woocommerce']);
 //XALAPA
 Route::get('/ofertas_xalapa_nuevas', [XalapaController::class, 'ofertasnuevas']);
 Route::get('/ofertas_xalapa_vigentes', [XalapaController::class, 'vigentesxalapa']);

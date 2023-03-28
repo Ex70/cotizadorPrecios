@@ -86,7 +86,7 @@ class CyberPuertaController extends Controller
 
     public function cotizar($productos){
         set_time_limit(0);
-        $client = new Client();
+        $client = new Client(array( 'curl' => array( CURLOPT_SSL_VERIFYPEER => false, ), ));
         for($i=0;$i<sizeof($productos)-1;$i++){
             $sku = $productos[$i]->sku;
             $clave_ct = $productos[$i]->clave_ct;
@@ -102,7 +102,7 @@ class CyberPuertaController extends Controller
                 $data2 = "";
             }else{
                 $id = $data['results']['articleIds'][0];
-                $url = "https://www.cyberpuerta.mx/widget.php?cl=cpmobile_ajax&fnc=getArticles&skipSession=1&ids%5B%5D=".$id;
+                $url = "http://www.cyberpuerta.mx/widget.php?cl=cpmobile_ajax&fnc=getArticles&skipSession=1&ids%5B%5D=".$id;
                 $res = $client->request('GET', $url);
                 $result = $res->getBody();
                 $data2 = json_decode($result, true);

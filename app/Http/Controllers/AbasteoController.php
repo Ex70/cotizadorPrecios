@@ -106,7 +106,8 @@ class AbasteoController extends Controller
                 $sku="NOEXISTE";
                 print_r($skus[$i]->id);
             }
-            $url = "https://www.abasteo.mx/api/v0.1/catalog/filter?type=search&id=".$sku;
+            // $url = "https://www.abasteo.mx/api/v0.1/catalog/filter?type=search&id=".$sku;
+            $url = "http://www.abasteo.mx/api/v0.1/catalog/filter?type=search&id=".$sku;
             $res = $client->request('GET', $url);
             $result = $res->getBody();
             $data = json_decode($result, true);
@@ -118,7 +119,7 @@ class AbasteoController extends Controller
         }
 
         $client = new Client();
-        $res = $client->request('GET', 'https://www.abasteo.mx/api/v0.1/catalog/filter?type=search&id=VENTO120-BKCW');
+        $res = $client->request('GET', 'http://www.abasteo.mx/api/v0.1/catalog/filter?type=search&id=VENTO120-BKCW');
         $result = $res->getBody();
         $data = json_decode($result, true);
         print_r($data['price']);

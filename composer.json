@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "automattic/woocommerce": "^3.1",
         "guzzlehttp/guzzle": "^7.4",
         "html2text/html2text": "^4.3",
         "laravel/framework": "^9.19",

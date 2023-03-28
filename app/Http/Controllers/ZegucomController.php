@@ -20,7 +20,7 @@ class ZegucomController extends Controller
         $data['subcategorias'] = DB::table('productos')->distinct()->get(['subcategoria']);
         return view('filtroszegucom',compact('data'));
     }
-
+ 
     public function cotizar($productos){
         set_time_limit(0);
         $remove = array(" ","  ","   ","    ", "(", ")", "$", "*", "/",",","IVA","Incluido");
@@ -31,9 +31,12 @@ class ZegucomController extends Controller
             if($sku==""){
                 $sku="NOEXISTE";
             }
-            $website = $client->request('GET', 'https://www.zegucom.com.mx/?cons='.$sku.'&mod=search&reg=1');
-            $result = $website->filter('.price-text > .result-price-search');
-            $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.price-text > .result-price-search')->first()->text()) : $precios[$i] = 0;
+            // $website = $client->request('GET', 'https://www.zegucom.com.mx/?cons='.$sku.'&mod=search&reg=1');
+            $website = $client->request('GET', 'https://www.zegucom.com.mx/productos/search?search='.$sku.'');
+            $result = $website->filter('.search-price-now > .search-price-now-value ');
+            // $result = $website->filter('.price-text > .result-price-search');
+            // $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.price-text > .result-price-search')->first()->text()) : $precios[$i] = 0;
+            $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.search-price-now > .search-price-now-value ')->first()->text()) : $precios[$i] = 0;
             $productoZegucom = Zegucom::updateOrCreate(
                 ['sku'=>$sku, 'clave_ct'=>$clave_ct],
                 ['precio_unitario'=>$precios[$i]]

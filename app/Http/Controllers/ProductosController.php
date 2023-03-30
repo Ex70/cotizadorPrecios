@@ -235,5 +235,37 @@ class ProductosController extends Controller
         }
         return view('productos.cartaProductos', compact('data'));
     }
+
+    public function pruebas(){
+        $data['productos'] = Producto::Join('margenes', function ($margenes) {
+            $margenes->on('productos.categoria_id', '=', 'margenes.categoria_id')
+                ->on('productos.subcategoria_id', '=', 'margenes.subcategoria_id')
+                ->on('productos.marca_id', '=', 'margenes.marca_id');
+            })
+                ->join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+                ->join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+                ->join('marcas', 'marcas.id', '=', 'productos.marca_id')
+                ->join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+                ->where('productos.estatus', 'Activo')
+                ->where('existencias.almacen_id', '=', 15)
+                ->get(
+                    [
+                    'productos.clave_ct',
+                    'productos.nombre',
+                    'categorias.nombre as categoria',
+                    'subcategorias.nombre as subcategoria',
+                    'marcas.nombre as marca',
+                    'productos.enlace',
+                    'productos.imagen',
+                    'productos.existencias',
+                    'productos.precio_unitario',
+                    'existencias.almacen_id as almacen',
+                    'existencias.existencias as existencias',
+                    'margenes.margen_utilidad as margen'
+                ]
+            );
+        dd('hola');
+        //return view('productos.cartaProductos', compact('data'));
+    }
 }
 

@@ -18,6 +18,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PromocionesController;
 use App\Http\Controllers\TopsController;
 use App\Http\Controllers\XalapaController;
+use App\Http\Controllers\WPController;
 use App\Models\Margenes;
 // use Google\Service\Analytics;
 // use Analytics;
@@ -73,6 +74,7 @@ Route::get("jsonLocal", [PreciosController::class, "lecturaLocal"]);
 Route::get("token", [CTConnect::class, "token"]);
 Route::get("sitemap", [PreciosController::class, "sitemap"]);
 Route::get("enlaces", [PreciosController::class, "enlaces"]);
+Route::get("/pruebas", [WPController::class, "pruebas"]);
 
 // MÁRGENES //
 Route::get("/margenes", [MargenesController::class, "index"]);

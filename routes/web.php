@@ -76,6 +76,7 @@ Route::get("enlaces", [PreciosController::class, "enlaces"]);
 
 // MÁRGENES //
 Route::get("/margenes", [MargenesController::class, "index"]);
+Route::get("/nuevosmargenes", [MargenesController::class, "nuevosmargenes"]);
 Route::get("/pch", [PcMayoreoController::class, "cotizar"]);
 
 // EXISTENCIAS //

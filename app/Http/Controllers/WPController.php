@@ -13,18 +13,14 @@ class WPController extends Controller
 {
     public function pruebas(){
         set_time_limit(0);
-        $data['productos'] = Producto::Join('margenes', function ($margenes) {
-            $margenes->on('productos.categoria_id', '=', 'margenes.categoria_id')
-                ->on('productos.subcategoria_id', '=', 'margenes.subcategoria_id')
-                ->on('productos.marca_id', '=', 'margenes.marca_id');
-            })
+        $data['productos'] = Producto::Join('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
                 ->join('categorias', 'categorias.id', '=', 'productos.categoria_id')
                 ->join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
                 ->join('marcas', 'marcas.id', '=', 'productos.marca_id')
                 ->join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
                 ->where('productos.estatus', 'Activo')
-                ->where('productos.clave_ct', '=', 'MEMDAT6370')
-                ->groupBy('productos.clave_ct')
+                ->where('existencias.almacen_id', '=', 15)
+                ->where('existencias.existencias', '>', 0)
                 ->get(
                     [
                     'productos.clave_ct',
@@ -40,7 +36,7 @@ class WPController extends Controller
                     'productos.precio_unitario',
                     'existencias.almacen_id as almacen',
                     'existencias.existencias as existencias',
-                    'margenes.margen_utilidad as margen'
+                    'margenes_por_producto.margen_utilidad as margen'
                 ]
             );
         return view('wp.productos', compact('data'));

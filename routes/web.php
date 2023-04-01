@@ -74,6 +74,9 @@ Route::get("jsonLocal", [PreciosController::class, "lecturaLocal"]);
 Route::get("token", [CTConnect::class, "token"]);
 Route::get("sitemap", [PreciosController::class, "sitemap"]);
 Route::get("enlaces", [PreciosController::class, "enlaces"]);
+
+//WP XALAPA
+Route::get("/todos_xalapa", [WPController::class, "wpxalapa"]);
 Route::get("/pruebas", [WPController::class, "pruebas"]);
 
 // MÁRGENES //

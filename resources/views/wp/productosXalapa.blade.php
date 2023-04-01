@@ -52,11 +52,15 @@
 							<tbody>
 							@foreach ($data['productos'] as $productos)
 								<tr>
-									@if(($productos->existencias) >= 3)
-										<td>simple</td>
-									@else
-										<td>external</td>
-									@endif
+									
+										@if(($productos->existencias) >= 3)
+											<td>simple</td>
+										@else
+											<td>external</td>
+										@endif
+								
+										
+									
 									<td>{{$productos->clave_ct}}</td>
 									<td>{{$productos->nombre}}</td>
 									<td>1</td>
@@ -66,11 +70,13 @@
 									<td>{{$productos->descripcion_corta}}</td>
 									<td>taxable</td>
 									<td>1</td>
-									@if(($productos->existencias) >= 3)
-										<td>{{$productos->existencias}}</td>
-									@else
-										<td></td>
-									@endif
+									
+										@if(($productos->existencias) >= 3)
+											<td>{{$productos->existencias}}</td>
+										@else
+											<td></td>
+										@endif
+									
 									<td>0</td>
 									<td>0</td>
 									<td>1</td>
@@ -80,15 +86,17 @@
 									<td>{{$precio_final}}</td> 
 									<td>{{$productos->subcategoria}}</td>
 									<td>{{$productos->categoria}},  {{$productos->subcategoria}}</td>
-									<td>https://xalapa.ehstecnologias.com.mx/wp-content/uploads/2023/03/{{$productos->clave_ct}}_0.png</td>
+									<td>https://xalapa.ehstecnologias.com.mx/wp-content/uploads/2023/03/{{$productos->clave_ct}}_0.jpg</td>
 									<td>0</td>
-									@if(($productos->existencias) >= 3)
-										<td></td>
-										<td></td>
-									@else
-										<td>https://api.whatsapp.com/send?phone=2283669400&text=Hola,%20quiero%20solicitar%20la%20cotización%20del%20producto:%20%2A{{$productos->nombre}}%2A%20con%20CLAVE:%20%2A{{$productos->clave_ct}}%2A</td>
-										<td>Solicitar Cotización</td>
-									@endif
+									
+										@if(($productos->existencias) >= 3)
+											<td></td>
+											<td></td>
+										@else
+											<td>https://api.whatsapp.com/send?phone=2283669400&text=Hola,%20quiero%20solicitar%20la%20cotización%20del%20producto:%20%2A{{$productos->nombre}}%2A%20con%20CLAVE:%20%2A{{$productos->clave_ct}}%2A</td>
+											<td>Solicitar Cotización</td>
+										@endif
+									
 								</tr>
 								@endforeach
 							</tbody>

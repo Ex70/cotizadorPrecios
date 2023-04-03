@@ -2214,7 +2214,6 @@ class PreciosController extends Controller
           )
           ->where('clave_ct', '=', $clavect)
           ->where('sku', '=', $sku)
-          
           ;
         }else{
           //dd('Producto No Encontrado');
@@ -2230,22 +2229,29 @@ class PreciosController extends Controller
     {
         set_time_limit(0);
         $woocommerce = new WooClient(
-          'http://xalapa.ehstecnologias.com.mx/',
-          'ck_f58c8eb0bad70fff49f465663d0699e702ba5f98',
-          'cs_42daeb979f4e3fc4a69603b1ba8c0d02f55632bd',
+          'http://ehstecnologias.com.mx/',
+          'ck_209a05b01fc07d7b4d54c05383b048f9d58c075f',
+          'cs_0ef9dc123f35a8b70a76317e30a598332dcd01c6',
           [
             'version' => 'wc/v3',
           ]
         );
+        $apiCT = new CTConnect();
+        $precios = $apiCT->preciosProductoWP("ACCHPE230");
+        dd($precios['normal']);
         $params = [
           // 'per_page'=>1000
-          'sku'=>'ACCPVS260'
+          'sku'=>'ACCACO010'
         ];
+
         $data = [
-          'stock_quantity' => 171
+          'stock_quantity' => $apiCT->existenciaProductoWP("ACCACO010"),
+          'sale_price' => $precios['rebajado']
         ];
-        dd($woocommerce->put('products/10785', $data));
         // dd($woocommerce->get('products',$params));
+        $producto = $woocommerce->get('products',$params);
+        // dd($producto[0]->id);
+        dd($woocommerce->put('products/'.$producto[0]->id, $data));
         $productos = DB::select("SELECT categorias.nombre AS Categoría, subcategorias.nombre AS Subcategoría, productos.nombre, productos.sku, productos.clave_ct, productos.precio_unitario, existencias.existencias, productos.enlace FROM productos INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategoriaS.id INNER JOIN existencias ON productos.clave_ct = existencias.clave_ct WHERE existencias.almacen_id = 15 AND existencias.existencias > 150 AND productos.estatus = 'Activo';");
         // $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos-woo.json"), true);
         return $productos;

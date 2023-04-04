@@ -31,6 +31,7 @@ class CTConnect extends Controller
 
     public function existencias($productos){
         set_time_limit(0);
+        $this->token();
         $token = Token::all()->last()->token;
         $headers = [
             'x-auth' => $token,
@@ -38,8 +39,10 @@ class CTConnect extends Controller
         ];
         $client = new Client();
         for($i=0;$i<sizeof($productos);$i++){
-            $clave_ct = $productos[$i]->clave_ct;
-            $sku = $productos[$i]->sku;
+            // $clave_ct = $productos[$i]->clave_ct;
+            $clave_ct= $productos[$i]['clave'];
+            $sku= $productos[$i]['numParte'];
+            // $sku = $productos[$i]->sku;
             $url = "http://connect.ctonline.mx:3001/existencia/".$clave_ct."/TOTAL";
             try {
                 $res = $client->request('GET', $url, [

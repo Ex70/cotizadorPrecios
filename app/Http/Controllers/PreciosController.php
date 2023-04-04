@@ -185,6 +185,9 @@ class PreciosController extends Controller
             $borrarProm = Promocion::where('id','>',0)->delete();
             //dd('Tabla Borrada');
         }
+        $existencias = new CTConnect;
+        $existencias->existencias($productos);
+        dd("Listo");
         for ($i = 0; $i < sizeof($productos); $i++) {
           //for($i=0;$i<3;$i++){
             $existencia_producto = 0;

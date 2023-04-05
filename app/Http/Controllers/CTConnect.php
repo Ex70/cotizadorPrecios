@@ -31,6 +31,7 @@ class CTConnect extends Controller
 
     public function existencias($productos){
         set_time_limit(0);
+        $this->token();
         $token = Token::all()->last()->token;
         $headers = [
             'x-auth' => $token,
@@ -38,8 +39,10 @@ class CTConnect extends Controller
         ];
         $client = new Client();
         for($i=0;$i<sizeof($productos);$i++){
-            $clave_ct = $productos[$i]->clave_ct;
-            $sku = $productos[$i]->sku;
+            // $clave_ct = $productos[$i]->clave_ct;
+            $clave_ct= $productos[$i]['clave'];
+            $sku= $productos[$i]['numParte'];
+            // $sku = $productos[$i]->sku;
             $url = "http://connect.ctonline.mx:3001/existencia/".$clave_ct."/TOTAL";
             try {
                 $res = $client->request('GET', $url, [
@@ -61,6 +64,72 @@ class CTConnect extends Controller
                     'Accept'        => 'application/json',
                 ];
             }
+        }
+    }
+
+    public function existenciaProductoWP($clave_ct){
+        set_time_limit(0);
+        $this->token();
+        $token = Token::all()->last()->token;
+        $headers = [
+            'x-auth' => $token,
+            'Accept'        => 'application/json',
+        ];
+        $client = new Client();
+        $url = "http://connect.ctonline.mx:3001/existencia/".$clave_ct."/TOTAL";
+        try {
+            $res = $client->request('GET', $url, [
+                'headers' => $headers
+            ]);
+            $result = $res->getBody();
+            $data = json_decode($result, true);
+            $existencia= $data['existencia_total'];
+            Producto::updateOrCreate(
+                ['clave_ct'=>$clave_ct],
+                ['existencias'=>$existencia]
+            );
+            return $existencia;
+        }catch (ClientException $e) {
+            $this->token();
+            $token = Token::all()->last()->token;
+            $headers = [
+                'x-auth' => $token,
+                'Accept'        => 'application/json',
+            ];
+        }
+    }
+    public function preciosProductoWP($clave_ct){
+        set_time_limit(0);
+        $this->token();
+        $token = Token::all()->last()->token;
+        $headers = [
+            'x-auth' => $token,
+            'Accept'        => 'application/json',
+        ];
+        $client = new Client();
+        $url = "http://connect.ctonline.mx:3001/existencia/promociones/".$clave_ct."";
+        try {
+            $res = $client->request('GET', $url, [
+                'headers' => $headers
+            ]);
+            $result = $res->getBody();
+            $data = json_decode($result, true);
+            // dd($data);
+            $precios['normal']= $data['precio'];
+            $precios['rebajado']= $data['almacenes'][0]['promocion']['precio'];
+            // dd($precios['rebajado']);
+            // Producto::updateOrCreate(
+            //     ['clave_ct'=>$clave_ct],
+            //     ['existencias'=>$existencia]
+            // );
+            return $precios;
+        }catch (ClientException $e) {
+            $this->token();
+            $token = Token::all()->last()->token;
+            $headers = [
+                'x-auth' => $token,
+                'Accept'        => 'application/json',
+            ];
         }
     }
 }

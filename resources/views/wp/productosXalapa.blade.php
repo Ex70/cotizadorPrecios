@@ -53,10 +53,10 @@
 							@foreach ($data['productos'] as $productos)
 								<tr>
 									
-										@if(($productos->existencias) >= 3)
-											<td>simple</td>
-										@else
+										@if(($productos->existencias) >= 1)
 											<td>external</td>
+										@else
+											<td>simple</td>
 										@endif
 								
 										
@@ -71,10 +71,10 @@
 									<td>taxable</td>
 									<td>1</td>
 									
-										@if(($productos->existencias) >= 3)
-											<td>{{$productos->existencias}}</td>
-										@else
+										@if(($productos->existencias) >= 1)
 											<td></td>
+										@else
+											<td>{{$productos->existencias}}</td>
 										@endif
 									
 									<td>0</td>
@@ -84,17 +84,17 @@
 										$precio_final = round((($productos->precio_unitario)*(($productos->margen)+1)),2)
 									@endphp
 									<td>{{$precio_final}}</td> 
-									<td>{{$productos->subcategoria}}</td>
+									<td>{{$productos->categoria}}, {{$productos->categoria}} > {{$productos->subcategoria}}</td>
 									<td>{{$productos->categoria}},  {{$productos->subcategoria}}</td>
-									<td>https://xalapa.ehstecnologias.com.mx/wp-content/uploads/2023/03/{{$productos->clave_ct}}_0.jpg</td>
+									<td>https://ehstecnologias.com.mx/wp-content/uploads/2023/04/{{$productos->clave_ct}}_0.jpg</td>
 									<td>0</td>
 									
-										@if(($productos->existencias) >= 3)
-											<td></td>
-											<td></td>
-										@else
+										@if(($productos->existencias) >= 1)
 											<td>https://api.whatsapp.com/send?phone=2283669400&text=Hola,%20quiero%20solicitar%20la%20cotización%20del%20producto:%20%2A{{$productos->nombre}}%2A%20con%20CLAVE:%20%2A{{$productos->clave_ct}}%2A</td>
 											<td>Solicitar Cotización</td>
+										@else
+											<td></td>
+											<td></td>
 										@endif
 									
 								</tr>
@@ -112,6 +112,7 @@
 	<script src="/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
 	<script src="/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
 	<script>
+		
 		$(document).ready(function() {
 			var table = $('#example2').DataTable( {
 				lengthChange: false,

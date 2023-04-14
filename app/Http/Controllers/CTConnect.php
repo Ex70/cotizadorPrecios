@@ -13,7 +13,8 @@ class CTConnect extends Controller
     public function token(){
         set_time_limit(0);
         $client = new Client();
-        $url = "http://connect.ctonline.mx:3001/cliente/token";
+        // $url = "http://connect.ctonline.mx:3001/cliente/token";
+        // dd($url);
         $res = $client->request('POST', 'http://connect.ctonline.mx:3001/cliente/token', [
             'form_params' => [
                 'email' => 'ehscompras@hotmail.com',
@@ -29,7 +30,7 @@ class CTConnect extends Controller
         return $token;
     }
 
-    public function existencias($productos){
+    public function existencias($productos=0){
         set_time_limit(0);
         $this->token();
         $token = Token::all()->last()->token;
@@ -38,6 +39,9 @@ class CTConnect extends Controller
             'Accept'        => 'application/json',
         ];
         $client = new Client();
+        if($productos==0){
+            $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
+        }
         for($i=0;$i<sizeof($productos);$i++){
             // $clave_ct = $productos[$i]->clave_ct;
             $clave_ct= $productos[$i]['clave'];

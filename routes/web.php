@@ -86,6 +86,7 @@ Route::get("/pch", [PcMayoreoController::class, "cotizar"]);
 
 // EXISTENCIAS //
 Route::get('/existencias', [ProductosController::class, 'existencias']);
+Route::get('/existenciasTotales', [CTConnect::class, 'existencias']);
 
 // PALABRAS CLAVE //
 Route::get('/palabras-clave/nuevas', [PalabrasClaveController::class, 'nuevas']);

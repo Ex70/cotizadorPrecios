@@ -52,15 +52,11 @@
 							<tbody>
 							@foreach ($data['productos'] as $productos)
 								<tr>
-									
 										@if(($productos->existencias) >= 1)
 											<td>external</td>
 										@else
 											<td>simple</td>
 										@endif
-								
-										
-									
 									<td>{{$productos->clave_ct}}</td>
 									<td>{{$productos->nombre}}</td>
 									<td>1</td>
@@ -85,7 +81,7 @@
 									@endphp
 									<td>{{$precio_final}}</td> 
 									<td>{{$productos->categoria}}, {{$productos->categoria}} > {{$productos->subcategoria}}</td>
-									<td>{{$productos->categoria}},  {{$productos->subcategoria}}</td>
+									<td>{{$productos->categoria}},  {{$productos->subcategoria}}, {{$productos->marca}}</td>
 									<td>https://ehstecnologias.com.mx/wp-content/uploads/2023/04/{{$productos->clave_ct}}_0.jpg</td>
 									<td>0</td>
 									

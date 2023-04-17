@@ -16,10 +16,13 @@ use App\Models\Subcategoria;
 use App\Models\Producto;
 use App\Models\Promocion;
 use App\Models\Existencias;
+use App\Models\Woocommerce;
 use Illuminate\Support\Facades\Storage;
 use Goutte\Client AS Client2;
 use Automattic\WooCommerce\Client as WooClient;
 use Automattic\WooCommerce\HttpClient\HttpClientException;
+
+use function PHPUnit\Framework\isNull;
 
 class PreciosController extends Controller
 {
@@ -2854,6 +2857,7 @@ class PreciosController extends Controller
   public function woocommerce()
     {
         set_time_limit(0);
+        $fechaR = date('Y')."-".date('m')."-".date('d');
         $woocommerce = new WooClient(
           'http://ehstecnologias.com.mx/',
           'ck_209a05b01fc07d7b4d54c05383b048f9d58c075f',
@@ -2862,25 +2866,97 @@ class PreciosController extends Controller
             'version' => 'wc/v3',
           ]
         );
+        // $params = [
+        //   'per_page'=>100,
+        //   'page'=>36
+        // ];
+        // $data['woocommerce'] = $woocommerce->get('products',$params);
+        // for ($i = 0; $i < sizeof($data['woocommerce']); $i++) {
+        //   $ids = Woocommerce::updateOrCreate(
+        //     ['idWP' => $data['woocommerce'][$i]->id],
+        //     [
+        //       'idWP' => $data['woocommerce'][$i]->id,
+        //       'clave_ct' => $data['woocommerce'][$i]->sku,
+        //     ]
+        //     );
+        // }
         $apiCT = new CTConnect();
-        $precios = $apiCT->preciosProductoWP("ACCHPE230");
-        dd($precios['normal']);
-        $params = [
-          // 'per_page'=>1000
-          'sku'=>'ACCACO010'
-        ];
+        // PARA PRODUCTOS CON PROMOCIÓN
+        $data['promociones'] = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
+          ->join('woocommerce','woocommerce.clave_ct','=','promociones.clave_ct')
+          ->join('margenes_por_producto','margenes_por_producto.clave_ct','=','promociones.clave_ct')
+          ->where('productos.estatus','Activo')
+          ->where('productos.existencias','>',0)
+          ->where('promociones.updated_at','>=',$fechaR)
+          ->orderBy('productos.id')
+          ->get([
+              'woocommerce.idWP',
+              'promociones.clave_ct'
+          ]
+        );
+        // dd(sizeof($data['promociones']));
+        // dd($data['promociones'][0]);
+        // dd(($data['promociones'][0]['idWP']));
+        // PARA LOS PRODUCTOS EN WOOCOMMERCE
+        $data['productos'] = Woocommerce::Join('productos', 'productos.clave_ct', '=', 'woocommerce.clave_ct')
+          // ->join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+          ->join('margenes_por_producto','margenes_por_producto.clave_ct','=','woocommerce.clave_ct')
+          ->where('productos.estatus', 'Activo')
+          // ->where('existencias.almacen_id', '=', 15)
+          ->where('productos.existencias', '>', 0)
+          ->skip(3000)
+          ->take(500)
+          ->get(
+              [
+              'woocommerce.clave_ct',
+              'woocommerce.idWP'
+          ]
+        );
+        // dd(count($data['productos']));
+        // dd(sizeof($data['productos']));
+        // dd($data['promociones'][0]['clave_ct']);
+        for ($i = 0; $i < sizeof($data['productos']); $i++) {
+        // for ($i = 0; $i < sizeof($data['promociones']); $i++) {
+        // for ($i = 0; $i < 1; $i++) {
+          $existencias = $apiCT->existenciaProductoWP($data['productos'][$i]['clave_ct']);
+          // $existencias = $apiCT->existenciaProductoWP($data['promociones'][$i]['clave_ct']);
+          // $existencias = $apiCT->existenciaProductoWP("MEMKGN2290");
+          if($existencias==0){
+            continue;
+          }
+          $precios = $apiCT->preciosProductoWP($data['productos'][$i]['clave_ct']);
+          // $precios = $apiCT->preciosProductoWP($data['promociones'][$i]['clave_ct']);
+          // $precios = $apiCT->preciosProductoWP("MEMKGN2290");
+          // if((!isset($precios['normal']))){
+          //   dd($data['promociones'][$i]['clave_ct']);
+          // }
+          // dd($data['promociones'][0]);
+          $params = [
+            // 'per_page'=>1000
+            'sku'=>$data['productos'][$i]['clave_ct']
+            // 'sku'=>$data['promociones'][$i]['clave_ct']
+            // 'sku'=>"MEMKGN2290"
+          ];
+          $dataWP = [
+            'stock_quantity' => $existencias,
+            'regular_price' => $precios['normal'],
+            'sale_price' => $precios['rebajado']
+          ];
+          $producto = $woocommerce->put('products/'.$data['productos'][$i]['idWP'], $dataWP);
+          // $producto = $woocommerce->put('products/'.$data['promociones'][$i]['idWP'], $dataWP);
+          // $producto = $woocommerce->put('products/15472', $dataWP);
+          // dd($producto);
+          // dd($woocommerce->put('products/'.$data['promociones'][$i]['idWP'], $dataWP));
+          // dd($woocommerce->get('products',$params));
+          // $producto = $woocommerce->get('products',$params);
+          // dd($producto[0]->id);
 
-        $data = [
-          'stock_quantity' => $apiCT->existenciaProductoWP("ACCACO010"),
-          'sale_price' => $precios['rebajado']
-        ];
-        // dd($woocommerce->get('products',$params));
-        $producto = $woocommerce->get('products',$params);
-        // dd($producto[0]->id);
-        dd($woocommerce->put('products/'.$producto[0]->id, $data));
-        $productos = DB::select("SELECT categorias.nombre AS Categoría, subcategorias.nombre AS Subcategoría, productos.nombre, productos.sku, productos.clave_ct, productos.precio_unitario, existencias.existencias, productos.enlace FROM productos INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategoriaS.id INNER JOIN existencias ON productos.clave_ct = existencias.clave_ct WHERE existencias.almacen_id = 15 AND existencias.existencias > 150 AND productos.estatus = 'Activo';");
-        // $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos-woo.json"), true);
-        return $productos;
+          // $productos = DB::select("SELECT categorias.nombre AS Categoría, subcategorias.nombre AS Subcategoría, productos.nombre, productos.sku, productos.clave_ct, productos.precio_unitario, existencias.existencias, productos.enlace FROM productos INNER JOIN categorias ON productos.categoria_id = categorias.id INNER JOIN subcategorias ON productos.subcategoria_id = subcategoriaS.id INNER JOIN existencias ON productos.clave_ct = existencias.clave_ct WHERE existencias.almacen_id = 15 AND existencias.existencias > 150 AND productos.estatus = 'Activo';");
+
+          // $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos-woo.json"), true);
+          // return $productos;
+        }
+        dd("Terminado");
     }
 }
 

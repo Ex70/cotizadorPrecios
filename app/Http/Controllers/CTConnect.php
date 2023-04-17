@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MargenesProducto;
 use App\Models\Producto;
 use App\Models\Token;
 use GuzzleHttp\Client;
@@ -102,6 +103,7 @@ class CTConnect extends Controller
             ];
         }
     }
+
     public function preciosProductoWP($clave_ct){
         set_time_limit(0);
         $this->token();
@@ -119,14 +121,47 @@ class CTConnect extends Controller
             $result = $res->getBody();
             $data = json_decode($result, true);
             // dd($data);
-            $precios['normal']= $data['precio'];
-            $precios['rebajado']= $data['almacenes'][0]['promocion']['precio'];
-            // dd($precios['rebajado']);
+            $margen=MargenesProducto::select('margen_utilidad')->where('clave_ct',$clave_ct)->get();
+            $data['precio'] = $data['moneda'] == "USD" ? number_format(($data['precio'] * $this->divisa()*1.16), 2, '.', '') : number_format($data['precio']*1.16,2,'.','');
+            // dd($margen[0]['margen_utilidad']);
+            // number_format((($productos[$i]['precio'] * $productos[$i]['tipoCambio']) * 1.16), 2, '.', '')
+            $precios['normal']= number_format($data['precio']*(1+$margen[0]['margen_utilidad']),2,'.','');
+            $precios['rebajado']= isset($data['almacenes'][0]['promocion']) ? isset($data['almacenes'][0]['promocion']['precio']) ? $data['moneda'] == "USD" ? number_format($data['almacenes'][0]['promocion']['precio']*$this->divisa()*1.16*(1+$margen[0]['margen_utilidad']),2,'.','') :  number_format($data['almacenes'][0]['promocion']['precio']*1.16*(1+$margen[0]['margen_utilidad']),2,'.','') : number_format($data['precio']*($data['almacenes'][0]['promocion']['porciento']/100)*(1+$margen[0]['margen_utilidad']),2,'.','') : '';
+            // dd($precios);
             // Producto::updateOrCreate(
             //     ['clave_ct'=>$clave_ct],
             //     ['existencias'=>$existencia]
             // );
             return $precios;
+        }catch (ClientException $e) {
+            $this->token();
+            $token = Token::all()->last()->token;
+            $headers = [
+                'x-auth' => $token,
+                'Accept'        => 'application/json',
+            ];
+        }
+    }
+
+    public function divisa(){
+        set_time_limit(0);
+        $this->token();
+        $token = Token::all()->last()->token;
+        $headers = [
+            'x-auth' => $token,
+            'Accept'        => 'application/json',
+        ];
+        $client = new Client();
+        $url = "http://connect.ctonline.mx:3001/pedido/tipoCambio";
+        try {
+            $res = $client->request('GET', $url, [
+                'headers' => $headers
+            ]);
+            $result = $res->getBody();
+            $data = json_decode($result, true);
+            // dd($data);
+            // $existencia= $data['existencia_total'];
+            return $data['tipoCambio'];
         }catch (ClientException $e) {
             $this->token();
             $token = Token::all()->last()->token;

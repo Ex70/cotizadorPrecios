@@ -14,7 +14,12 @@
 						<ol class="breadcrumb mb-0 p-0">
 							<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
 							</li>
-							<li class="breadcrumb-item active" aria-current="page">Todos/simples...</li>
+							@if ($data['met'] == 1)
+								<li class="breadcrumb-item active" aria-current="page">Xalapa</li>
+							@else
+								<li class="breadcrumb-item active" aria-current="page">Todos</li>
+							@endif
+							
 						</ol>
 					</nav>
 				</div>
@@ -52,11 +57,15 @@
 							<tbody>
 							@foreach ($data['productos'] as $productos)
 								<tr>
-										@if(($productos->existencias) >= 1)
-											<td>external</td>
-										@else
+									@if ($data['met'] == 1)
+										@if(($productos->existencias) >= 3)
 											<td>simple</td>
+										@else
+											<td>external</td>
 										@endif
+									@else
+										<td>external</td>
+									@endif
 									<td>{{$productos->clave_ct}}</td>
 									<td>{{$productos->nombre}}</td>
 									<td>1</td>
@@ -66,13 +75,15 @@
 									<td>{{$productos->descripcion_corta}}</td>
 									<td>taxable</td>
 									<td>1</td>
-									
-										@if(($productos->existencias) >= 1)
-											<td></td>
-										@else
+									@if ($data['met'] == 1)
+										@if(($productos->existencias) >= 3)
 											<td>{{$productos->existencias}}</td>
+										@else
+											<td></td>
 										@endif
-									
+									@else
+										<td></td>
+									@endif
 									<td>0</td>
 									<td>0</td>
 									<td>1</td>
@@ -84,15 +95,18 @@
 									<td>{{$productos->categoria}},  {{$productos->subcategoria}}, {{$productos->marca}}</td>
 									<td>https://ehstecnologias.com.mx/wp-content/uploads/2023/04/{{$productos->clave_ct}}_0.jpg</td>
 									<td>0</td>
-									
-										@if(($productos->existencias) >= 1)
+									@if ($data['met'] == 1)
+										@if(($productos->existencias) >= 3)
+											<td></td>
+											<td></td>
+										@else
 											<td>https://api.whatsapp.com/send?phone=2283669400&text=Hola,%20quiero%20solicitar%20la%20cotización%20del%20producto:%20%2A{{$productos->nombre}}%2A%20con%20CLAVE:%20%2A{{$productos->clave_ct}}%2A</td>
 											<td>Solicitar Cotización</td>
-										@else
-											<td></td>
-											<td></td>
 										@endif
-									
+									@else
+										<td>https://api.whatsapp.com/send?phone=2283669400&text=Hola,%20quiero%20solicitar%20la%20cotización%20del%20producto:%20%2A{{$productos->nombre}}%2A%20con%20CLAVE:%20%2A{{$productos->clave_ct}}%2A</td>
+										<td>Solicitar Cotización</td>
+									@endif
 								</tr>
 								@endforeach
 							</tbody>

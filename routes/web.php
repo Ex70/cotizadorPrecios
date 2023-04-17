@@ -76,7 +76,8 @@ Route::get("sitemap", [PreciosController::class, "sitemap"]);
 Route::get("enlaces", [PreciosController::class, "enlaces"]);
 
 //WP XALAPA
-Route::get("/todos_xalapa", [WPController::class, "wpxalapa"]);
+Route::get("/wp_xalapa", [WPController::class, "wpxalapa"]);
+Route::get("/wp_todos", [WPController::class, "wptodos"]);
 Route::get("/pruebas", [WPController::class, "pruebas"]);
 
 // MÁRGENES //

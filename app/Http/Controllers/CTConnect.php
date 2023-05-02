@@ -126,7 +126,7 @@ class CTConnect extends Controller
             // dd($margen[0]['margen_utilidad']);
             // number_format((($productos[$i]['precio'] * $productos[$i]['tipoCambio']) * 1.16), 2, '.', '')
             $precios['normal']= number_format($data['precio']*(1+$margen[0]['margen_utilidad']),2,'.','');
-            $precios['rebajado']= isset($data['almacenes'][0]['promocion']) ? isset($data['almacenes'][0]['promocion']['precio']) ? $data['moneda'] == "USD" ? number_format($data['almacenes'][0]['promocion']['precio']*$this->divisa()*1.16*(1+$margen[0]['margen_utilidad']),2,'.','') :  number_format($data['almacenes'][0]['promocion']['precio']*1.16*(1+$margen[0]['margen_utilidad']),2,'.','') : number_format($data['precio']*($data['almacenes'][0]['promocion']['porciento']/100)*(1+$margen[0]['margen_utilidad']),2,'.','') : '';
+            $precios['rebajado']= isset($data['almacenes'][0]['promocion']) ? isset($data['almacenes'][0]['promocion']['precio']) ? $data['moneda'] == "USD" ? number_format($data['almacenes'][0]['promocion']['precio']*$this->divisa()*1.16*(1+$margen[0]['margen_utilidad']),2,'.','') :  number_format($data['almacenes'][0]['promocion']['precio']*1.16*(1+$margen[0]['margen_utilidad']),2,'.','') : number_format($data['precio']*(1-($data['almacenes'][0]['promocion']['porciento']/100))*(1+$margen[0]['margen_utilidad']),2,'.','') : '';
             // dd($precios);
             // Producto::updateOrCreate(
             //     ['clave_ct'=>$clave_ct],

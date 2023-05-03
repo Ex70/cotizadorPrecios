@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Existencias;
 use App\Models\Margenes;
 use App\Models\Producto;
 use Illuminate\Support\Facades\DB;
@@ -49,6 +50,28 @@ class ProductosXalapaController extends Controller{
         $offset = ($currentpage * $perPage) - $perPage ;
         $itemstoshow = array_slice($items , $offset , $perPage);
         return new LengthAwarePaginator($itemstoshow ,$total ,$perPage);
+    }
+
+    public function existenciasXalapa(){
+        $ct = new CTConnect();
+        $data['productos'] = Producto::where('productos.existencias','>',0)
+            ->where('productos.estatus','Activo')
+            ->get([
+                'productos.clave_ct',
+            ]);
+        // dd($data['productos'][0]['clave_ct']);
+        foreach ($data['productos'] as $key => $row) {
+            $existencias = Existencias::updateOrCreate(
+                ['clave_ct' => $data['productos'][$key]['clave_ct'],
+                'almacen_id' => '15'
+                ],
+                ['clave_ct' => $data['productos'][$key]['clave_ct'],
+                'almacen_id' => '15',
+                'existencias' => $ct->existenciasXalapa($data['productos'][$key]['clave_ct'])]
+            );
+            // dd($existencias);
+        }
+        dd("Terminado");
     }
 }
 

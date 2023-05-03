@@ -187,6 +187,7 @@ class MargenesController extends Controller
                 ->where('productos.existencias','>',0)
                 ->where('productos.estatus','Activo')
                 ->orderBy('productos.existencias')
+                // ->take(5)
                 ->get([
                     'productos.clave_ct',
                     'productos.precio_unitario as precioct',
@@ -195,10 +196,11 @@ class MargenesController extends Controller
                     'zegucom.precio_unitario as zegucom',
                 ])
                 ->groupBy('productos.clave_ct');
-                dd(count($data['productos']));
-        foreach ($data['productos'] as $key => $row) {
+                // dd(count($data['productos'][""]));
+                // dd(sizeof($data['productos']));
+        foreach ($data['productos'][""] as $key => $row) {
             $margenes=[];
-            $freq_0 = ($row->abasteo < ($row->precioct*.55)||$row->abasteo > ($row->precioct*1.55)) ? 0 : $row->abasteo;
+            // $freq_0 = ($row->abasteo < ($row->precioct*.55)||$row->abasteo > ($row->precioct*1.55)) ? 0 : $row->abasteo;
             // dd($freq_0);
             array_push($margenes,($row->abasteo < ($row->precioct*.55)||$row->abasteo > ($row->precioct*1.55)) ? 0 : $row->abasteo);
             array_push($margenes,($row->mipc < ($row->precioct*.55)||$row->mipc > ($row->precioct*1.55)) ? 0 : $row->mipc);
@@ -207,7 +209,11 @@ class MargenesController extends Controller
             // array_push($margenes,0);
             // $margen = ($this->ordenarArreglo($margenes)<0||$this->ordenarArreglo($margenes)>1) ? 0.10 : $this->ordenarArreglo($margenes);
             $margen = $this->ordenarArreglo($margenes);
-            $valor = number_format(((($margen/$row->precioct)-1)<0||(($margen/$row->precioct)-1)>0.5) ? 0.10 : (($margen/$row->precioct)-1),4);
+            if($margen==-1){
+                $valor = 0.1111;
+            }else{
+                $valor = number_format(((($margen/$row->precioct)-1)<0||(($margen/$row->precioct)-1)>0.5) ? 0.10 : (($margen/$row->precioct)-1),4);
+            }
             // dd($this->ordenarArreglo($margenes));
             $margen = MargenesProducto::updateOrCreate(
                 ['clave_ct'=>$row->clave_ct],

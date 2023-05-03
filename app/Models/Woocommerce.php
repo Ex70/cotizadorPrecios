@@ -12,6 +12,6 @@ class Woocommerce extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'idWP','clave_ct'
+        'idWP','clave_ct','precio_venta','precio_venta_rebajado','fecha_inicio','fecha_fin'
     ];
 }

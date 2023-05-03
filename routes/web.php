@@ -14,6 +14,7 @@ use App\Http\Controllers\MargenesController;
 use App\Http\Controllers\PalabrasClaveController;
 use App\Http\Controllers\PcMayoreoController;
 use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\ProductosXalapaController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PromocionesController;
 use App\Http\Controllers\TopsController;
@@ -105,9 +106,10 @@ Route::get('ejemploImagenes', [ImagenesController::class, 'ejemploImagenes']);
 Route::get('obtener/{filename}', [ImagenesController::class, 'getFile'])->name('getfile');
 
 
-//CARTAS PRODUCTOS
+//PRODUCTOS
 Route::get('/productos/cartas',[ProductosController::class, 'cartas']);
 Route::post('/productos/cartas',[ProductosController::class, 'cartas']);
+Route::get('/productos/existenciasXalapa',[ProductosXalapaController::class, 'existenciasXalapa']);
 
 //CARTAS MARGENES
 Route::get('margenes/mayor', [MargenesController::class, 'cartaMayor']);

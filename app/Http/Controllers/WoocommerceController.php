@@ -85,6 +85,32 @@ class WoocommerceController extends Controller
         //
     }
 
+    public function preciosVenta(){
+        $data['productos'] = Woocommerce::Join('productos', 'productos.clave_ct', '=', 'woocommerce.clave_ct')
+            ->leftJoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
+            ->join('margenes_por_producto','margenes_por_producto.clave_ct','=','woocommerce.clave_ct')
+            ->where('productos.estatus', 'Activo')
+            ->whereNull('promociones.clave_ct')
+            ->get([
+                'woocommerce.idWP',
+                'productos.clave_ct',
+                'woocommerce.precio_venta',
+                'woocommerce.precio_venta_rebajado',
+                'woocommerce.fecha_inicio',
+                'woocommerce.fecha_fin',
+                'productos.precio_unitario',
+                'margenes_por_producto.margen_utilidad'
+            ]
+        );
+        dd(sizeof($data['productos']));
+        for ($i = 0; $i < sizeof($data['productos']); $i++) {
+            $prueba = Woocommerce::updateOrCreate(
+                ['clave_ct'=>$data['productos'][$i]['clave_ct']],
+                ['precio_venta'=>number_format($data['productos'][$i]['precio_unitario']*(1+$data['productos'][$i]['margen_utilidad']),2, '.', '')]
+            );
+        }
+    }
+
     public function woocommerce()
     {
         set_time_limit(0);
@@ -112,5 +138,23 @@ class WoocommerceController extends Controller
             );
         }
         dd("Terminado");
+    }
+
+    public function actualizarInventario(){
+        $params = [
+            'per_page'=>100,
+            'page'=>7
+        ];
+        $data['woocommerce'] = $woocommerce->get('products',$params);
+        for ($i = 0; $i < sizeof($data['woocommerce']); $i++) {
+            $ids = Woocommerce::updateOrCreate(
+                ['idWP' => $data['woocommerce'][$i]->id],
+                [
+                    'idWP' => $data['woocommerce'][$i]->id,
+                    'clave_ct' => $data['woocommerce'][$i]->sku,
+                ]
+            );
+        }
+        dd("Listo");
     }
 }

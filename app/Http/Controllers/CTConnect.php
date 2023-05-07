@@ -171,4 +171,33 @@ class CTConnect extends Controller
             ];
         }
     }
+
+    public function volumen($clave_ct){
+        set_time_limit(0);
+        $this->token();
+        $token = Token::all()->last()->token;
+        $headers = [
+            'x-auth' => $token,
+            'Accept'        => 'application/json',
+        ];
+        $client = new Client();
+        $url = "http://connect.ctonline.mx:3001/paqueteria/volumetria/".$clave_ct."";
+        try {
+            $res = $client->request('GET', $url, [
+                'headers' => $headers
+            ]);
+            $result = $res->getBody();
+            $data = json_decode($result, true);
+            // dd($data[0]);
+            // $existencia= $data['existencia_total'];
+            return $data[0];
+        }catch (ClientException $e) {
+            $this->token();
+            $token = Token::all()->last()->token;
+            $headers = [
+                'x-auth' => $token,
+                'Accept'        => 'application/json',
+            ];
+        }
+    }
 }

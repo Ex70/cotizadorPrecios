@@ -432,8 +432,10 @@ class PreciosController extends Controller
         set_time_limit(0);
         //dd($productos);
         $existencia_producto = 0;
+        $existencia_cedis = 0;
         if (!empty($productos['existencia']['DFA'])) {
             $existencia_producto += $productos['existencia']['DFA'];
+            $existencia_cedis += $productos['existencia']['DFA'];
             $existencias = Existencias::updateOrCreate(
               ['clave_ct' => $productos['clave'],
               'almacen_id' => '34'
@@ -447,6 +449,7 @@ class PreciosController extends Controller
         }
         if (!empty($productos['existencia']['D2A'])) {
             $existencia_producto += $productos['existencia']['D2A'];
+            $existencia_cedis += $productos['existencia']['D2A'];
             $existencias = Existencias::updateOrCreate(
               ['clave_ct' => $productos['clave'],
               'almacen_id' => '48'
@@ -850,6 +853,7 @@ class PreciosController extends Controller
       }
       if (!empty($productos['existencia']['XLP'])) {
           $existencia_producto += $productos['existencia']['XLP'];
+          $existencia_cedis += $productos['existencia']['XLP'];
            $existencias = Existencias::updateOrCreate(
              ['clave_ct' => $productos['clave'],
              'almacen_id' => '15'
@@ -1043,7 +1047,17 @@ class PreciosController extends Controller
           ]
           );
       }
-        return $existencia_producto;
+      $existencias = Existencias::updateOrCreate(
+        ['clave_ct' => $productos['clave'],
+        'almacen_id' => '50'
+      ],
+        [
+        'clave_ct' => $productos['clave'],
+        'almacen_id' => '50',
+        'existencias' => $existencia_cedis
+      ]
+      );
+      return $existencia_producto;
     }
 
     public function lecturaPrueba()

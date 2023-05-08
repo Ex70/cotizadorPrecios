@@ -173,4 +173,42 @@ class WPController extends Controller
         $data['met'] = 2;
         return view('wp.productosXalapa', compact('data'));
     }
+
+    public function fichas(){
+        set_time_limit(0);
+        $productos=Producto::join('cateegorias',)
+        ->where('existencias','>',0)
+            ->where('estatus','Activo')
+            ->get();
+        dd(sizeof($productos));
+        $remove = array(" ","  ","   ","    ", "(", ")", "$", "*", "/",",","IVA","Incluido");
+        $client = new Client();
+        for($i=0;$i<sizeof($productos);$i++){
+            $sku = $productos[$i]->sku;
+            $clave_ct = $productos[$i]->clave_ct;
+            if($sku==""){
+                $sku="NOEXISTE";
+            }
+            // $website = $client->request('GET', 'https://www.zegucom.com.mx/?cons='.$sku.'&mod=search&reg=1');
+            $website = $client->request('GET', 'https://www.zegucom.com.mx/productos/search?search='.$sku.'');
+            $result = $website->filter('.search-price-now > .search-price-now-value ');
+            // $result = $website->filter('.price-text > .result-price-search');
+            // $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.price-text > .result-price-search')->first()->text()) : $precios[$i] = 0;
+            $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.search-price-now > .search-price-now-value ')->first()->text()) : $precios[$i] = 0;
+            $productoZegucom = Zegucom::updateOrCreate(
+                ['sku'=>$sku, 'clave_ct'=>$clave_ct],
+                ['precio_unitario'=>$precios[$i]]
+            );
+        }
+        // dd($precios);
+        return $precios;
+        // $data['precios'] = $precios;
+        // dd($data['precios']);
+        // $data['categoria'] = $request->get('filtro1');
+        // $data['subcategoria'] = $request->get('filtro2');
+        // $data['productos'] = DB::table('productos')->select('id','descripcion')->where('estatus','Activo')->where('categoria',$test)->where('subcategoria',$test2)->orderBy('id', 'ASC')->get()->toArray();
+        // $data['categorias'] = DB::table('productos')->distinct()->get(['categoria']);
+        // $data['subcategorias'] = DB::table('productos')->distinct()->get(['subcategoria']);
+        // return view('filtrosmipc',compact('data'));
+    }
 }

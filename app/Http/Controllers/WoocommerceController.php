@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Producto;
 use App\Models\Woocommerce;
 use Illuminate\Http\Request;
 use Automattic\WooCommerce\Client as WooClient;
@@ -86,29 +87,58 @@ class WoocommerceController extends Controller
     }
 
     public function preciosVenta(){
-        $data['productos'] = Woocommerce::Join('productos', 'productos.clave_ct', '=', 'woocommerce.clave_ct')
-            ->leftJoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
-            ->join('margenes_por_producto','margenes_por_producto.clave_ct','=','woocommerce.clave_ct')
-            ->where('productos.estatus', 'Activo')
-            ->whereNull('promociones.clave_ct')
+        set_time_limit(0);
+        $data['productos'] = Producto::join('woocommerce','woocommerce.clave_ct','=','productos.clave_ct')
+            ->join('margenes_por_producto','margenes_por_producto.clave_ct','=','productos.clave_ct')
+            ->where('productos.estatus','Activo')
+            ->where('productos.existencias','>',0)
+            ->orderBy('productos.id')
             ->get([
                 'woocommerce.idWP',
                 'productos.clave_ct',
-                'woocommerce.precio_venta',
-                'woocommerce.precio_venta_rebajado',
-                'woocommerce.fecha_inicio',
-                'woocommerce.fecha_fin',
                 'productos.precio_unitario',
                 'margenes_por_producto.margen_utilidad'
             ]
         );
-        dd(sizeof($data['productos']));
+        // dd(sizeof($data['productos']));
         for ($i = 0; $i < sizeof($data['productos']); $i++) {
             $prueba = Woocommerce::updateOrCreate(
                 ['clave_ct'=>$data['productos'][$i]['clave_ct']],
-                ['precio_venta'=>number_format($data['productos'][$i]['precio_unitario']*(1+$data['productos'][$i]['margen_utilidad']),2, '.', '')]
+                ['precio_venta'=>number_format($data['productos'][$i]['precio_unitario']*(1+$data['productos'][$i]['margen_utilidad']),2, '.', '')],
             );
         }
+        dd("Listo");
+    }
+
+    public function preciosPromociones(){
+        set_time_limit(0);
+        $data['productos'] = Producto::Join('promociones','productos.clave_ct','=','promociones.clave_ct')
+            ->join('woocommerce','woocommerce.clave_ct','=','promociones.clave_ct')
+            ->join('margenes_por_producto','margenes_por_producto.clave_ct','=','promociones.clave_ct')
+            ->where('productos.estatus','Activo')
+            ->where('productos.existencias','>',0)
+            ->orderBy('productos.id')
+            ->get([
+                'woocommerce.idWP',
+                'productos.clave_ct',
+                'productos.precio_unitario',
+                'margenes_por_producto.margen_utilidad',
+                'promociones.descuento',
+                'promociones.fecha_inicio',
+                'promociones.fecha_fin'
+            ]
+        );
+        for ($i = 0; $i < sizeof($data['productos']); $i++) {
+            $prueba = Woocommerce::updateOrCreate(
+                ['clave_ct'=>$data['productos'][$i]['clave_ct']],
+                ['precio_venta'=>number_format($data['productos'][$i]['precio_unitario']*(1+$data['productos'][$i]['margen_utilidad']),2, '.', ''),
+                'precio_venta_rebajado'=>number_format($data['productos'][$i]['precio_unitario']*((1)-($data['productos'][$i]['descuento']/100))*(1+$data['productos'][$i]['margen_utilidad']),2, '.', ''),
+                'fecha_inicio'=>$data['productos'][$i]['fecha_inicio'],
+                'fecha_fin'=>$data['productos'][$i]['fecha_fin']]
+            );
+        }
+        // dd(sizeof($data['productos']));
+        dd("Listo");
     }
 
     public function woocommerce()

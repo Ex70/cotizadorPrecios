@@ -19,6 +19,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PromocionesController;
 use App\Http\Controllers\TopsController;
 use App\Http\Controllers\VolumetriaController;
+use App\Http\Controllers\WoocommerceController;
 use App\Http\Controllers\XalapaController;
 use App\Http\Controllers\WPController;
 use App\Models\Margenes;
@@ -156,6 +157,11 @@ Route::get('/analytics', function () {
 //VOLUMETRIA
 Route::get('/obtenerVolumenes', [VolumetriaController::class, 'agregarVolumetrias']);
 
+
+//WORDPRESS
+Route::get('/obtenerNuevosPrecios', [WoocommerceController::class, 'preciosVenta']);
+Route::get('/obtenerPreciosPromocion', [WoocommerceController::class, 'preciosPromociones']);
+Route::get('/obtenerFichas', [WPController::class, 'fichas']);
 
 Route::get('subir-tops', function () {
     return view('file-upload');

@@ -53,9 +53,9 @@ class PreciosController extends Controller
 
     public function cotizar(Request $request)
     {
-        $preciosAbasteo = new PreciosAbasteoController;
+        // $preciosAbasteo = new PreciosAbasteoController;
         // $preciosCyberpuerta = new CyberPuertaController;
-        $preciosMiPC = new MiPCController;
+        // $preciosMiPC = new MiPCController;
         $preciosZegucom = new ZegucomController;
         $test = $request->get('filtro1');
         $test2 = $request->get('filtro2');
@@ -66,9 +66,9 @@ class PreciosController extends Controller
             $data['productos'] = Producto::where('categoria_id', $test)->where('subcategoria_id', $test2)->where('marca_id', $test3)->where('estatus', 'Activo')->get();
         }
         if (sizeof($data['productos']) > 0) {
-            $data['abasteo'] = $preciosAbasteo->cotizar($data['productos']);
+            // $data['abasteo'] = $preciosAbasteo->cotizar($data['productos']);
             // $data['cyberpuerta'] = $preciosCyberpuerta->cotizar($data['productos']);
-            $data['mipc'] = $preciosMiPC->cotizar($data['productos']);
+            // $data['mipc'] = $preciosMiPC->cotizar($data['productos']);
             $data['zegucom'] = $preciosZegucom->cotizar($data['productos']);
             $data['categoria'] = $request->get('filtro1');
             $data['subcategoria'] = $request->get('filtro2');

@@ -96,6 +96,8 @@
 											$fecha_inico = '';
 											$fecha_fin = '';
 										}
+										$mes= date('m');
+										$año= date('Y');
 									@endphp
 									<td>{{$fecha_inico}}</td>
 									<td>{{$fecha_fin}}</td>
@@ -143,7 +145,7 @@
 										<td>{{$productos->categoria}}, {{$productos->categoria}} > {{$productos->subcategoria}}, {{$productos->marca}}</td>
 									@endif
 									<td>{{$productos->categoria}},  {{$productos->subcategoria}}, {{$productos->marca}}</td>
-									<td>https://ehstecnologias.com.mx/wp-content/uploads/2023/05/{{$productos->clave_ct}}_0.jpg</td>
+									<td>https://ehstecnologias.com.mx/wp-content/uploads/{{$año}}/{{$mes}}/{{$productos->clave_ct}}_0.jpg</td>
 									{{-- @if ($data['met'] == 1) --}}
 									@if (($productos->almacen) == 50)
 										@if(($productos->existencias) >= 1)

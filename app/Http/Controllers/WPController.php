@@ -255,7 +255,8 @@ class WPController extends Controller
                 ->where('existencias.existencias', '>', 0)
                 ->where('productos.clave_ct', '=', $clave)
                 // ->groupBy('clave_ct')
-                // ->take(1)
+                ->take(1)
+                ->orderBy('existencias.almacen_id', 'desc')
                 ->get(
                     [
                     'productos.clave_ct',

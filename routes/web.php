@@ -162,6 +162,7 @@ Route::get('/obtenerVolumenes', [VolumetriaController::class, 'agregarVolumetria
 Route::get('/obtenerNuevosPrecios', [WoocommerceController::class, 'preciosVenta']);
 Route::get('/obtenerPreciosPromocion', [WoocommerceController::class, 'preciosPromociones']);
 Route::get('/obtenerFichas', [WPController::class, 'fichas']);
+Route::get('/actualizarInventario', [WoocommerceController::class, 'actualizarInventario']);
 
 Route::get('subir-tops', function () {
     return view('file-upload');

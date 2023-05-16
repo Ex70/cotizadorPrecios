@@ -192,10 +192,21 @@ class WPController extends Controller
 
     public function fichas(){
         set_time_limit(0);
-        $productos=Producto::join('cateegorias',)
-        ->where('existencias','>',0)
-            ->where('estatus','Activo')
-            ->get();
+        $data['productos']=Producto::join('categorias','productos.categoria_id','=','categorias.id')
+            ->join('subcategorias','productos.subcategoria_id','=','subcategorias.id')
+            ->join('marcas','productos.marca_id','=','marcas.id')
+            ->where('productos.estatus','Activo')
+            ->where('productos.existencias','>',0)
+            ->get([
+                'woocommerce.idWP',
+                'productos.clave_ct',
+                'productos.precio_unitario',
+                'margenes_por_producto.margen_utilidad',
+                'promociones.descuento',
+                'promociones.fecha_inicio',
+                'promociones.fecha_fin'
+            ]
+        );
         dd(sizeof($productos));
         $remove = array(" ","  ","   ","    ", "(", ")", "$", "*", "/",",","IVA","Incluido");
         $client = new Client();

@@ -257,7 +257,7 @@ class PromocionesController extends Controller
             ->toArray();
         $prom2 = $this->paginate($prom2, 20);
         $prom2->withPath('/promociones/flash');
-        return view('cartas.cartas', compact('prom2'));  
+        return view('cartas.cartas', compact('prom2'));
     }
 
     public function paginate($items, $perPage = 20, $page = null){

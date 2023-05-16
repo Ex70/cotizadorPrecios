@@ -14,6 +14,7 @@ class Producto extends Model
 
     protected $fillable = [
         'clave_ct',
+        'idProductoCT',
         'sku',
         'nombre',
         'descripcion_corta',

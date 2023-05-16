@@ -171,9 +171,21 @@ class WoocommerceController extends Controller
     }
 
     public function actualizarInventario(){
+        set_time_limit(0);
+        $fechaR = date('Y')."-".date('m')."-".date('d');
+        $woocommerce = new WooClient(
+            'http://ehstecnologias.com.mx/',
+            'ck_209a05b01fc07d7b4d54c05383b048f9d58c075f',
+            'cs_0ef9dc123f35a8b70a76317e30a598332dcd01c6',
+            [
+                'version' => 'wc/v3',
+                'timeout' => 800
+            ]
+        );
+        
         $params = [
             'per_page'=>100,
-            'page'=>7
+            'page'=>5
         ];
         $data['woocommerce'] = $woocommerce->get('products',$params);
         for ($i = 0; $i < sizeof($data['woocommerce']); $i++) {

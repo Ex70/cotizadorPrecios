@@ -59,7 +59,8 @@
 								</tr>
 							</thead>
 							<tbody>
-							@foreach ($data['productos'] as $productos)
+							@foreach ($data as $productos)
+
 								<tr>
 									@if ($data['met'] == 1)
 										@if(($productos->existencias) >= 1)

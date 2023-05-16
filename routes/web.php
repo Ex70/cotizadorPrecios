@@ -165,6 +165,10 @@ Route::get('/obtenerFichas', [WPController::class, 'fichas']);
 Route::get('/wp_individual',[WPController::class, 'individual']);
 Route::post('/wp_individual',[WPController::class, 'individual']);
 Route::get('/actualizarInventario', [WoocommerceController::class, 'actualizarInventario']);
+Route::get('/wp_imagenes',[WPController::class, 'wp_imagenes']);
+Route::get('/wp_promociones_faltantes',[WPController::class, 'wp_promociones_faltantes']);
+Route::get('/wp_promociones_vigentes',[WPController::class, 'wp_promociones_vigentes']);
+Route::get('/wp_promociones_vencidas',[WPController::class, 'wp_promociones_vencidas']);
 
 Route::get('subir-tops', function () {
     return view('file-upload');

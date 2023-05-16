@@ -84,6 +84,24 @@
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
                         </div>
+                        <div class="menu-title">Productos</div>
+                    </a>
+                    <ul>
+                        <li> 
+                            <a href="{{ url('/wp_xalapa') }}"><i class="bx bx-right-arrow-alt"></i>Xalapa</a>
+                        </li>
+                        <li> 
+                            <a href="{{ url('/wp_todos') }}"><i class="bx bx-right-arrow-alt"></i>Otros Almacenes</a>
+                        </li>
+                        <li> 
+                            <a href="{{ url('/wp_individual') }}"><i class="bx bx-right-arrow-alt"></i>Producto Individual</a>
+                        </li>
+                    </ul>
+                </li>
+                {{-- <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                        </div>
                         <div class="menu-title">Productos Xalapa</div>
                     </a>
                     <ul>
@@ -94,8 +112,8 @@
                             <a href="{{ url('margenes/menor') }}"><i class="bx bx-right-arrow-alt"></i>Menores al 10%</a>
                         </li>
                     </ul>
-                </li>
-                <li>
+                </li> --}}
+                {{-- <li>
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
                         </div>
@@ -115,7 +133,7 @@
                             <a href="{{ url('/ofertas_xalapa_vencidas') }}"><i class="bx bx-right-arrow-alt"></i>Vencidas</a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 <li class="menu-label">Márgenes</li>
                 <li>
                     <a class="has-arrow" href="javascript:;">

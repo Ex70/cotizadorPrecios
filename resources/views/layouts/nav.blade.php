@@ -98,6 +98,24 @@
                         </li>
                     </ul>
                 </li>
+            <li>
+                <a class="has-arrow" href="javascript:;">
+                    <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                    </div>
+                    <div class="menu-title">Promociones</div>
+                </a>
+                <ul>
+                    <li> 
+                        <a href="{{ url('/wp_xalapa') }}"><i class="bx bx-right-arrow-alt"></i>Faltantes</a>
+                    </li>
+                    <li> 
+                        <a href="{{ url('/wp_todos') }}"><i class="bx bx-right-arrow-alt"></i>Vigentes</a>
+                    </li>
+                    <li> 
+                        <a href="{{ url('/wp_individual') }}"><i class="bx bx-right-arrow-alt"></i>Vencidas</a>
+                    </li>
+                </ul>
+            </li>
                 {{-- <li>
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon"><i class='bx bx-message-square-edit'></i>

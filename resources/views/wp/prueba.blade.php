@@ -15,12 +15,7 @@
 						<ol class="breadcrumb mb-0 p-0">
 							<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
 							</li>
-							@if ($data['met'] == 1)
-								<li class="breadcrumb-item active" aria-current="page">Xalapa</li>
-							@else
-								<li class="breadcrumb-item active" aria-current="page">Todos</li>
-							@endif
-							
+							<li class="breadcrumb-item active" aria-current="page">Productos</li>
 						</ol>
 					</nav>
 				</div>
@@ -59,18 +54,9 @@
 								</tr>
 							</thead>
 							<tbody>
-							@foreach ($data['productos'] as $productos)
-
+							@foreach ($data['xalapa'] as $productos)
 								<tr>
-									@if ($data['met'] == 1)
-										@if(($productos->existencias) >= 1)
-											<td>simple</td>
-										@else
-											<td>external</td>
-										@endif
-									@else
-										<td>external</td>
-									@endif
+                                    <td>simple</td>
 									<td>{{$productos->clave_ct}}</td>
 									<td>{{$productos->nombre}}</td>
 									<td>1</td>
@@ -97,15 +83,7 @@
 									<td>{{$fecha_fin}}</td>
 									<td>taxable</td>
 									<td>1</td>
-									@if ($data['met'] == 1)
-										@if(($productos->existencias) >= 1)
-											<td>{{$productos->existencias}}</td>
-										@else
-											<td></td>
-										@endif
-									@else
-										<td></td>
-									@endif
+									<td>{{$productos->existencias}}</td>
 									<td>0</td>
 									<td>0</td>
 									<td>1</td>
@@ -139,31 +117,81 @@
 									@endif
 									<td>{{$productos->categoria}},  {{$productos->subcategoria}}, {{$productos->marca}}</td>
 									<td>https://ehstecnologias.com.mx/wp-content/uploads/{{$año}}/{{$mes}}/{{$productos->clave_ct}}_0.jpg</td>
-									@if ($data['met'] == 1)
-										@if(($productos->existencias) >= 1)
-											@if (isset($productos->descuento))
-												<td>1</td>
-											@else
-												<td>2</td>
-											@endif
-										@else
-											<td>3</td>
-										@endif
+									@if (isset($productos->descuento))
+										<td>1</td>
 									@else
-										<td>3</td>
+										<td>2</td>
 									@endif
-									@if ($data['met'] == 1)
-										@if(($productos->existencias) >= 1)
-											<td></td>
-											<td></td>
-										@else
-											<td>https://api.whatsapp.com/send?phone=2283669400&text=Hola,%20quiero%20solicitar%20la%20cotización%20del%20producto:%20%2A{{$productos->nombre}}%2A%20con%20CLAVE:%20%2A{{$productos->clave_ct}}%2A</td>
-											<td>Consultar Disponibilidad</td>
-										@endif
+									<td></td>
+									<td></td>
+								</tr>
+								@endforeach
+                                @foreach ($data['resto'] as $productos)
+								<tr>
+                                    <td>external</td>
+									<td>{{$productos->clave_ct}}</td>
+									<td>{{$productos->nombre}}</td>
+									<td>1</td>
+									<td>0</td>
+									<td>visible</td>
+									<td>{{$productos->descripcion_corta}}</td>
+									<td>{{$productos->descripcion_corta}}</td>
+									@php
+										if(isset($productos->inicio)){
+											$fecha_inico = Carbon\Carbon::createFromFormat('Y-m-d',($productos->inicio))
+											->format('d/m/Y 00:00:00');
+											$fecha_fin = Carbon\Carbon::createFromFormat('Y-m-d',($productos->fin))
+											->format('d/m/Y 11:59:59');
+											$fecha_inico = $fecha_inico.' a. m.';
+											$fecha_fin = $fecha_fin.' p. m.';
+										}else{
+											$fecha_inico = '';
+											$fecha_fin = '';
+										}
+										$mes= date('m');
+										$año= date('Y');
+									@endphp
+									<td>{{$fecha_inico}}</td>
+									<td>{{$fecha_fin}}</td>
+									<td>taxable</td>
+									<td>1</td>
+									<td></td>
+									<td>0</td>
+									<td>0</td>
+									<td>1</td>
+									@php
+										if(isset($productos->margen)){
+											if(isset($productos->descuento)){
+												$precio_rebajado = round(((($productos->precio_unitario)*(($productos->margen)+1))*((100-($productos->descuento))/100)),2);
+												$precio_normal= round((($productos->precio_unitario)*(($productos->margen)+1)),2);
+											}else{
+												$precio_rebajado = '';
+												$precio_normal= round((($productos->precio_unitario)*(($productos->margen)+1)),2);
+											}
+										}else{
+											if(isset($productos->descuento)){
+												$precio_rebajado = round((($productos->precio_unitario)*(1.10)*((100-($productos->descuento))/100)),2);
+												$precio_normal= round((($productos->precio_unitario)*(1.10)),2);
+											}else{
+												$precio_rebajado = '';
+												$precio_normal= round((($productos->precio_unitario)*(1.10)),2);
+											}
+										}
+										// $precio_final = round((($productos->precio_unitario)*(1.10)),2)
+										// $precio_final = round((($productos->precio_unitario)*(($productos->margen)+1)),2)
+									@endphp
+									<td>{{$precio_rebajado}}</td> 
+									<td>{{$precio_normal}}</td> 
+									@if (isset($productos->descuento))
+										<td>{{$productos->categoria}}, {{$productos->categoria}} > {{$productos->subcategoria}}, {{$productos->marca}}, Promociones</td>
 									@else
-										<td>https://api.whatsapp.com/send?phone=2283669400&text=Hola,%20quiero%20solicitar%20la%20cotización%20del%20producto:%20%2A{{$productos->nombre}}%2A%20con%20CLAVE:%20%2A{{$productos->clave_ct}}%2A</td>
-										<td>Consultar Disponibilidad</td>
+										<td>{{$productos->categoria}}, {{$productos->categoria}} > {{$productos->subcategoria}}, {{$productos->marca}}</td>
 									@endif
+									<td>{{$productos->categoria}},  {{$productos->subcategoria}}, {{$productos->marca}}</td>
+									<td>https://ehstecnologias.com.mx/wp-content/uploads/{{$año}}/{{$mes}}/{{$productos->clave_ct}}_0.jpg</td>
+									<td>3</td>
+									<td>https://api.whatsapp.com/send?phone=2283669400&text=Hola,%20quiero%20solicitar%20la%20cotización%20del%20producto:%20%2A{{$productos->nombre}}%2A%20con%20CLAVE:%20%2A{{$productos->clave_ct}}%2A</td>
+									<td>Consultar Disponibilidad</td>
 								</tr>
 								@endforeach
 							</tbody>

@@ -341,7 +341,6 @@ class WPController extends Controller
                     'promociones.descuento as descuento',
                 ]
                     );
-        $data['met'] = 1;
 
         $data['resto'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct') 
             ->join('categorias', 'categorias.id', '=', 'productos.categoria_id')
@@ -383,7 +382,7 @@ class WPController extends Controller
                     'promociones.descuento as descuento',
                 ]
                     );
-        return view('wp.productosXalapa', compact('data'));
+        return view('wp.prueba', compact('data'));
 
 
         }

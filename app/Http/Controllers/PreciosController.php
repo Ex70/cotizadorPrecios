@@ -1118,16 +1118,19 @@ class PreciosController extends Controller
       ]
       );
 
-      $existencias = Existencias::updateOrCreate(
-        ['clave_ct' => $productos['clave'],
-        'almacen_id' => '53'
-      ],
+      if ($existencia_cedis == 0){
+        $existencias = Existencias::updateOrCreate(
+          ['clave_ct' => $productos['clave'],
+          'almacen_id' => '53'
+        ],
         [
         'clave_ct' => $productos['clave'],
         'almacen_id' => '53',
         'existencias' => $existencia_resto
       ]
-      );
+    );
+  }
+     
       return $existencia_producto;
     }
 

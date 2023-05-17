@@ -352,14 +352,14 @@ class WPController extends Controller
                 ->where('productos.estatus', 'Activo')
                 ->where('existencias.almacen_id', '=', 53)
                 ->whereNotIn('productos.clave_ct',  Producto::join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
-                    ->where('productos.estatus', 'Activo')
+                    // ->where('productos.estatus', 'Activo')
                     ->where('existencias.almacen_id', '=', 50)
                     ->where('existencias.existencias', '>', 0)
                     ->get(
                         'productos.clave_ct'
                     )
                 )
-                ->where('productos.existencias', '>', 0)
+                // ->where('productos.existencias', '>', 0)
                 ->whereNotIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
                 ->groupBy('clave_ct')
                 ->get(
@@ -383,7 +383,29 @@ class WPController extends Controller
                 ]
                     );
         return view('wp.prueba', compact('data'));
-
-
         }
+
+    public function wp_inventario(){
+        set_time_limit(0);
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        // $data['xalapa'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+        //     ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+        //     ->where('existencias.almacen_id', '=', 50)
+        //     ->get([
+        //         'productos.clave_ct',
+        //         'productos.existencias'
+        //         ]);
+        // dd($data['xalapa'][0]);
+
+        $data['resto'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->where('existencias.almacen_id', '=', 53)
+            ->get([
+                'productos.clave_ct',
+                'productos.existencias'
+                ]);
+            dd($data['resto']);
+        $data['titulo'] = "EHS - WP - Inventario - (".$fecha.")";        
+        return view('wp.wp_inventario', compact('data'));
+    }
 }

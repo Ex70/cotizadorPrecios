@@ -27,18 +27,26 @@
 								<tr>
 									<th>SKU</th>
 									<th>Inventario</th>
-                                    <th></th>
-                                    <th></th>
+                                    <th>URL externa</th>
+									<th>Texto del botón</th>
 								</tr>
 							</thead>
 							<tbody>
-							@foreach ($data['productos'] as $productos)
-								<tr>
-									<td>{{$productos->clave_ct}}</td>
-                                    <td>{{$productos->existencias}}</td>
-                                    <td></td>
-                                    <td></td>
-								</tr>
+                                @foreach ($data['xalapa'] as $productos)
+                                    <tr>
+                                        <td>{{$productos->clave_ct}}</td>
+                                        <td>simple</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+								@endforeach
+                                @foreach ($data['resto'] as $productos)
+                                    <tr>
+                                        <td>{{$productos->clave_ct}}</td>
+                                        <td>external</td>
+                                        <td>https://api.whatsapp.com/send?phone=2283669400&text=Hola,%20quiero%20solicitar%20la%20cotización%20del%20producto:%20%2A{{$productos->nombre}}%2A%20con%20CLAVE:%20%2A{{$productos->clave_ct}}%2A</td>
+										<td>Consultar Disponibilidad</td>
+                                    </tr>
 								@endforeach
 							</tbody>
 						</table>

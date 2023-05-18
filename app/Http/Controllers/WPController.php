@@ -387,25 +387,43 @@ class WPController extends Controller
 
     public function wp_inventario(){
         set_time_limit(0);
-        $fecha = date('Y')."-".date('m')."-".date('d');
-        // $data['xalapa'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
-        //     ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
-        //     ->where('existencias.almacen_id', '=', 50)
-        //     ->get([
-        //         'productos.clave_ct',
-        //         'productos.existencias'
-        //         ]);
-        // dd($data['xalapa'][0]);
-
-        $data['resto'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
-            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
-            ->where('existencias.almacen_id', '=', 53)
+        $fechaR = date('Y')."-".date('m')."-".date('d');
+        $data['productos'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+            ->where('productos.estatus', '=', 'Activo')
             ->get([
                 'productos.clave_ct',
                 'productos.existencias'
                 ]);
-            dd($data['resto']);
-        $data['titulo'] = "EHS - WP - Inventario - (".$fecha.")";        
+        $data['titulo'] = "EHS - WP - Inventario - (".$fechaR.")";        
         return view('wp.wp_inventario', compact('data'));
+    }
+
+    public function wp_tipos(){
+        set_time_limit(0);
+        $fechaR = date('Y')."-".date('m')."-".date('d');
+        $data['xalapa'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->where('existencias.almacen_id', '=', 50)
+            ->where('productos.estatus', '=', 'Activo')
+            ->get([
+                'woocommerce.clave_ct',
+                ]);
+        $data['resto'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->where('productos.estatus', '=', 'Activo')
+            ->whereNotIn('woocommerce.clave_ct',  Woocommerce::join('existencias', 'existencias.clave_ct', '=', 'woocommerce.clave_ct')
+                ->where('existencias.almacen_id', '=', 50)
+                ->get([
+                    'woocommerce.clave_ct'
+                ])
+                )
+            ->groupBy('productos.clave_ct')
+            ->get([
+                'woocommerce.clave_ct',
+                'existencias.almacen_id as almacen'
+            ]);
+        // dd($data['resto']);
+        $data['titulo'] = "EHS - WP - Tipos - (".$fechaR.")";        
+        return view('wp.wp_tipos', compact('data'));
     }
 }

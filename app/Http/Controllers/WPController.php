@@ -22,7 +22,7 @@ class WPController extends Controller
                 ->where('productos.estatus', 'Activo')
                 ->where('existencias.almacen_id', '=', 50)
                 ->where('existencias.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',['ACCNCB860'])
+                // ->whereIn('productos.clave_ct',[''])
                 ->get(
                     [
                     'productos.clave_ct',
@@ -70,7 +70,7 @@ class WPController extends Controller
                 // ->where('productos.existencias', '>', 0)
                 // ->whereMonth('productos.created_at', '>=', '03')
                 // ->whereYear('productos.created_at', '=', '2023')
-                ->whereIn('productos.clave_ct', ['ACCNCB860'])
+                // ->whereIn('productos.clave_ct', [''])
                 ->groupBy('clave_ct')
                 ->get(
                     [
@@ -287,7 +287,7 @@ class WPController extends Controller
         set_time_limit(0);
         $data['productos'] = Producto::where('productos.estatus', 'Activo')
                 ->where('productos.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',['DDUSAN430'])
+                ->whereIn('productos.clave_ct',[''])
                 //->where('productos.clave_ct', '=', '')
                 // ->groupBy('clave_ct')
                 // ->take(1)
@@ -309,18 +309,17 @@ class WPController extends Controller
     public function wp_promociones_faltantes(){
         set_time_limit(0);
         $fecha = date('Y')."-".date('m')."-".date('d');
-        $data['xalapa'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct') 
-            ->join('categorias', 'categorias.id', '=', 'productos.categoria_id')
-        // $data['productos'] = Producto::join('categorias', 'categorias.id', '=', 'productos.categoria_id')
-                ->join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
-                ->join('marcas', 'marcas.id', '=', 'productos.marca_id')
-                ->join('promociones', 'promociones.clave_ct', 'productos.clave_ct')
-                ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+        $data['xalapa'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+                ->leftJoin('categorias', 'categorias.id', '=', 'productos.categoria_id')
+                // $data['productos'] = Producto::join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+                ->leftJoin('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+                ->leftJoin('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+                ->leftJoin('marcas', 'marcas.id', '=', 'productos.marca_id')
+                ->leftjoin('promociones', 'promociones.clave_ct', 'productos.clave_ct')
                 ->where('productos.estatus', 'Activo')
                 ->where('existencias.almacen_id', '=', 50)
-                ->where('productos.existencias', '>', 0)
-                ->whereNotIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
-                ->groupBy('clave_ct')
+                ->where('existencias.existencias', '>', 0)
+                // ->whereIn('productos.clave_ct',[''])
                 ->get(
                     [
                     'productos.clave_ct',
@@ -338,9 +337,9 @@ class WPController extends Controller
                     'margenes_por_producto.margen_utilidad as margen',
                     'promociones.fecha_inicio as inicio',
                     'promociones.fecha_fin as fin',
-                    'promociones.descuento as descuento',
+                    'promociones.descuento as descuento'
                 ]
-                    );
+            );
 
         $data['resto'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct') 
             ->join('categorias', 'categorias.id', '=', 'productos.categoria_id')
@@ -351,6 +350,7 @@ class WPController extends Controller
                 ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
                 ->where('productos.estatus', 'Activo')
                 ->where('existencias.almacen_id', '=', 53)
+                ->whereDay('promociones.updated_at', '=', 18)
                 ->whereNotIn('productos.clave_ct',  Producto::join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
                     // ->where('productos.estatus', 'Activo')
                     ->where('existencias.almacen_id', '=', 50)
@@ -426,4 +426,20 @@ class WPController extends Controller
         $data['titulo'] = "EHS - WP - Tipos - (".$fechaR.")";        
         return view('wp.wp_tipos', compact('data'));
     }
+
+    public function wp_landing_(){
+        set_time_limit(0);
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['xalapa'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+            ->Join('', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->where('existencias.almacen_id', '=', 50)
+            ->where('productos.estatus', '=', 'Activo')
+            ->get([
+                'woocommerce.idWP'
+                ]);
+        // dd($data['resto']);
+        $data['titulo'] = "EHS - WP - Tipos - (".$fechaR.")";        
+        return view('wp.wp_tipos', compact('data'));
+    }
+
 }

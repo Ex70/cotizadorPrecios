@@ -177,8 +177,8 @@ class PreciosController extends Controller
         $imagenes = new ImagenesController();
         $existencias = new ExistenciasController();
         $existencia_producto = 0;
-        // $products->limpieza();
-        // $existencias->limpieza();
+        $products->limpieza();
+        $existencias->limpieza();
         $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
         // if(date('d')==01){
         //     $borrarProm = Promocion::where('id','>',0)->delete();

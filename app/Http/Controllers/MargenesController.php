@@ -183,7 +183,7 @@ class MargenesController extends Controller
                 // ->where('productos.categoria_id',3)
                 // ->where('productos.subcategoria_id',97)
                 // ->where('productos.marca_id',267)
-                // ->where('productos.clave_ct','MEMDAT2380')
+                // ->where('productos.clave_ct','ACCRBT6270')
                 ->where('productos.existencias','>',0)
                 ->where('productos.estatus','Activo')
                 ->orderBy('productos.existencias')
@@ -198,6 +198,7 @@ class MargenesController extends Controller
                 ->groupBy('productos.clave_ct');
                 // dd(count($data['productos'][""]));
                 // dd(sizeof($data['productos']));
+                
         foreach ($data['productos'][""] as $key => $row) {
             $margenes=[];
             // $freq_0 = ($row->abasteo < ($row->precioct*.55)||$row->abasteo > ($row->precioct*1.55)) ? 0 : $row->abasteo;
@@ -212,8 +213,9 @@ class MargenesController extends Controller
             if($margen==-1){
                 $valor = 0.1111;
             }else{
-                $valor = number_format(((($margen/$row->precioct)-1)<0||(($margen/$row->precioct)-1)>0.5) ? 0.10 : (($margen/$row->precioct)-1),4);
-            }
+                $valor = number_format(((($margen/$row->precioct)-1)<0.10||(($margen/$row->precioct)-1)>0.5) ? 0.10 : (($margen/$row->precioct)-1),4);
+             }
+            //  dd($valor);
             // dd($this->ordenarArreglo($margenes));
             $margen = MargenesProducto::updateOrCreate(
                 ['clave_ct'=>$row->clave_ct],

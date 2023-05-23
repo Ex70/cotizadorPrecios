@@ -84,7 +84,7 @@ class ExistenciasController extends Controller
     }
 
     public function limpieza(){
-        Existencias::where('id','>',0)->update([
+        Existencias::where('almacen_id','>',0)->update([
             'existencias' => '0'
         ]);
     }

@@ -2438,7 +2438,7 @@ class PreciosController extends Controller
     dd('Enlace Actualizado');
   }
 
-  public function woocommerce()
+  public function woocommerce1()
     {
         set_time_limit(0);
         $fechaR = date('Y')."-".date('m')."-".date('d');
@@ -2601,6 +2601,112 @@ class PreciosController extends Controller
           // return $productos;
         }
         dd("Terminado");
+        
+    }
+
+    public function woocommerce2()
+    {
+        set_time_limit(0);
+        $fechaR = date('Y')."-".date('m')."-".date('d');
+        $woocommerce = new WooClient(
+          'http://ehstecnologias.com.mx/',
+          'ck_209a05b01fc07d7b4d54c05383b048f9d58c075f',
+          'cs_0ef9dc123f35a8b70a76317e30a598332dcd01c6',
+          [
+            'version' => 'wc/v3',
+          ]
+        );
+        $data['existencias'] = Producto::join('existencias','existencias.clave_ct','=','productos.clave_ct')
+        ->join('woocommerce','woocommerce.clave_ct','=','productos.clave_ct')
+        ->where('productos.estatus','Activo')
+        ->where('productos.existencias','>',0)
+        ->where('existencias.almacen_id', '=', 15)
+        ->get([
+            'productos.nombre',
+            'woocommerce.idWP',
+            'productos.existencias as existencias',
+            'productos.clave_ct'
+        ])
+        ->toArray();
+        //dd(sizeof($data['existencias']));
+        //for ($i = 0; $i < sizeof($data['existencias']); $i++) {
+        for ($i = 0; $i < 1; $i++) {
+          //dd($data['existencias'][$i]['idWP']);
+          if ($data['existencias'][$i]['idWP'] >= 3) {
+            $params = [
+              //'id' => $data['existencias'][$i]['idWP'],
+              'type' => 'external',
+              'external_url' => 'https://api.whatsapp.com/send?phone=2283669400&text=Hola,%20quiero%20solicitar%20la%20cotización%20del%20producto:%20%2A'.$data['existencias'][$i]['nombre'].'%2A%20con%20CLAVE:%20%2A'.$data['existencias'][$i]['clave_ct'].'%2A',
+              'button_text' => 'Consultar existencias con asesor',
+              'stock_quantity' => $data['existencias'][$i]['existencias']
+            ];
+            $data['woocommerce'] = $woocommerce->put('products/'.$data['existencias'][$i]['idWP'],$params);
+          } else {
+            $params = [
+              'id' => $data['existencias'][$i]['idWP'],
+              'type' => 'simple',
+              'external_url' => '',
+              'button_text' => '',
+              'stock_quantity' => $data['existencias'][$i]['existencias']
+            ];
+            $data['woocommerce'] = $woocommerce->put('products/'.$data['existencias'][$i]['idWP'],$params);
+          }
+          
+        }
+        //dd(sizeof($data['existencias']));
+        dd("Terminado");
+    }
+
+    public function woocommerce(){
+      set_time_limit(0);
+        $fechaR = date('Y')."-".date('m')."-".date('d');
+        $texto1 = 'Productos con Imagenes Faltantes -'.$fechaR;
+        $woocommerce = new WooClient(
+          'http://ehstecnologias.com.mx/',
+          'ck_209a05b01fc07d7b4d54c05383b048f9d58c075f',
+          'cs_0ef9dc123f35a8b70a76317e30a598332dcd01c6',
+          [
+            'version' => 'wc/v3',
+            'timeout' => 2000
+          ]
+        );
+        $productos = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+        ->get([
+          'productos.clave_ct'
+        ])
+        ->toArray();
+        // dd(sizeof($productos));
+        // dd($productos);
+        // $params = [
+        //   'per_page'=>100,
+        //   'page'=>9
+        // ];
+        // for ($i = 0; $i < sizeof($productos); $i++) {
+        // dd($productos);
+        for ($i = 0; $i < 200; $i++) {
+          $params = [
+            'sku'=> $productos[$i]['clave_ct'],
+          ];
+          $data['woocommerce']= $woocommerce->get('products',$params);
+          // for ($i = 0; $i < sizeof($data['woocommerce']); $i++) {
+          if(isset($data['woocommerce'][0]->images[0]->src)){
+            $ids = Producto::updateOrCreate(
+            ['clave_ct' => $productos[$i]['clave_ct']],
+            [
+              'enlace'  => $data['woocommerce'][0]->permalink,
+              'imagen' => $data['woocommerce'][0]->images[0]->src,
+            ]
+          );
+          $texto2 = $i. ', '.$productos[$i]['clave_ct']. ', - ACTUALIZADO';
+            Storage::append("imagenes_faltantes.xml", $texto2);
+          }else{
+            $texto2 = $i. ', '.$productos[$i]['clave_ct']. ', - ERROR';
+            Storage::append("imagenes_faltantes.xml", $texto2);
+            // dd($productos[$i]['clave_ct']);
+
+          }
+      }
+        dd("Listo Todos");
     }
 }
 

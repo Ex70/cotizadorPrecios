@@ -171,6 +171,7 @@ Route::get('/wp_promociones_vigentes',[WPController::class, 'wp_promociones_vige
 Route::get('/wp_promociones_vencidas',[WPController::class, 'wp_promociones_vencidas']);
 Route::get('/wp_inventario',[WPController::class, 'wp_inventario']);
 Route::get('/wp_tipos',[WPController::class, 'wp_tipos']);
+Route::get('/wp_nuevos_mes',[WPController::class, 'wp_nuevos_mes']);
 
 Route::get('subir-tops', function () {
     return view('file-upload');

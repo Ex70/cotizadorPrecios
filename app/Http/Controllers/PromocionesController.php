@@ -257,7 +257,7 @@ class PromocionesController extends Controller
             ->toArray();
         $prom2 = $this->paginate($prom2, 20);
         $prom2->withPath('/promociones/flash');
-        return view('cartas.cartas', compact('prom2'));
+        return view('cartas.cartas', compact('prom2'));  
     }
 
     public function paginate($items, $perPage = 20, $page = null){
@@ -274,6 +274,27 @@ class PromocionesController extends Controller
         return (new Response($file, 200))
             ->header('Content-Type', 'image/jpeg');
     }
-  
+
+    public function promocionesWP(){
+        $ct = new CTConnect();
+        $data['productos'] = Prom::where('productos.existencias','>',0)
+            ->where('productos.estatus','Activo')
+            ->get([
+                'productos.clave_ct',
+            ]);
+        // dd($data['productos'][0]['clave_ct']);
+        foreach ($data['productos'] as $key => $row) {
+            $existencias = Existencias::updateOrCreate(
+                ['clave_ct' => $data['productos'][$key]['clave_ct'],
+                'almacen_id' => '15'
+                ],
+                ['clave_ct' => $data['productos'][$key]['clave_ct'],
+                'almacen_id' => '15',
+                'existencias' => $ct->existenciasXalapa($data['productos'][$key]['clave_ct'])]
+            );
+            // dd($existencias);
+        }
+        dd("Terminado");
+    }
 }
 

@@ -35,7 +35,11 @@
 							@foreach ($data['productos'] as $productos)
 								<tr>
 									<td>{{$productos->clave_ct}}</td>
-                                    <td>{{$productos->existencias}}</td>
+									@if (($productos->estatus == 'Activo'))
+										<td>{{$productos->existencias}}</td>
+									@else
+										<td>0</td>
+									@endif
                                     <td></td>
                                     <td></td>
 								</tr>

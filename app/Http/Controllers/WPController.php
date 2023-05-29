@@ -240,7 +240,7 @@ class WPController extends Controller
 
     public function individual(Request $request){
         $clave = $request->clavect;
-        $clave = 'ACCACO050';
+        // $clave = 'ACCACO050';
         set_time_limit(0);
         $data['productos'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
             ->leftJoin('categorias', 'categorias.id', '=', 'productos.categoria_id')
@@ -387,10 +387,10 @@ class WPController extends Controller
         set_time_limit(0);
         $fechaR = date('Y')."-".date('m')."-".date('d');
         $data['productos'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
-            ->where('productos.estatus', '=', 'Activo')
             ->get([
                 'productos.clave_ct',
-                'productos.existencias'
+                'productos.existencias',
+                'productos.estatus'
                 ]);
         $data['titulo'] = "EHS - WP - Inventario - (".$fechaR.")";        
         return view('wp.wp_inventario', compact('data'));

@@ -13,7 +13,7 @@ class Especificacion extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'id_atributo',
+        'atributo_id',
         'valor',
         'clave_ct'
     ];

@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use App\Http\Controllers\PreciosAbasteoController;
 use App\Http\Controllers\CyberPuertaController;
+use App\Models\Atributo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use App\Models\Categoria;
+use App\Models\Especificacion;
 use App\Models\imagenProducto;
 use App\Models\Marca;
 use App\Models\Palabras;
@@ -2707,6 +2709,42 @@ class PreciosController extends Controller
           }
       }
         dd("Listo Todos");
+    }
+
+    public function lecturaAtributos()
+    {
+        set_time_limit(0);
+        $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
+        for ($i = 0; $i < sizeof($productos); $i++) {
+        // for ($i = 0; $i < 10; $i++) {
+            $existencia_producto = 0;
+            if ($productos[$i]['especificaciones'] != null) {
+                // dd($productos[$i]['especificaciones']);
+                for ($h = 0; $h < sizeof($productos[$i]['especificaciones']); $h++) {
+                  // dd($productos[$i]['especificaciones'][$h]['tipo']);
+                  $atributo_nuevo = Atributo::updateOrCreate(
+                    ['nombre' => $productos[$i]['especificaciones'][$h]['tipo']],
+                    [
+                        'nombre' => $productos[$i]['especificaciones'][$h]['tipo']
+                    ]
+                  );
+                  // dd($atributo_nuevo->id);
+                  $especificacion_nueva = Especificacion::updateOrCreate(
+                      ['atributo_id' => $atributo_nuevo->id,
+                       'clave_ct' => $productos[$i]['clave'],
+                       'valor' => $productos[$i]['especificaciones'][$h]['valor']
+                      ],
+                      [
+                        'atributo_id' => $atributo_nuevo->id,
+                        'clave_ct' => $productos[$i]['clave'],
+                        'valor' => $productos[$i]['especificaciones'][$h]['valor']
+                      ]
+                  );
+                }
+                // dd($productos[$i]['especificaciones'][0]['tipo']);
+            }
+        }
+        dd("Archivo cargado");
     }
 }
 

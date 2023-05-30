@@ -27,8 +27,8 @@
 								<tr>
 									<th>SKU</th>
 									<th>Inventario</th>
-                                    <th></th>
-                                    <th></th>
+                                    {{-- <th></th>
+                                    <th></th> --}}
 								</tr>
 							</thead>
 							<tbody>
@@ -40,8 +40,8 @@
 									@else
 										<td>0</td>
 									@endif
-                                    <td></td>
-                                    <td></td>
+                                    {{-- <td></td>
+                                    <td></td> --}}
 								</tr>
 								@endforeach
 							</tbody>
@@ -62,7 +62,7 @@
 			var table = $('#example2').DataTable( {
 				lengthChange: false,
 				buttons: [ 'csv','excel', 'pdf', 'print'],
-				order: [3,'asc'],
+				order: [1,'asc'],
 				pageLength: 50
 			} );
 			table.buttons().container()

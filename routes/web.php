@@ -170,6 +170,9 @@ Route::get('/wp_promociones_faltantes',[WPController::class, 'wp_promociones_fal
 Route::get('/wp_promociones_vigentes',[WPController::class, 'wp_promociones_vigentes']);
 Route::get('/wp_promociones_vencidas',[WPController::class, 'wp_promociones_vencidas']);
 Route::get('/wp_inventario',[WPController::class, 'wp_inventario']);
+Route::get('/wp_inventario_50',[WPController::class, 'wp_inventario_50']);
+Route::get('/wp_precios',[WPController::class, 'wp_precios']);
+Route::get('/wp_precios_50',[WPController::class, 'wp_precios_50']);
 Route::get('/wp_tipos',[WPController::class, 'wp_tipos']);
 Route::get('/wp_nuevos_mes',[WPController::class, 'wp_nuevos_mes']);
 

@@ -116,6 +116,21 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <a class="has-arrow" href="javascript:;">
+                    <div class="parent-icon"><i class='bx bx-message-square-edit'></i>
+                    </div>
+                    <div class="menu-title">Actualizar</div>
+                </a>
+                <ul>
+                    <li> 
+                        <a href="{{ url('/wp_precios') }}"><i class="bx bx-right-arrow-alt"></i>Precios</a>
+                    </li>
+                    <li> 
+                        <a href="{{ url('/wp_inventario') }}"><i class="bx bx-right-arrow-alt"></i>Existencias</a>
+                    </li>
+                </ul>
+            </li>
                 {{-- <li>
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon"><i class='bx bx-message-square-edit'></i>

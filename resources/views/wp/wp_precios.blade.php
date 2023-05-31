@@ -30,7 +30,7 @@
                                     <th>Día en que termina el precio rebajado</th>
                                     <th>Precio rebajado</th>
                                     <th>Precio normal</th>
-                                    <th>Superior</th>
+                                    <th>Posición</th>
 								</tr>
 							</thead>
 							<tbody>

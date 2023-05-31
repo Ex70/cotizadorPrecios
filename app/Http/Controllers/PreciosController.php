@@ -2440,7 +2440,7 @@ class PreciosController extends Controller
     dd('Enlace Actualizado');
   }
 
-  public function woocommerce1()
+  public function woocommerce()
     {
         set_time_limit(0);
         $fechaR = date('Y')."-".date('m')."-".date('d');
@@ -2659,7 +2659,7 @@ class PreciosController extends Controller
         dd("Terminado");
     }
 
-    public function woocommerce(){
+    public function woocommerce1(){
       set_time_limit(0);
         $fechaR = date('Y')."-".date('m')."-".date('d');
         $texto1 = 'Productos con Imagenes Faltantes -'.$fechaR;

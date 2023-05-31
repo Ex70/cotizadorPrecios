@@ -183,19 +183,21 @@ class WoocommerceController extends Controller
             ]
         );
         
-        $params = [
-            'per_page'=>100,
-            'page'=>5
-        ];
-        $data['woocommerce'] = $woocommerce->get('products',$params);
-        for ($i = 0; $i < sizeof($data['woocommerce']); $i++) {
-            $ids = Woocommerce::updateOrCreate(
-                ['idWP' => $data['woocommerce'][$i]->id],
-                [
-                    'idWP' => $data['woocommerce'][$i]->id,
-                    'clave_ct' => $data['woocommerce'][$i]->sku,
-                ]
-            );
+        for ($j = 1; $j < 3; $j++) {
+            $params = [
+                'per_page'=>100,
+                'page'=>$j
+            ];
+            $data['woocommerce'] = $woocommerce->get('products',$params);
+            for ($i = 0; $i < sizeof($data['woocommerce']); $i++) {
+                $ids = Woocommerce::updateOrCreate(
+                    ['idWP' => $data['woocommerce'][$i]->id],
+                    [
+                        'idWP' => $data['woocommerce'][$i]->id,
+                        'clave_ct' => $data['woocommerce'][$i]->sku,
+                    ]
+                );
+            }
         }
         dd("Listo");
     }

@@ -1060,4 +1060,34 @@ public function wp_bloque_videovigilancia(){
         $texto4 = 'Total de productos en landing: ' .$i;
         Storage::append("bloques_promociones.txt", $texto4);
     }
+
+    public function wp_promocion_dia(){
+        set_time_limit(0);
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        $data['productos'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+            ->Join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+            ->Join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
+            ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
+            ->where('productos.estatus', 'Activo')
+            ->whereIN('existencias.almacen_id', [50,53])
+            ->where('existencias.existencias', '>', 0)
+            ->whereDay('promociones.updated_at', date('d'))
+            ->whereMonth('promociones.updated_at', date('m'))
+            ->whereYear('promociones.updated_at', date('Y'))
+            ->get([
+                'productos.clave_ct',
+                'productos.nombre',
+                'existencias.almacen_id as almacen',
+                'margenes_por_producto.margen_utilidad as margen',
+                'promociones.fecha_inicio as inicio',
+                'promociones.fecha_fin as fin',
+                'promociones.descuento as descuento',
+                ]);
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - WP - Productos Xalapa - (".$fechaR.")";
+        // return view('wp.productosXalapa', compact('data'));
+        return view('wp.wp_promociones', compact('data'));
+    }
 }

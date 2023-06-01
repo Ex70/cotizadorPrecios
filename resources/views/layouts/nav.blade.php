@@ -112,13 +112,16 @@
                 </a>
                 <ul>
                     <li> 
-                        <a href="{{ url('/wp_xalapa') }}"><i class="bx bx-right-arrow-alt"></i>Faltantes</a>
+                        <a href="{{ url('/wp_promociones_dia') }}"><i class="bx bx-right-arrow-alt"></i>Nuevas</a>
                     </li>
                     <li> 
-                        <a href="{{ url('/wp_todos') }}"><i class="bx bx-right-arrow-alt"></i>Vigentes</a>
+                        <a href="{{ url('') }}"><i class="bx bx-right-arrow-alt"></i>Faltantes</a>
                     </li>
                     <li> 
-                        <a href="{{ url('/wp_individual') }}"><i class="bx bx-right-arrow-alt"></i>Vencidas</a>
+                        <a href="{{ url('') }}"><i class="bx bx-right-arrow-alt"></i>Vigentes</a>
+                    </li>
+                    <li> 
+                        <a href="{{ url('') }}"><i class="bx bx-right-arrow-alt"></i>Vencidas</a>
                     </li>
                 </ul>
             </li>

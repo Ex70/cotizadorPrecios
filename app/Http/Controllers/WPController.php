@@ -1079,12 +1079,21 @@ public function wp_bloque_videovigilancia(){
             ->get([
                 'productos.clave_ct',
                 'productos.nombre',
+                'productos.descripcion_corta',
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'marcas.nombre as marca',
+                'productos.precio_unitario',
+                'productos.enlace',
+                'productos.imagen',
                 'existencias.almacen_id as almacen',
+                'existencias.existencias as existencias',
                 'margenes_por_producto.margen_utilidad as margen',
                 'promociones.fecha_inicio as inicio',
                 'promociones.fecha_fin as fin',
                 'promociones.descuento as descuento',
                 ]);
+            // dd($data['productos']);
         $fechaR = date('d')."-".date('m')."-".date('Y');
         $data['titulo'] = "EHS - WP - Productos Xalapa - (".$fechaR.")";
         // return view('wp.productosXalapa', compact('data'));

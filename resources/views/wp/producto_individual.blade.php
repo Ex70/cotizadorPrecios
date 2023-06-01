@@ -99,7 +99,7 @@
 										$mes= date('m');
 										$año= date('Y');
 									@endphp
-									<td>{{$fecha_inicio}}</td>
+									<td>{{$fecha_inico}}</td>
 									<td>{{$fecha_fin}}</td>
 									<td>taxable</td>
 									<td>1</td>

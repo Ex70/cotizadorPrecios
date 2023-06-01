@@ -101,8 +101,6 @@ class WPController extends Controller
 
     public function wp_nuevos_mes(){
         set_time_limit(0);
-        $mes = date('m');
-        $año = date('Y');
         $data['productos'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
             ->Join('categorias', 'categorias.id', '=', 'productos.categoria_id')
             ->Join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
@@ -112,8 +110,46 @@ class WPController extends Controller
             ->where('productos.estatus', 'Activo')
             ->whereIN('existencias.almacen_id', [50,53])
             ->where('existencias.existencias', '>', 0)
-            ->whereMonth('productos.created_at', '>=', $mes)
-            ->whereYear('productos.created_at', '>=', $año)
+            ->whereMonth('productos.created_at', date('m'))
+            ->whereYear('productos.created_at', date('Y'))
+            ->get([
+                'productos.clave_ct',
+                'productos.nombre',
+                'productos.descripcion_corta',
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'marcas.nombre as marca',
+                'productos.precio_unitario',
+                'productos.enlace',
+                'productos.imagen',
+                'existencias.almacen_id as almacen',
+                'existencias.existencias as existencias',
+                'margenes_por_producto.margen_utilidad as margen',
+                'promociones.fecha_inicio as inicio',
+                'promociones.fecha_fin as fin',
+                'promociones.descuento as descuento',
+                ]);
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - WP - Productos Xalapa - (".$fechaR.")";
+        // return view('wp.productosXalapa', compact('data'));
+        return view('wp.producto_individual', compact('data'));
+    }
+
+    public function wp_nuevos_dia(){
+        set_time_limit(0);
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        $data['productos'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+            ->Join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+            ->Join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
+            ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
+            ->where('productos.estatus', 'Activo')
+            ->whereIN('existencias.almacen_id', [50,53])
+            ->where('existencias.existencias', '>', 0)
+            ->whereDay('productos.created_at', date('d'))
+            ->whereMonth('productos.created_at', date('m'))
+            ->whereYear('productos.created_at', date('Y'))
             ->get([
                 'productos.clave_ct',
                 'productos.nombre',

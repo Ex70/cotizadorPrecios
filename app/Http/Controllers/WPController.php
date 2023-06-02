@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Categoria;
+use App\Models\Subcategoria;
+use App\Models\Marca;
 
 class WPController extends Controller
 {
@@ -132,7 +135,7 @@ class WPController extends Controller
         $fechaR = date('d')."-".date('m')."-".date('Y');
         $data['titulo'] = "EHS - WP - Productos Xalapa - (".$fechaR.")";
         // return view('wp.productosXalapa', compact('data'));
-        return view('wp.producto_individual', compact('data'));
+        return view('wp.wp_productos', compact('data'));
     }
 
     public function wp_nuevos_dia(){
@@ -170,7 +173,7 @@ class WPController extends Controller
         $fechaR = date('d')."-".date('m')."-".date('Y');
         $data['titulo'] = "EHS - WP - Productos Xalapa - (".$fechaR.")";
         // return view('wp.productosXalapa', compact('data'));
-        return view('wp.producto_individual', compact('data'));
+        return view('wp.wp_productos', compact('data'));
     }
     public function pruebas(){
         set_time_limit(0);
@@ -1098,5 +1101,94 @@ public function wp_bloque_videovigilancia(){
         $data['titulo'] = "EHS - WP - Productos Xalapa - (".$fechaR.")";
         // return view('wp.productosXalapa', compact('data'));
         return view('wp.wp_promociones', compact('data'));
+    }
+
+    public function wp_filtros()
+    {
+        $data['categorias'] = Categoria::distinct('nombre')->where('nombre','not like',"% - 2%")->orderBy('nombre')->get();
+        $data['subcategorias'] = Subcategoria::distinct('nombre')->orderBy('nombre')->get();
+        $data['marcas'] = Marca::distinct('nombre')->orderBy('nombre')->get();
+        $data['productos'] = '';
+        return view('wp.wp_filtros_productos', compact('data'));
+    }
+
+    public function wp_productos_filtros(Request $request){
+        $test = $request->get('filtro1');
+        $test2 = $request->get('filtro2');
+        $test3 = $request->get('filtro3');
+        // dd($test2);
+        // $test = 10;
+        // $test2 = 27;
+        // $test3 = 98;
+        if ($test3 == 'z') {
+            $data['productos'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+            ->Join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+            ->Join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
+            ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
+            ->where('productos.estatus', 'Activo')
+            ->whereIN('existencias.almacen_id', [50,53])
+            ->where('existencias.existencias', '>', 0)
+            ->whereNotIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
+            ->where('productos.categoria_id', '=', $test)
+            ->where('productos.subcategoria_id', '=', $test2)
+            ->get([
+                'productos.clave_ct',
+                'productos.nombre',
+                'productos.descripcion_corta',
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'marcas.nombre as marca',
+                'productos.precio_unitario',
+                'productos.enlace',
+                'productos.imagen',
+                'existencias.almacen_id as almacen',
+                'existencias.existencias as existencias',
+                'margenes_por_producto.margen_utilidad as margen',
+                'promociones.fecha_inicio as inicio',
+                'promociones.fecha_fin as fin',
+                'promociones.descuento as descuento',
+                ]);
+        } else {
+            $data['productos'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+            ->Join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+            ->Join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
+            ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
+            ->where('productos.estatus', 'Activo')
+            ->whereIN('existencias.almacen_id', [50])
+            ->where('existencias.existencias', '>', 0)
+            ->whereNotIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
+            ->where('productos.categoria_id', '=', $test)
+            ->where('productos.subcategoria_id', '=', $test2)
+            ->where('productos.marca_id', '=', $test3)
+            ->get([
+                'productos.clave_ct',
+                'productos.nombre',
+                'productos.descripcion_corta',
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'marcas.nombre as marca',
+                'productos.precio_unitario',
+                'productos.enlace',
+                'productos.imagen',
+                'existencias.almacen_id as almacen',
+                'existencias.existencias as existencias',
+                'margenes_por_producto.margen_utilidad as margen',
+                'promociones.fecha_inicio as inicio',
+                'promociones.fecha_fin as fin',
+                'promociones.descuento as descuento',
+                ]);
+        }
+            // dd($data['productos']);
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - WP - Productos por Categoria - (".$fechaR.")";
+        $data['categorias'] = Categoria::distinct('nombre')->where('nombre','not like',"% - 2%")->orderBy('nombre')->get();
+        $data['marcas'] = Marca::distinct('nombre')->orderBy('nombre')->get();
+        $data['subcategorias'] = Subcategoria::distinct('nombre')->orderBy('nombre')->get();
+        // return view('wp.productosXalapa', compact('data'));
+        return view('wp.wp_filtros_productos', compact('data'));
     }
 }

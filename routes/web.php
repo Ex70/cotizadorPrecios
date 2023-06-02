@@ -179,6 +179,9 @@ Route::get('/wp_nuevos_mes',[WPController::class, 'wp_nuevos_mes']);
 Route::get('/wp_nuevos_dia',[WPController::class, 'wp_nuevos_dia']);
 Route::get('/wp_bloques',[WPController::class, 'wp_bloque_promociones']);
 Route::get('/wp_promociones_dia',[WPController::class, 'wp_promocion_dia']);
+Route::get('/wp_filtros',[WPController::class, 'wp_filtros']);
+Route::post('/wp_productos_filtros', [WPController::class, 'wp_productos_filtros']);
+
 
 
 Route::get('subir-tops', function () {

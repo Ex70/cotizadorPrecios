@@ -87,12 +87,13 @@
                         <div class="menu-title">Productos</div>
                     </a>
                     <ul>
-                        <li> 
+                        {{-- <li> 
                             <a href="{{ url('/wp_xalapa') }}"><i class="bx bx-right-arrow-alt"></i>Xalapa</a>
                         </li>
                         <li> 
                             <a href="{{ url('/wp_todos') }}"><i class="bx bx-right-arrow-alt"></i>Otros Almacenes</a>
-                        </li>
+                        </li> --}}
+                        
                         <li> 
                             <a href="{{ url('/wp_nuevos_dia') }}"><i class="bx bx-right-arrow-alt"></i>Nuevos del Día</a>
                         </li>
@@ -101,6 +102,9 @@
                         </li>
                         <li> 
                             <a href="{{ url('/wp_individual') }}"><i class="bx bx-right-arrow-alt"></i>Producto Individual</a>
+                        </li>
+                        <li> 
+                            <a href="{{ url('/wp_filtros') }}"><i class="bx bx-right-arrow-alt"></i>Productos por Filtros</a>
                         </li>
                     </ul>
                 </li>
@@ -137,6 +141,9 @@
                     </li>
                     <li> 
                         <a href="{{ url('/wp_inventario') }}"><i class="bx bx-right-arrow-alt"></i>Existencias</a>
+                    </li>
+                    <li> 
+                        <a href="{{ url('/wp_bloques') }}"><i class="bx bx-right-arrow-alt"></i>Landing</a>
                     </li>
                 </ul>
             </li>

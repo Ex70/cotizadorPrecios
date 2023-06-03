@@ -119,7 +119,7 @@
                         <a href="{{ url('/wp_promociones_dia') }}"><i class="bx bx-right-arrow-alt"></i>Nuevas</a>
                     </li>
                     <li> 
-                        <a href="{{ url('') }}"><i class="bx bx-right-arrow-alt"></i>Faltantes</a>
+                        <a href="{{ url('wp_promociones_faltantes') }}"><i class="bx bx-right-arrow-alt"></i>Faltantes en WP</a>
                     </li>
                     <li> 
                         <a href="{{ url('') }}"><i class="bx bx-right-arrow-alt"></i>Vigentes</a>

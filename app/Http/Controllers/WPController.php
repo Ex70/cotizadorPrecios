@@ -47,7 +47,6 @@ class WPController extends Controller
                     'promociones.descuento as descuento'
                 ]
             );
-        $data['met'] = 1;
         $fechaR = date('d')."-".date('m')."-".date('Y');
         $data['titulo'] = "EHS - WP - Productos Xalapa - (".$fechaR.")";
         return view('wp.productosXalapa', compact('data'));
@@ -62,20 +61,14 @@ class WPController extends Controller
                 ->leftJoin('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
                 ->leftJoin('marcas', 'marcas.id', '=', 'productos.marca_id')
                 ->leftjoin('promociones', 'promociones.clave_ct', 'productos.clave_ct')
-                ->whereNotIn('productos.clave_ct',  Producto::join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
-                    ->where('productos.estatus', 'Activo')
-                    ->where('existencias.almacen_id', '=', 50)
-                    ->where('existencias.existencias', '>', 0)
-                    ->get(
-                        'productos.clave_ct'
-                    )
-                )
+                ->where('productos.estatus', 'Activo')
+                ->where('existencias.almacen_id', '=', 53)
+                ->where('existencias.existencias', '>', 0)
                 // ->where('productos.estatus', 'Activo')
                 // ->where('productos.existencias', '>', 0)
                 // ->whereMonth('productos.created_at', '>=', '03')
                 // ->whereYear('productos.created_at', '=', '2023')
                 // ->whereIn('productos.clave_ct', [])
-                ->groupBy('clave_ct')
                 ->get(
                     [
                     'productos.clave_ct',
@@ -96,7 +89,6 @@ class WPController extends Controller
                 ]
             );
            //dd(count($data['productos']));
-        $data['met'] = 2;
         $fechaR = date('d')."-".date('m')."-".date('Y');
         $data['titulo'] = "EHS - WP - Productos Todos los Almacenes - (".$fechaR.")";
         return view('wp.productosXalapa', compact('data'));
@@ -111,7 +103,7 @@ class WPController extends Controller
             ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
             ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->where('productos.estatus', 'Activo')
-            ->whereIN('existencias.almacen_id', [50,53])
+            ->whereIN('existencias.almacen_id', [50])
             ->where('existencias.existencias', '>', 0)
             ->whereMonth('productos.created_at', date('m'))
             ->whereYear('productos.created_at', date('Y'))
@@ -148,7 +140,7 @@ class WPController extends Controller
             ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
             ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->where('productos.estatus', 'Activo')
-            ->whereIN('existencias.almacen_id', [50,53])
+            ->whereIN('existencias.almacen_id', [50])
             ->where('existencias.existencias', '>', 0)
             ->whereDay('productos.created_at', date('d'))
             ->whereMonth('productos.created_at', date('m'))
@@ -184,7 +176,7 @@ class WPController extends Controller
             ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
             ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->where('productos.estatus', 'Activo')
-            ->whereIN('existencias.almacen_id', [50,53])
+            ->whereIN('existencias.almacen_id', [50])
             ->where('existencias.existencias', '>', 0)
             ->get([
                 'productos.clave_ct',
@@ -271,7 +263,7 @@ class WPController extends Controller
             ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
             ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->where('productos.estatus', 'Activo')
-            ->whereIN('existencias.almacen_id', [50,53])
+            ->whereIN('existencias.almacen_id', [50])
             ->where('existencias.existencias', '>', 0)
             ->where('productos.clave_ct', '=', $clave)
             ->get([
@@ -295,7 +287,6 @@ class WPController extends Controller
             // dd($data['productos']);
             if ($request->has('clavect')) {
             }
-        $data['met'] = 1;
         $fechaR = date('d')."-".date('m')."-".date('Y');
         $data['titulo'] = "EHS - WP - Producto ".$clave." - (".$fechaR.")";
         return view('wp.producto_individual', compact('data'));
@@ -305,7 +296,7 @@ class WPController extends Controller
         set_time_limit(0);
         $data['productos'] = Producto::where('productos.estatus', 'Activo')
                 ->where('productos.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',[])
+                ->whereIn('productos.clave_ct',['IMPXRX2270', 'IMPXRX2290', 'NBKAPC1620', 'NBKVIC720', 'NBKAPC2010', 'ACCPOL630', 'NBKAPC2020', 'IMPXRX2490', 'NBKAPC2030', 'NBKAPC2480', 'NBKAPC1940', 'MALSTY020', 'ACCPOL240', 'MALSTY010', 'IMPXRX2520', 'BATAPC110', 'NBKAPC2430', 'IMPXRX2570', 'IMPXRX2660', 'MALSTY040', 'IMPXRX2230', 'IMPXRX2560', 'ACCMST4240', 'NBKAPC1950', 'MALGEN3670', 'NBKAPC2530', 'IMPXRX2550', 'MOUMST1660', 'NBKAPC1960', 'NBKDTS500', 'BOCMST3130', 'IMPXRX2580', 'ACCSTY360', 'IMPXRX2590', 'IMPXRX2650', 'BOCMST3480', 'ACCMST4370', 'BOCSTY440', 'BOCSTY430', 'BOCMST3270', 'TARMER030', 'NBKAPC1690', 'TELPAN130', 'ACCSTY330', 'IMPXRX2610', 'SOFEST2070', 'TELPAN050', 'IMPXRX2600', 'TELPAN120', 'SOFEST2080', 'NBKAPC1820', 'SOFNRT1620', 'ACCMST4130', 'TELPAN055', 'NBKAPC420', 'SOFNRT1600', 'SOFNRT1610', 'SOFBIT1360', 'SOFNRT1630', 'ACCHIG080', 'TELPAN105', 'ACCPTS1060', 'BOCMST250', 'BOCHIG140', 'SOFEST2100', 'SOFEST2090', 'ACCMST1700', 'ACCPTS1020', 'TARMER010', 'NBKAPC600', 'NBKAPC1980', 'NBKAPC2270', 'IMPXRX2620', 'NBKAPC1460', 'ACCHPE2730', 'ACCMST4270', 'BATAPC030', 'ACCAPC080', 'NBKCYP750', 'NBKQIA010', 'ACCAPC150', 'REGAPC030', 'NBKCYP960', 'BATAPC620', 'BATAPC240', 'NBKAPC2170', 'BATAPC180', 'IMPEPS3270', 'DDUHPE880', 'SWTARU210', 'SWTARU190', 'STOHPE610', 'ACCARU280', 'NBKAPC1450', 'NBKAPC2260', 'NBKAPC2130', 'SWTARU150', 'BATAPC340', 'NBKAPC2050', 'PANHSE1430', 'PLOEPS240', 'PLOEPS260', 'SCAEPS780'])
                 //->where('productos.clave_ct', '=', '')
                 // ->groupBy('clave_ct')
                 // ->take(1)
@@ -327,82 +318,38 @@ class WPController extends Controller
     public function wp_promociones_faltantes(){
         set_time_limit(0);
         $fecha = date('Y')."-".date('m')."-".date('d');
-        $data['xalapa'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct') 
-            ->join('categorias', 'categorias.id', '=', 'productos.categoria_id')
-        // $data['productos'] = Producto::join('categorias', 'categorias.id', '=', 'productos.categoria_id')
-                ->join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
-                ->join('marcas', 'marcas.id', '=', 'productos.marca_id')
-                ->join('promociones', 'promociones.clave_ct', 'productos.clave_ct')
-                ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
-                ->where('productos.estatus', 'Activo')
-                ->where('existencias.almacen_id', '=', 50)
-                ->where('productos.existencias', '>', 0)
-                ->whereDay('promociones.updated_at', '=', 18)
-                ->whereNotIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
-                ->groupBy('clave_ct')
-                ->get(
-                    [
-                    'productos.clave_ct',
-                    'productos.nombre',
-                    'productos.descripcion_corta',
-                    'categorias.nombre as categoria',
-                    'subcategorias.nombre as subcategoria',
-                    'marcas.nombre as marca',
-                    'productos.precio_unitario',
-                    'productos.enlace',
-                    'productos.imagen',
-                    'productos.precio_unitario',
-                    'existencias.almacen_id as almacen',
-                    'existencias.existencias as existencias',
-                    'margenes_por_producto.margen_utilidad as margen',
-                    'promociones.fecha_inicio as inicio',
-                    'promociones.fecha_fin as fin',
-                    'promociones.descuento as descuento',
-                ]
-                    );
-
-        $data['resto'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct') 
-            ->join('categorias', 'categorias.id', '=', 'productos.categoria_id')
-        // $data['productos'] = Producto::join('categorias', 'categorias.id', '=', 'productos.categoria_id')
-                ->join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
-                ->join('marcas', 'marcas.id', '=', 'productos.marca_id')
-                ->join('promociones', 'promociones.clave_ct', 'productos.clave_ct')
-                ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
-                ->where('productos.estatus', 'Activo')
-                ->where('existencias.almacen_id', '=', 53)
-                ->whereDay('promociones.updated_at', '=', 18)
-                ->whereNotIn('productos.clave_ct',  Producto::join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
-                    // ->where('productos.estatus', 'Activo')
-                    ->where('existencias.almacen_id', '=', 50)
-                    ->where('existencias.existencias', '>', 0)
-                    ->get(
-                        'productos.clave_ct'
-                    )
-                )
-                // ->where('productos.existencias', '>', 0)
-                ->whereNotIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
-                ->groupBy('clave_ct')
-                ->get(
-                    [
-                    'productos.clave_ct',
-                    'productos.nombre',
-                    'productos.descripcion_corta',
-                    'categorias.nombre as categoria',
-                    'subcategorias.nombre as subcategoria',
-                    'marcas.nombre as marca',
-                    'productos.precio_unitario',
-                    'productos.enlace',
-                    'productos.imagen',
-                    'productos.precio_unitario',
-                    'existencias.almacen_id as almacen',
-                    'existencias.existencias as existencias',
-                    'margenes_por_producto.margen_utilidad as margen',
-                    'promociones.fecha_inicio as inicio',
-                    'promociones.fecha_fin as fin',
-                    'promociones.descuento as descuento',
-                ]
-                    );
-        return view('wp.prueba', compact('data'));
+        $data['productos'] = Producto::rightJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+            ->Join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+            ->Join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
+            ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
+            ->where('productos.estatus', 'Activo')
+            ->whereIN('existencias.almacen_id', [50])
+            ->where('existencias.existencias', '>', 0)
+            // ->whereDay('promociones.updated_at', date('d'))
+            ->whereMonth('promociones.updated_at', date('m'))
+            ->whereYear('promociones.updated_at', date('Y'))
+            ->whereNotIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
+            ->get([
+                'productos.clave_ct',
+                'productos.nombre',
+                'productos.descripcion_corta',
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'marcas.nombre as marca',
+                'productos.precio_unitario',
+                'productos.enlace',
+                'productos.imagen',
+                'existencias.almacen_id as almacen',
+                'existencias.existencias as existencias',
+                'margenes_por_producto.margen_utilidad as margen',
+                'promociones.fecha_inicio as inicio',
+                'promociones.fecha_fin as fin',
+                'promociones.descuento as descuento',
+                ]);
+        $data['titulo'] = "EHS - WP - Promociones Faltantes - (".$fecha.")";
+        return view('wp.wp_productos', compact('data'));
         }
 
     public function wp_inventario(){
@@ -488,7 +435,7 @@ class WPController extends Controller
             ->leftJoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
             ->where('productos.clave_ct', '!=' , '')
-            ->whereIn('existencias.almacen_id', [50, 53])
+            ->whereIn('existencias.almacen_id', [50])
             ->where('existencias.existencias', '>', 0)
             ->get([
                 'productos.clave_ct',
@@ -1067,18 +1014,19 @@ public function wp_bloque_videovigilancia(){
     public function wp_promocion_dia(){
         set_time_limit(0);
         $fecha = date('Y')."-".date('m')."-".date('d');
-        $data['productos'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+        $data['productos'] = Producto::rightJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
             ->Join('categorias', 'categorias.id', '=', 'productos.categoria_id')
             ->Join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
             ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->where('productos.estatus', 'Activo')
-            ->whereIN('existencias.almacen_id', [50,53])
+            ->whereIN('existencias.almacen_id', [50])
             ->where('existencias.existencias', '>', 0)
             ->whereDay('promociones.updated_at', date('d'))
             ->whereMonth('promociones.updated_at', date('m'))
             ->whereYear('promociones.updated_at', date('Y'))
+            ->whereIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
             ->get([
                 'productos.clave_ct',
                 'productos.nombre',
@@ -1098,7 +1046,7 @@ public function wp_bloque_videovigilancia(){
                 ]);
             // dd($data['productos']);
         $fechaR = date('d')."-".date('m')."-".date('Y');
-        $data['titulo'] = "EHS - WP - Productos Xalapa - (".$fechaR.")";
+        $data['titulo'] = "EHS - WP - Promociones - (".$fechaR.")";
         // return view('wp.productosXalapa', compact('data'));
         return view('wp.wp_promociones', compact('data'));
     }
@@ -1128,7 +1076,7 @@ public function wp_bloque_videovigilancia(){
             ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
             ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->where('productos.estatus', 'Activo')
-            ->whereIN('existencias.almacen_id', [50,53])
+            ->whereIN('existencias.almacen_id', [50])
             ->where('existencias.existencias', '>', 0)
             ->whereNotIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
             ->where('productos.categoria_id', '=', $test)

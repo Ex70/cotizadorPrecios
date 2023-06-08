@@ -265,6 +265,7 @@ class WPController extends Controller
             ->where('productos.estatus', 'Activo')
             ->whereIN('existencias.almacen_id', [50])
             ->where('existencias.existencias', '>', 0)
+            // ->where('productos.existencias', '>', 0)
             ->where('productos.clave_ct', '=', $clave)
             ->get([
                 'productos.clave_ct',
@@ -277,7 +278,8 @@ class WPController extends Controller
                 'productos.enlace',
                 'productos.imagen',
                 'existencias.almacen_id as almacen',
-                'existencias.existencias as existencias',
+                // 'existencias.existencias as existencias',
+                'productos.existencias as existencias',
                 'margenes_por_producto.margen_utilidad as margen',
                 'promociones.fecha_inicio as inicio',
                 'promociones.fecha_fin as fin',
@@ -426,7 +428,7 @@ class WPController extends Controller
         return view('wp.wp_inventario', compact('data'));
     }
 
-    public function wp_precios(){
+    public function wp_promociones_vigentes(){
         set_time_limit(0);
         $fechaR = date('Y')."-".date('m')."-".date('d');
         // dd('Bien');
@@ -435,8 +437,9 @@ class WPController extends Controller
             ->leftJoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
             ->where('productos.clave_ct', '!=' , '')
-            ->whereIn('existencias.almacen_id', [50])
+            ->whereIn('existencias.almacen_id', [50,53])
             ->where('existencias.existencias', '>', 0)
+            ->where('promociones.fecha_fin', '>=', $fechaR)
             ->get([
                 'productos.clave_ct',
                 'productos.precio_unitario',
@@ -449,31 +452,7 @@ class WPController extends Controller
                 ]);
         // dd('Bien');
         $data['titulo'] = "EHS - WP - Precios - (".$fechaR.")";        
-        return view('wp.wp_precios', compact('data'));
-    }
-
-    public function wp_precios_50(){
-        set_time_limit(0);
-        $fechaR = date('Y')."-".date('m')."-".date('d');
-        $data['productos'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
-            ->leftjoin('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
-            ->leftJoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
-            ->leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
-            ->where('productos.clave_ct', '!=' , '')
-            ->where('existencias.almacen_id', '=', 50)
-            ->groupBy('clave_ct')
-            ->get([
-                'productos.clave_ct',
-                'productos.precio_unitario',
-                'existencias.almacen_id as almacen',
-                'margenes_por_producto.margen_utilidad as margen',
-                'promociones.fecha_inicio as inicio',
-                'promociones.fecha_fin as fin',
-                'promociones.descuento as descuento',
-                ]);
-        // dd('Bien');
-        $data['titulo'] = "EHS - WP - Inventario - (".$fechaR.")";        
-        return view('wp.wp_precios', compact('data'));
+        return view('wp.wp_promociones', compact('data'));
     }
 
     public function wp_bloque_promociones(){
@@ -1023,7 +1002,7 @@ public function wp_bloque_videovigilancia(){
             ->where('productos.estatus', 'Activo')
             ->whereIN('existencias.almacen_id', [50])
             ->where('existencias.existencias', '>', 0)
-            ->whereDay('promociones.updated_at', date('d'))
+            // ->whereDay('promociones.updated_at', date('d'))
             ->whereMonth('promociones.updated_at', date('m'))
             ->whereYear('promociones.updated_at', date('Y'))
             ->whereIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
@@ -1138,5 +1117,29 @@ public function wp_bloque_videovigilancia(){
         $data['subcategorias'] = Subcategoria::distinct('nombre')->orderBy('nombre')->get();
         // return view('wp.productosXalapa', compact('data'));
         return view('wp.wp_filtros_productos', compact('data'));
+    }
+
+    public function wp_precios(){
+        set_time_limit(0);
+        $fechaR = date('Y')."-".date('m')."-".date('d');
+        // dd('Bien');
+        $data['productos'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+            ->join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+            ->where('productos.clave_ct', '!=' , '')
+            ->whereIn('existencias.almacen_id', [50])
+            ->where('productos.existencias', '>=', 0)
+            // ->where('productos.estatus', 'Activo')
+            // ->where('promociones.fecha_fin', '>=', $fechaR)
+            ->get([
+                'productos.clave_ct',
+                'productos.precio_unitario',
+                // 'existencias.almacen_id as almacen',
+                'productos.existencias as existencias',
+                'margenes_por_producto.margen_utilidad as margen',
+                ]);
+        // dd('Bien');
+        $data['titulo'] = "EHS - WP - Precios - (".$fechaR.")";        
+        return view('wp.wp_precios', compact('data'));
     }
 }

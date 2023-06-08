@@ -26,73 +26,32 @@
 							<thead>
 								<tr>
 									<th>SKU</th>
-									<th>Día en que empieza el precio rebajado</th>
+									{{-- <th>Día en que empieza el precio rebajado</th>
                                     <th>Día en que termina el precio rebajado</th>
-                                    <th>Precio rebajado</th>
+                                    <th>Precio rebajado</th> --}}
+									<th>Inventario</th>
                                     <th>Precio normal</th>
-                                    <th>Posición</th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
 							@foreach ($data['productos'] as $productos)
 								<tr>
 									<td>{{$productos->clave_ct}}</td>
-                                    @php
-                                    $fechaR = date('Y')."-".date('m')."-".date('d');
-										if(isset($productos->inicio)){
-                                            if (($productos->fin) >= $fechaR) {
-                                                $fecha_inico = Carbon\Carbon::createFromFormat('Y-m-d',($productos->inicio))
-											    ->format('d/m/Y 00:00:00');
-											    $fecha_fin = Carbon\Carbon::createFromFormat('Y-m-d',($productos->fin))
-											    ->format('d/m/Y 11:59:59');
-											    $fecha_inico = $fecha_inico.' a. m.';
-											    $fecha_fin = $fecha_fin.' p. m.';
-                                                }
-										}else{
-											$fecha_inico = '';
-											$fecha_fin = '';
-										}
-										$mes= date('m');
-										$año= date('Y');
-									@endphp
-									<td>{{$fecha_inico}}</td>
-									<td>{{$fecha_fin}}</td>
+									<td>{{$productos->existencias}}</td>
                                     @php
 										if(isset($productos->margen)){
-											if(isset($productos->descuento)){
-												$precio_rebajado = round(((($productos->precio_unitario)*(($productos->margen)+1))*((100-($productos->descuento))/100)),2);
 												$precio_normal= round((($productos->precio_unitario)*(($productos->margen)+1)),2);
-											}else{
-												$precio_rebajado = '';
-												$precio_normal= round((($productos->precio_unitario)*(($productos->margen)+1)),2);
-											}
 										}else{
-											if(isset($productos->descuento)){
-												$precio_rebajado = round((($productos->precio_unitario)*(1.10)*((100-($productos->descuento))/100)),2);
 												$precio_normal= round((($productos->precio_unitario)*(1.10)),2);
-											}else{
-												$precio_rebajado = '';
-												$precio_normal= round((($productos->precio_unitario)*(1.10)),2);
-											}
 										}
-										// $precio_final = round((($productos->precio_unitario)*(1.10)),2)
-										// $precio_final = round((($productos->precio_unitario)*(($productos->margen)+1)),2)
+										// if (($productos->almacen) == 50) {
+										// }else{
+										// 	$precio_normal = $precio_normal+100;
+										// }
 									@endphp
-									<td>{{$precio_rebajado}}</td> 
 									<td>{{$precio_normal}}</td> 
-                                    @if (($productos->almacen) == 50)
-										@if(($productos->existencias) >= 1)
-											@if (isset($productos->descuento))
-												<td>1</td>
-											@else
-												<td>2</td>
-											@endif
-										@else
-											<td>3</td>
-										@endif
-									@else
-										<td>3</td>
-									@endif
+									<td></td>
 								</tr>
 								@endforeach
 							</tbody>

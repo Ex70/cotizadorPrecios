@@ -183,7 +183,7 @@ class WoocommerceController extends Controller
             ]
         );
         
-        for ($j = 1; $j < 3; $j++) {
+        for ($j = 1; $j < 10; $j++) {
             $params = [
                 'per_page'=>100,
                 'page'=>$j

@@ -85,22 +85,22 @@
 									<td>{{$productos->descripcion_corta}}</td>
 									<td>{{$productos->descripcion_corta}}</td>
 									@php
-										if(isset($productos->inicio)){
-											$fecha_inico = Carbon\Carbon::createFromFormat('Y-m-d',($productos->inicio))
-											->format('d/m/Y 00:00:00');
-											$fecha_fin = Carbon\Carbon::createFromFormat('Y-m-d',($productos->fin))
-											->format('d/m/Y 11:59:59');
-											$fecha_inico = $fecha_inico.' a. m.';
-											$fecha_fin = $fecha_fin.' p. m.';
-										}else{
-											$fecha_inico = '';
-											$fecha_fin = '';
-										}
+										// if(isset($productos->inicio)){
+										// 	$fecha_inico = Carbon\Carbon::createFromFormat('Y-m-d',($productos->inicio))
+										// 	->format('d/m/Y 00:00:00');
+										// 	$fecha_fin = Carbon\Carbon::createFromFormat('Y-m-d',($productos->fin))
+										// 	->format('d/m/Y 11:59:59');
+										// 	$fecha_inico = $fecha_inico.' a. m.';
+										// 	$fecha_fin = $fecha_fin.' p. m.';
+										// }else{
+										// 	$fecha_inico = '';
+										// 	$fecha_fin = '';
+										// }
 										$mes= date('m');
 										$año= date('Y');
 									@endphp
-									<td>{{$fecha_inico}}</td>
-									<td>{{$fecha_fin}}</td>
+									<td>{{$productos->inicio}}</td>
+									<td>{{$$productos->fin}}</td>
 									<td>taxable</td>
 									<td>1</td>
 									{{-- @if ($data['met'] == 1) --}}
@@ -133,6 +133,11 @@
 												$precio_rebajado = '';
 												$precio_normal= round((($productos->precio_unitario)*(1.10)),2);
 											}
+										}
+										if (($productos->almacen) == 50) {
+										}else{
+											$precio_rebajado = $precio_rebajado+100;
+											$precio_normal = $precio_normal+100
 										}
 										// $precio_final = round((($productos->precio_unitario)*(1.10)),2)
 										// $precio_final = round((($productos->precio_unitario)*(($productos->margen)+1)),2)

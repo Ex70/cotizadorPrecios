@@ -2507,153 +2507,59 @@ class PreciosController extends Controller
         set_time_limit(0);
         $fechaR = date('Y')."-".date('m')."-".date('d');
         $woocommerce = new WooClient(
-          'http://ehstecnologias.com.mx/',
+          'https://www.ehstecnologias.com.mx/',
           'ck_209a05b01fc07d7b4d54c05383b048f9d58c075f',
           'cs_0ef9dc123f35a8b70a76317e30a598332dcd01c6',
           [
             'version' => 'wc/v3',
-            'timeout' => 800
+            'timeout' => 800,
+            'query_string_auth' => true,
+            'verify_ssl' => false
           ]
         );
-        // $params = [
-        //   'per_page'=>100,
-        //   'page'=>3
-        // ];
-        // $data['woocommerce'] = $woocommerce->get('products',$params);
-        // for ($i = 0; $i < sizeof($data['woocommerce']); $i++) {
-        //   $ids = Woocommerce::updateOrCreate(
-        //     ['idWP' => $data['woocommerce'][$i]->id],
-        //     [
-        //       'idWP' => $data['woocommerce'][$i]->id,
-        //       'clave_ct' => $data['woocommerce'][$i]->sku,
-        //     ]
-        //   );
-        // }
-        // dd("Listo");
         $apiCT = new CTConnect();
-        // PARA PRODUCTOS CON PROMOCIÓN
-        // $data['promociones'] = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
-        //   ->join('woocommerce','woocommerce.clave_ct','=','promociones.clave_ct')
-        //   ->join('margenes_por_producto','margenes_por_producto.clave_ct','=','promociones.clave_ct')
-        //   ->where('productos.estatus','Activo')
-        //   ->where('productos.existencias','>',0)
-        //   ->where('promociones.updated_at','>=',$fechaR)
-        //   ->orderBy('productos.id')
-        //   ->get([
-        //       'woocommerce.idWP',
-        //       'promociones.clave_ct'
-        //   ]
-        // );
-        $data['promociones'] = Promocion::join('productos','productos.clave_ct','=','promociones.clave_ct')
-          ->join('woocommerce','woocommerce.clave_ct','=','promociones.clave_ct')
-          ->join('margenes_por_producto','margenes_por_producto.clave_ct','=','promociones.clave_ct')
-          ->where('productos.estatus','Activo')
-          ->where('productos.existencias','>',0)
-          // ->where('productos.categoria_id', 621)
-          // ->where('productos.subcategoria_id', 793)
-          // ->where('productos.marca_id', 30)
-          // ->where('promociones.updated_at','>=',$fechaR)
-          ->orderBy('productos.id')
-          ->get([
-              // 'woocommerce.idWP',
-              'productos.precio_unitario',
-              'margenes_por_producto.margen_utilidad',
-              'promociones.clave_ct',
-              'promociones.descuento',
-              'promociones.fecha_inicio',
-              'promociones.fecha_fin'
-          ]
-        );
-
         // PARA LOS PRODUCTOS EN WOOCOMMERCE
-        // $data['productos'] = Woocommerce::Join('productos', 'productos.clave_ct', '=', 'woocommerce.clave_ct')
-        //   ->leftJoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
-        //   ->join('margenes_por_producto','margenes_por_producto.clave_ct','=','woocommerce.clave_ct')
-        //   ->where('productos.estatus', 'Activo')
-        //   ->whereNull('promociones.clave_ct')
-        //   // ->where('productos.categoria_id', 610)
-        //   // ->where('productos.subcategoria_id', 157)
-        //   // ->where('productos.marca_id', 6)
-        //   // ->where('existencias.almacen_id', '=', 15)
-        //   // ->where('productos.existencias', '>', 0)
-        //   // ->where('productos.clave_ct', 'SWTARU160')
-        //   // ->where('woocommerce.precio_venta', '>', 0)
-        //   // ->skip(90)
-        //   // ->take(10)
-        //   ->get(
-        //       [
-        //       'woocommerce.idWP',
-        //       'productos.clave_ct',
-        //       'woocommerce.precio_venta',
-        //       'woocommerce.precio_venta_rebajado',
-        //       'woocommerce.fecha_inicio',
-        //       'woocommerce.fecha_fin',
-        //       'productos.precio_unitario',
-        //       'margenes_por_producto.margen_utilidad'
-        //   ]
-        // );
         $data['productos'] = Woocommerce::Join('productos', 'productos.clave_ct', '=', 'woocommerce.clave_ct')
+          ->Join('promociones', 'woocommerce.clave_ct', '=', 'promociones.clave_ct')
           ->where('productos.estatus', 'Activo')
+          // ->where('productos.categoria_id', 610)
+          // ->where('productos.subcategoria_id', 157)
+          // ->where('productos.marca_id', 6)
+          // ->where('existencias.almacen_id', '=', 15)
+          ->where('productos.existencias', '>', 0)
+          ->whereMonth('promociones.updated_at', date('m'))
+          ->whereDay('promociones.updated_at', date('d'))
+          // ->where('productos.clave_ct', 'CPUDEL9350')
+          // ->where('woocommerce.precio_venta', '>', 0)
+          // ->skip(90)
+          // ->take(10)
+          ->orderBy('woocommerce.id','ASC')
           ->get(
               [
               'woocommerce.idWP',
               'productos.clave_ct',
+              'productos.existencias',
+              'woocommerce.precio_venta',
+              'woocommerce.precio_venta_rebajado',
+              'woocommerce.fecha_inicio',
+              'woocommerce.fecha_fin',
+              'productos.precio_unitario',
           ]
         );
-        // dd(count($data['promociones']));
-        // dd(sizeof($data['productos']));
-        // dd($data['promociones'][0]['clave_ct']);
+        // dd(count($data['productos']));
         for ($i = 0; $i < sizeof($data['productos']); $i++) {
-          dd($data['productos'][$i]['clave_ct']);
-        // for ($i = 0; $i < sizeof($data['promociones']); $i++) {
-          // for ($i = 0; $i < 1; $i++) {
-        // for ($i = 0; $i < sizeof($data['promociones']); $i++) {
-        // for ($i = 0; $i < 1; $i++) {
-          // $existencias = $apiCT->existenciaProductoWP($data['promociones'][$i]['clave_ct']);
-          // // $existencias = $apiCT->existenciaProductoWP($data['promociones'][$i]['clave_ct']);
-          // // $existencias = $apiCT->existenciaProductoWP("MEMKGN2290");
-          // if($existencias==0){
-          //   continue;
-          // }
-          // $precios = $apiCT->preciosProductoWP($data['promociones'][$i]['clave_ct']);
-          // ACTUALIZACION DE PRECIOS CON DESCUENTO
-            // $prueba = Woocommerce::updateOrCreate(
-            //       ['clave_ct'=>$data['promociones'][$i]['clave_ct']],
-            //       ['precio_venta'=>number_format($data['promociones'][$i]['precio_unitario']*(1+$data['promociones'][$i]['margen_utilidad']),2, '.', ''),
-            //       'precio_venta_rebajado'=>number_format($data['promociones'][$i]['precio_unitario']*((1)-($data['promociones'][$i]['descuento']/100))*(1+$data['promociones'][$i]['margen_utilidad']),2, '.', ''),
-            //       'fecha_inicio'=>$data['promociones'][$i]['fecha_inicio'],
-            //       'fecha_fin'=>$data['promociones'][$i]['fecha_fin']]
-            // );
-            $prueba = Woocommerce::updateOrCreate(
-              ['clave_ct'=>$data['productos'][$i]['clave_ct']],
-              ['precio_venta'=>number_format($data['productos'][$i]['precio_unitario']*(1+$data['productos'][$i]['margen_utilidad']),2, '.', '')]
-              // 'precio_venta_rebajado'=>number_format($data['productos'][$i]['precio_unitario']*((1)-($data['promociones'][$i]['descuento']/100))*(1+$data['promociones'][$i]['margen_utilidad']),2, '.', ''),
-              // 'fecha_inicio'=>$data['promociones'][$i]['fecha_inicio'],
-              // 'fecha_fin'=>$data['promociones'][$i]['fecha_fin']]
-        );
-          // dd($prueba);
-          // $precios = $apiCT->preciosProductoWP($data['promociones'][$i]['clave_ct']);
-          // $precios = $apiCT->preciosProductoWP("MEMKGN2290");
-          // if((!isset($precios['normal']))){
-          //   dd($data['promociones'][$i]['clave_ct']);
-          // }
-          // dd($data['promociones'][0]);
-          // $params = [
-          //   // 'per_page'=>1000
-          //   'sku'=>$data['promociones'][$i]['clave_ct']
-          //   // 'sku'=>$data['promociones'][$i]['clave_ct']
-          //   // 'sku'=>"MEMKGN2290"
-          // ];
-          // $dataWP = [
-          //   // 'stock_quantity' => $existencias,
-          //   'regular_price' => $data['productos'][$i]['precio_venta'],
-          //   'sale_price' => $data['productos'][$i]['precio_venta_rebajado'],
-          //   'date_on_sale_from' => $data['productos'][$i]['fecha_inicio'],
-          //   'date_on_sale_to' => $data['productos'][$i]['fecha_fin']
-          // ];
-          // $producto = $woocommerce->put('products/'.$data['productos'][$i]['idWP'], $dataWP);
-          // $producto = $woocommerce->put('products/15472', $dataWP);
+        $dataWP = [
+            'stock_quantity' => $data['productos'][$i]['existencias'],
+            'regular_price' => $data['productos'][$i]['precio_venta'],
+            'sale_price' => $data['productos'][$i]['precio_venta_rebajado'],
+            'date_on_sale_from' => $data['productos'][$i]['fecha_inicio'],
+            'date_on_sale_to' => $data['productos'][$i]['fecha_fin']
+          ];
+          // dd($woocommerce->get('products/22739'));
+          $producto = $woocommerce->put('products/'.$data['productos'][$i]['idWP'], $dataWP);
           // dd($producto);
+        }
+          // $producto = $woocommerce->put('products/15472', $dataWP);
           // dd($woocommerce->put('products/'.$data['promociones'][$i]['idWP'], $dataWP));
           // dd($woocommerce->get('products',$params));
           // $producto = $woocommerce->get('products',$params);
@@ -2663,9 +2569,7 @@ class PreciosController extends Controller
 
           // $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos-woo.json"), true);
           // return $productos;
-        }
         dd("Terminado");
-        
     }
 
     public function woocommerce2()

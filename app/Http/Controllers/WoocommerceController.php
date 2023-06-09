@@ -117,6 +117,8 @@ class WoocommerceController extends Controller
             ->join('margenes_por_producto','margenes_por_producto.clave_ct','=','promociones.clave_ct')
             ->where('productos.estatus','Activo')
             ->where('productos.existencias','>',0)
+            ->whereMonth('promociones.updated_at',date('m'))
+            ->whereDay('promociones.updated_at',date('d'))
             ->orderBy('productos.id')
             ->get([
                 'woocommerce.idWP',
@@ -128,6 +130,8 @@ class WoocommerceController extends Controller
                 'promociones.fecha_fin'
             ]
         );
+        dd(count($data['productos']));
+        // for ($i = 0; $i < 1; $i++) {
         for ($i = 0; $i < sizeof($data['productos']); $i++) {
             $prueba = Woocommerce::updateOrCreate(
                 ['clave_ct'=>$data['productos'][$i]['clave_ct']],
@@ -136,6 +140,7 @@ class WoocommerceController extends Controller
                 'fecha_inicio'=>$data['productos'][$i]['fecha_inicio'],
                 'fecha_fin'=>$data['productos'][$i]['fecha_fin']]
             );
+            // dd($prueba);
         }
         // dd(sizeof($data['productos']));
         dd("Listo");

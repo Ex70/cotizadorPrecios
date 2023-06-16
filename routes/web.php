@@ -160,6 +160,8 @@ Route::get('/obtenerVolumenes', [VolumetriaController::class, 'agregarVolumetria
 
 
 //WORDPRESS
+Route::any('/actualizarExistencias', [WoocommerceController::class, 'actualizarExistencias'])->name('wp-existencias');
+// Route::put('/actualizarExistencias', [WoocommerceController::class, 'actualizarExistencias'])->name('wp-existencias');
 Route::get('/obtenerNuevosPrecios', [WoocommerceController::class, 'preciosVenta']);
 Route::get('/obtenerPreciosPromocion', [WoocommerceController::class, 'preciosPromociones']);
 Route::get('/obtenerFichas', [WPController::class, 'fichas']);

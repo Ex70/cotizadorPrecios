@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Categoria;
+use App\Models\Marca;
 use App\Models\Producto;
+use App\Models\Subcategoria;
 use App\Models\Woocommerce;
 use Illuminate\Http\Request;
 use Automattic\WooCommerce\Client as WooClient;
@@ -187,7 +190,6 @@ class WoocommerceController extends Controller
                 'timeout' => 800
             ]
         );
-        
         for ($j = 1; $j < 10; $j++) {
             $params = [
                 'per_page'=>100,
@@ -205,5 +207,62 @@ class WoocommerceController extends Controller
             }
         }
         dd("Listo");
+    }
+
+    public function actualizarExistencias(Request $request){
+        set_time_limit(0);
+        $woocommerce = new WooClient(
+            'https://www.ehstecnologias.com.mx/',
+            'ck_209a05b01fc07d7b4d54c05383b048f9d58c075f',
+            'cs_0ef9dc123f35a8b70a76317e30a598332dcd01c6',
+            [
+                'version' => 'wc/v3',
+                'timeout' => 800,
+                'query_string_auth' => true,
+                'verify_ssl' => false
+            ]
+        );
+        $APICT = new CTConnect;
+        $test = $request->get('filtro1');
+        $test2 = $request->get('filtro2');
+        $test3 = $request->get('filtro3');
+        if ($test3 == 'z') {
+            $data['productos'] = Producto::join('woocommerce','woocommerce.clave_ct','=','productos.clave_ct')
+                ->where('productos.existencias','>',0)
+                ->where('categoria_id', $test)
+                ->where('subcategoria_id', $test2)
+                ->orderBy('productos.id')
+                ->get([
+                    'woocommerce.idWP',
+                    'productos.clave_ct',
+                ]
+            );
+            // $data['productos'] = Producto::where('categoria_id', $test)->where('subcategoria_id', $test2)->where('estatus', 'Activo')->get();
+        } else {
+            $data['productos'] = Producto::join('woocommerce','woocommerce.clave_ct','=','productos.clave_ct')
+            ->where('productos.existencias','>',0)
+            ->where('categoria_id', $test)
+            ->where('subcategoria_id', $test2)
+            ->where('marca_id', $test3)
+            ->orderBy('productos.id')
+            ->get([
+                'woocommerce.idWP',
+                'productos.clave_ct',
+            ]);
+            // $data['productos'] = Producto::where('categoria_id', $test)->where('subcategoria_id', $test2)->where('marca_id', $test3)->where('estatus', 'Activo')->get();
+        }
+        // for ($i = 0; $i < 2; $i++) {
+        for ($i = 0; $i < sizeof($data['productos']); $i++) {
+            $dataWP = [
+                'stock_quantity' => $APICT->existenciaProductoWP($data['productos'][$i]['clave_ct']),
+            ];
+            $producto = $woocommerce->put('products/'.$data['productos'][$i]['idWP'], $dataWP);
+        }
+        $data['categorias'] = Categoria::distinct('nombre')->where('nombre','not like',"% - 2%")->orderBy('nombre')->get();
+        $data['marcas'] = Marca::distinct('nombre')->orderBy('nombre')->get();
+        $data['subcategorias'] = Subcategoria::distinct('nombre')->orderBy('nombre')->get();
+        return view('wp.existencias', compact('data'));
+        // dd($data['productos'][0]);
+        // dd("Terminado");
     }
 }

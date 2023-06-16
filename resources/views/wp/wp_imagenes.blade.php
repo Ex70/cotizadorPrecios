@@ -30,6 +30,16 @@
 									<th>Enlace "CT"</th>
 									<th>Enlace "Full"</th>
                                     <th>Enlace "0"</th>
+									<th>Enlace "1"</th>
+									<th>Enlace "2"</th>
+									<th>Enlace "3"</th>
+									<th>Enlace "4"</th>
+									<th>Enlace "5"</th>
+									<th>Enlace "6"</th>
+									<th>Enlace "7"</th>
+									<th>Enlace "8"</th>
+									<th>Enlace "9"</th>
+									<th>Enlace "10"</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -39,6 +49,16 @@
                                     <td>http://ctonline.mx/img/productos/{{$productos->clave_ct}}.jpg</td>
 									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_full.jpg</td>
 									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_0_full.jpg</td>
+									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_1_full.jpg</td>
+									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_2_full.jpg</td>
+									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_3_full.jpg</td>
+									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_4_full.jpg</td>
+									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_5_full.jpg</td>
+									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_6_full.jpg</td>
+									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_7_full.jpg</td>
+									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_8_full.jpg</td>
+									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_9_full.jpg</td>
+									<td>https://static.ctonline.mx/imagenes/{{$productos->clave_ct}}/{{$productos->clave_ct}}_10_full.jpg</td>
 								</tr>
 								@endforeach
 							</tbody>

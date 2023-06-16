@@ -59,10 +59,9 @@
 								</tr>
 							</thead>
 							<tbody>
-							@foreach ($data['productos'] as $productos)
-
+								@foreach ($data['productos'] as $productos)
 								<tr>
-									@if ($data['met'] == 1)
+									@if (($productos->almacen) == 15)
 										@if(($productos->existencias) >= 1)
 											<td>simple</td>
 										@else
@@ -80,12 +79,14 @@
 									<td>{{$productos->descripcion_corta}}</td>
 									@php
 										if(isset($productos->inicio)){
-											$fecha_inico = Carbon\Carbon::createFromFormat('Y-m-d',($productos->inicio))
-											->format('d/m/Y 00:00:00');
-											$fecha_fin = Carbon\Carbon::createFromFormat('Y-m-d',($productos->fin))
-											->format('d/m/Y 11:59:59');
-											$fecha_inico = $fecha_inico.' a. m.';
-											$fecha_fin = $fecha_fin.' p. m.';
+											// $fecha_inico = Carbon\Carbon::createFromFormat('Y-m-d',($productos->inicio))
+											// ->format('d/m/Y 00:00:00');
+											// $fecha_fin = Carbon\Carbon::createFromFormat('Y-m-d',($productos->fin))
+											// ->format('d/m/Y 11:59:59');
+											// $fecha_inico = $fecha_inico.' a. m.';
+											// $fecha_fin = $fecha_fin.' p. m.';
+											$fecha_inico = ($productos->inicio);
+											$fecha_fin = ($productos->fin);
 										}else{
 											$fecha_inico = '';
 											$fecha_fin = '';
@@ -97,7 +98,7 @@
 									<td>{{$fecha_fin}}</td>
 									<td>taxable</td>
 									<td>1</td>
-									@if ($data['met'] == 1)
+									@if (($productos->almacen) == 15)
 										@if(($productos->existencias) >= 1)
 											<td>{{$productos->existencias}}</td>
 										@else
@@ -127,6 +128,12 @@
 												$precio_normal= round((($productos->precio_unitario)*(1.10)),2);
 											}
 										}
+										if (($productos->almacen) == 15) {
+											
+										}else{
+											$precio_rebajado = $precio_rebajado+100;
+											$precio_normal = $precio_normal+100;
+										}
 										// $precio_final = round((($productos->precio_unitario)*(1.10)),2)
 										// $precio_final = round((($productos->precio_unitario)*(($productos->margen)+1)),2)
 									@endphp
@@ -139,7 +146,8 @@
 									@endif
 									<td>{{$productos->categoria}},  {{$productos->subcategoria}}, {{$productos->marca}}</td>
 									<td>https://ehstecnologias.com.mx/wp-content/uploads/{{$año}}/{{$mes}}/{{$productos->clave_ct}}_0.jpg</td>
-									@if ($data['met'] == 1)
+									{{-- @if ($data['met'] == 1) --}}
+									@if (($productos->almacen) == 15)
 										@if(($productos->existencias) >= 1)
 											@if (isset($productos->descuento))
 												<td>1</td>
@@ -152,7 +160,8 @@
 									@else
 										<td>3</td>
 									@endif
-									@if ($data['met'] == 1)
+									{{-- @if ($data['met'] == 1) --}}
+									@if (($productos->almacen) == 15)
 										@if(($productos->existencias) >= 1)
 											<td></td>
 											<td></td>

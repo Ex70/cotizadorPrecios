@@ -38,7 +38,11 @@
 							@foreach ($data['productos'] as $productos)
 								<tr>
 									<td>{{$productos->clave_ct}}</td>
-									<td>{{$productos->existencias}}</td>
+									@if (($productos->estatus) == 'Activo')
+										<td>{{$productos->existencias}}</td>
+									@else
+										<td>0</td>
+									@endif
                                     @php
 										if(isset($productos->margen)){
 												$precio_normal= round((($productos->precio_unitario)*(($productos->margen)+1)),2);

@@ -296,5 +296,12 @@ class PromocionesController extends Controller
         }
         dd("Terminado");
     }
+
+    public function limpieza(){
+        Promocion::whereNotNull('updated_at')->update([
+            'updated_at' => NULL,
+            'consulta' => NULL
+        ]);
+    }
 }
 

@@ -182,15 +182,17 @@ class WoocommerceController extends Controller
         set_time_limit(0);
         $fechaR = date('Y')."-".date('m')."-".date('d');
         $woocommerce = new WooClient(
-            'http://ehstecnologias.com.mx/',
+            'https://ehstecnologias.com.mx/',
             'ck_209a05b01fc07d7b4d54c05383b048f9d58c075f',
             'cs_0ef9dc123f35a8b70a76317e30a598332dcd01c6',
             [
                 'version' => 'wc/v3',
-                'timeout' => 800
+                'timeout' => 800,
+                'query_string_auth' => true,
+                'verify_ssl' => false
             ]
         );
-        for ($j = 1; $j < 10; $j++) {
+        for ($j = 1; $j < 3; $j++) {
             $params = [
                 'per_page'=>100,
                 'page'=>$j

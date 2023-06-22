@@ -26,7 +26,7 @@ class WPController extends Controller
                 ->where('productos.estatus', 'Activo')
                 ->where('existencias.almacen_id', '=', 50)
                 ->where('existencias.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',['DDUWSD2080', 'GABYEY270', 'ACCVGO2430', 'ACCVGO2440', 'TECRDG390', 'TABLNX430'])
+                ->whereIn('productos.clave_ct',['COMLEV4340', 'MEMKGN4220', 'MBDASS5830', 'DDUWSD2120','DDUWSD2130', 'CAMDAH4540', 'MENWSD030', 'DDUKGT2310'])
                 ->get(
                     [
                     'productos.clave_ct',
@@ -270,7 +270,7 @@ class WPController extends Controller
             ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
             ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->where('productos.estatus', 'Activo')
-            ->whereIN('existencias.almacen_id', [50])
+            ->whereIN('existencias.almacen_id', [50,53])
             ->where('existencias.existencias', '>', 0)
             // ->where('productos.existencias', '>', 0)
             ->where('productos.clave_ct', '=', $clave)
@@ -305,7 +305,7 @@ class WPController extends Controller
         set_time_limit(0);
         $data['productos'] = Producto::where('productos.estatus', 'Activo')
                 ->where('productos.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',['DDUWSD2080', 'GABYEY270', 'ACCVGO2430', 'ACCVGO2440', 'TECRDG390', 'TABLNX430'])
+                ->whereIn('productos.clave_ct',['ACCNCB1210', 'BOCNCB680', 'BOCNCB770', 'GABACT190', 'GABBLR030', 'GABEVO470', 'GABEVO480', 'GABNCB070', 'KITBLR070', 'KITNCB120', 'MONNCB020', 'MONNCB040', 'MOUNCB260', 'MOUNCB270'])
                 //->where('productos.clave_ct', '=', '')
                 // ->groupBy('clave_ct')
                 // ->take(1)
@@ -349,7 +349,8 @@ class WPController extends Controller
                 'productos.enlace',
                 'productos.imagen',
                 'existencias.almacen_id as almacen',
-                'existencias.existencias as existencias',
+                // 'existencias.existencias as existencias',
+                'productos.existencias as existencias',
                 'margenes_por_producto.margen_utilidad as margen',
                 'promociones.fecha_inicio as inicio',
                 'promociones.fecha_fin as fin',
@@ -1190,5 +1191,42 @@ public function wp_bloque_videovigilancia(){
         // dd('Bien');
         $data['titulo'] = "EHS - WP - Precios - (".$fechaR.")";        
         return view('wp.wp_precios', compact('data'));
+    }
+
+
+
+    public function wp_bloque_nuevos(){
+        $mes = date('m');
+        $año = date('Y');
+        $texto1 = 'PRODUCTOS NUEVOS';
+        Storage::put('bloques_Productos Nuevos.txt', $texto1);
+        set_time_limit(0);
+        $texto_inicial = 'Bloque de productos nuevos';
+        Storage::append('bloques_Productos Nuevos.txt', $texto_inicial);
+        $texto1 = '[products columns="4" orderby="menu_order" order="ASC" ids="';
+        Storage::append('bloques_Productos Nuevos.txt', $texto1);
+        $data['productos'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+            ->where('productos.clave_ct', '!=' , '')
+            ->where('productos.estatus', '=' , 'Activo')
+            ->where('productos.existencias', '>' , 0)
+            ->whereMonth('productos.created_at', $mes)
+            ->whereYear('productos.created_at', $año)
+            ->get([
+                'woocommerce.idWP',
+                ]);
+        for ($i = 0; $i < sizeof($data['productos']); $i++) {
+            if(($i+1) != sizeof($data['productos'])){
+                $texto2 = $data['productos'][$i]['idWP']. ', ';
+                Storage::append("bloques_Productos Nuevos.txt", $texto2, NULL);
+            }else{
+                $texto2 = $data['productos'][$i]['idWP'];
+                Storage::append("bloques_Productos Nuevos.txt", $texto2, NULL);
+            }
+        }
+        $texto3 = '"][/vc_column][/vc_row]';
+        Storage::append("bloques_Productos Nuevos.txt", $texto3, NULL);
+        $texto4 = 'Total de productos Nuevos: ' .$i;
+        Storage::append("bloques_Productos Nuevos.txt", $texto4);
+        dd('Bloque Listo');
     }
 }

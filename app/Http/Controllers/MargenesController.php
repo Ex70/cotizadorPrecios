@@ -213,7 +213,7 @@ class MargenesController extends Controller
             if($margen==-1){
                 $valor = 0.1111;
             }else{
-                $valor = number_format(((($margen/$row->precioct)-1)<0.10||(($margen/$row->precioct)-1)>0.5) ? 0.10 : (($margen/$row->precioct)-1),4);
+                $valor = number_format(((($margen/$row->precioct)-1)<0.1111||(($margen/$row->precioct)-1)>0.5) ? 0.111 : (($margen/$row->precioct)-1),4);
              }
             //  dd($valor);
             // dd($this->ordenarArreglo($margenes));

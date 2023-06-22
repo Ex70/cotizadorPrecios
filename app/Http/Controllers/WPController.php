@@ -1229,4 +1229,28 @@ public function wp_bloque_videovigilancia(){
         Storage::append("bloques_Productos Nuevos.txt", $texto4);
         dd('Bloque Listo');
     }
+
+    public function wp_met_precios(Request $request){
+        $clave = $request->clavect;
+        $data['productos'] = Producto::join('woocommerce', 'productos.clave_ct', '=', 'woocommerce.clave_ct')
+        ->leftJoin('promociones', 'productos.clave_ct', '=', 'promociones.clave_ct')
+        ->leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+                ->where('productos.clave_ct', '=', $clave)
+                ->where('productos.estatus', 'Activo')
+                ->get(
+                    [
+                    'productos.clave_ct',
+                    'productos.nombre',
+                    'productos.precio_unitario',
+                    'margenes_por_producto.margen_utilidad as margen',
+                    'promociones.descuento',
+                    'woocommerce.precio_venta',
+                    'woocommerce.precio_venta_rebajado',
+                ]
+            );
+        //dd($data['productos']);
+        if ($request->has('clavect')) {
+        }
+        return view('wp.wp_carta_act_precios', compact('data'));
+    }
 }

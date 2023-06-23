@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Categoria;
 use App\Models\Subcategoria;
 use App\Models\Marca;
+use Maatwebsite\Excel\Concerns\ToArray;
 
 class WPController extends Controller
 {
@@ -305,7 +306,7 @@ class WPController extends Controller
         set_time_limit(0);
         $data['productos'] = Producto::where('productos.estatus', 'Activo')
                 ->where('productos.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',['ACCNCB1210', 'BOCNCB680', 'BOCNCB770', 'GABACT190', 'GABBLR030', 'GABEVO470', 'GABEVO480', 'GABNCB070', 'KITBLR070', 'KITNCB120', 'MONNCB020', 'MONNCB040', 'MOUNCB260', 'MOUNCB270'])
+                ->whereIn('productos.clave_ct',['CARHPP4170', 'TONHPS140', 'TONHPP3710', 'TONHPS190', 'CARHPP3230', 'TONHPP4260', 'TONHPS330', 'TONHPP3730', 'CARHPD3280', 'CARHPD4940'])
                 //->where('productos.clave_ct', '=', '')
                 // ->groupBy('clave_ct')
                 // ->take(1)
@@ -1235,8 +1236,11 @@ public function wp_bloque_videovigilancia(){
         $data['productos'] = Producto::join('woocommerce', 'productos.clave_ct', '=', 'woocommerce.clave_ct')
         ->leftJoin('promociones', 'productos.clave_ct', '=', 'promociones.clave_ct')
         ->leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+        ->join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+                ->where('existencias.existencias', '>', 0)
                 ->where('productos.clave_ct', '=', $clave)
                 ->where('productos.estatus', 'Activo')
+                ->where('existencias.almacen_id', '=', 50)
                 ->get(
                     [
                     'productos.clave_ct',
@@ -1244,13 +1248,35 @@ public function wp_bloque_videovigilancia(){
                     'productos.precio_unitario',
                     'margenes_por_producto.margen_utilidad as margen',
                     'promociones.descuento',
+                    'promociones.fecha_fin',
                     'woocommerce.precio_venta',
                     'woocommerce.precio_venta_rebajado',
                 ]
-            );
+                    )
+            ->toArray();
         //dd($data['productos']);
+        // dd(($data['productos'][0]['fecha_fin']));
+        if(isset($data['productos'][0]['margen'])){
+            if(isset($data['productos'][0]['descuento'])){
+                $data['productos'][0]['precio_rebajado'] = round(((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1))*((100-($data['productos'][0]['descuento']))/100)),2);
+                $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1)),2);
+            }else{
+                $data['productos'][0]['precio_rebajado'] = '';
+                $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1)),2);
+            }
+        }else{
+            if(isset($data['productos'][0]['descuento'])){
+                $data['productos'][0]['precio_rebajado'] = round((($data['productos'][0]['precio_unitario'])*(1.1111)*((100-($data['productos'][0]['descuento']))/100)),2);
+                $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(1.1111)),2);
+            }else{
+                $data['productos'][0]['precio_rebajado'] = '';
+                $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(1.1111)),2);
+            }
+        }
+        // dd($precio_normal);
         if ($request->has('clavect')) {
         }
+        
         return view('wp.wp_carta_act_precios', compact('data'));
     }
 }

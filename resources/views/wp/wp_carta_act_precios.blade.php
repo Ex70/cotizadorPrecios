@@ -17,10 +17,10 @@
             <div class="card">
               {{-- <img src="http://grupoehs.com/img/producto/{{$producto->clave_ct}}.jpg" class="card-img-top" alt="..."> --}}
               <div class="card-header">
-                <h4 class="card-title">Clave CT</h4>{{$producto->clave_ct}}
+                <h4 class="card-title">Clave CT</h4>{{$data['productos'][0]['clave_ct']}}
               </div>
               <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>Nombre: </strong>{{$producto->nombre}}</li>
+                <li class="list-group-item"><strong>Nombre: </strong>{{$data['productos'][0]['precio_normal']}}</li>
                 <li class="list-group-item"><strong>Precio CT: </strong>{{$producto->precio_unitario}}</li>
                 <li class="list-group-item"><strong>Precio WP: </strong>{{$producto->precio_venta}}</li>
                 @php

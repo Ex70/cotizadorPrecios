@@ -198,6 +198,7 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Spatie\Analytics\AnalyticsServiceProvider::class,
+        Corcel\Laravel\CorcelServiceProvider::class,
 
     ],
 

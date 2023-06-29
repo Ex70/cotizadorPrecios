@@ -7,9 +7,10 @@
     "require": {
         "php": "^8.0.2",
         "automattic/woocommerce": "^3.1",
+        "corcel/woocommerce": "3.0",
         "guzzlehttp/guzzle": "^7.4",
         "html2text/html2text": "^4.3",
-        "jgrossi/corcel": "^6.0",
+        "jgrossi/corcel": "*",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",

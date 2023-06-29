@@ -194,8 +194,8 @@ class PreciosController extends Controller
             if ($productos[$i]['idCategoria'] != 0) {
                 // PRUEBA EXISTENCIAS
                 $existencia_producto = $this->existencias($productos[$i]);
-                // $existencia_producto = $this->existenciasTotales($productos[$i]);
-                $existencia_producto2 = $this->existenciasTotalesXalapa($productos[$i]);
+                $existencia_producto = $this->existenciasTotales($productos[$i]);
+                // $existencia_producto2 = $this->existenciasTotalesXalapa($productos[$i]);
                 $marca_nueva = Marca::updateOrCreate(
                     ['id' => $productos[$i]['idMarca']],
                     [

@@ -27,7 +27,7 @@ class WPController extends Controller
                 ->where('productos.estatus', 'Activo')
                 ->where('existencias.almacen_id', '=', 50)
                 ->where('existencias.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',['COMLEV4340', 'MEMKGN4220', 'MBDASS5830', 'DDUWSD2120','DDUWSD2130', 'CAMDAH4540', 'MENWSD030', 'DDUKGT2310'])
+                ->whereIn('productos.clave_ct',['TABLNX400','TABLNX280','ACCHPI3590','ACCHPI3600'])
                 ->get(
                     [
                     'productos.clave_ct',
@@ -306,7 +306,7 @@ class WPController extends Controller
         set_time_limit(0);
         $data['productos'] = Producto::where('productos.estatus', 'Activo')
                 ->where('productos.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',['CARHPP4170', 'TONHPS140', 'TONHPP3710', 'TONHPS190', 'CARHPP3230', 'TONHPP4260', 'TONHPS330', 'TONHPP3730', 'CARHPD3280', 'CARHPD4940'])
+                ->whereIn('productos.clave_ct',['MONHYU010', 'MONYEY150', 'KITYEY070', 'TVIGIG2590', 'BOCLOG1240', 'SILYEY010', 'TECVGO210', 'GABSTY100', 'KITYEY030', 'GABSTY150', 'SILSTY120', 'BOCLOG1480', 'BOCLOG1630', 'BOCRBT540', 'MOURDG060', 'TECRDG220', 'GABYEY250', 'TVIMSI1760', 'MONSTY230', 'CPUDEL4170', 'MONASS590', 'MONLGE1870', 'MONYEY130', 'MBDASS5720', 'SILSTY380', 'GABTMK2390', 'GABTMK2270', 'ACCHPI3590', 'ACCHPI3600', 'TVIGIG2840', 'TVIGIG2850'])
                 //->where('productos.clave_ct', '=', '')
                 // ->groupBy('clave_ct')
                 // ->take(1)
@@ -365,10 +365,12 @@ class WPController extends Controller
         set_time_limit(0);
         $fechaR = date('Y')."-".date('m')."-".date('d');
         $data['productos'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('productos.clave_ct', '!=' , '')
+            ->where('existencias.almacen_id', '=' , 50)
             ->get([
                 'productos.clave_ct',
-                'productos.existencias',
+                'existencias.existencias',
                 'productos.estatus'
                 ]);
         $data['titulo'] = "EHS - WP - Inventario - (".$fechaR.")";        
@@ -419,21 +421,6 @@ class WPController extends Controller
         return view('wp.wp_tipos', compact('data'));
     }
 
-    public function wp_inventario_50(){
-        set_time_limit(0);
-        $fechaR = date('Y')."-".date('m')."-".date('d');
-        $data['productos'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
-            ->join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
-            ->where('productos.clave_ct', '!=' , '')
-            ->where('existencias.almacen_id', '=', 50)
-            ->get([
-                'productos.clave_ct',
-                'productos.existencias',
-                'productos.estatus'
-                ]);
-        $data['titulo'] = "EHS - WP - Inventario - (".$fechaR.")";        
-        return view('wp.wp_inventario', compact('data'));
-    }
 
     public function wp_promociones_vigentes(){
         set_time_limit(0);
@@ -1233,6 +1220,7 @@ public function wp_bloque_videovigilancia(){
 
     public function wp_met_precios(Request $request){
         $clave = $request->clavect;
+        $clave = 'MONDLL870';
         $data['productos'] = Producto::join('woocommerce', 'productos.clave_ct', '=', 'woocommerce.clave_ct')
         ->leftJoin('promociones', 'productos.clave_ct', '=', 'promociones.clave_ct')
         ->leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
@@ -1254,8 +1242,8 @@ public function wp_bloque_videovigilancia(){
                 ]
                     )
             ->toArray();
-        //dd($data['productos']);
-        // dd(($data['productos'][0]['fecha_fin']));
+        // dd($data['productos']);
+        // dd(($data['productos'][0]['precio_unitario']));
         if(isset($data['productos'][0]['margen'])){
             if(isset($data['productos'][0]['descuento'])){
                 $data['productos'][0]['precio_rebajado'] = round(((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1))*((100-($data['productos'][0]['descuento']))/100)),2);
@@ -1273,10 +1261,50 @@ public function wp_bloque_videovigilancia(){
                 $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(1.1111)),2);
             }
         }
-        // dd($precio_normal);
+        dd($data['productos'][0]['precio_normal']);
         if ($request->has('clavect')) {
         }
         
         return view('wp.wp_carta_act_precios', compact('data'));
+    }
+
+
+    public function wp_productos_faltantes_50(){
+        // $clave = 'ACCACO050';
+        set_time_limit(0);
+        $data['productos'] = Producto::leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+            ->leftJoin('categorias', 'categorias.id', '=', 'productos.categoria_id')
+            ->Join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->Join('marcas', 'marcas.id', '=', 'productos.marca_id')
+            ->leftjoin('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
+            ->where('existencias.almacen_id', '=', 50)
+            ->where('existencias.existencias', '>', 0)
+            ->where('productos.estatus', '=', 'Activo')
+            ->whereIN('productos.categoria_id', [830, 781] )
+            ->whereNotIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
+            ->get([
+                'productos.clave_ct',
+                'productos.nombre',
+                'productos.descripcion_corta',
+                'categorias.nombre as categoria',
+                'subcategorias.nombre as subcategoria',
+                'marcas.nombre as marca',
+                'productos.precio_unitario',
+                'productos.enlace',
+                'productos.imagen',
+                'existencias.almacen_id as almacen',
+                // 'existencias.existencias as existencias',
+                'productos.existencias as existencias',
+                'margenes_por_producto.margen_utilidad as margen',
+                'promociones.fecha_inicio as inicio',
+                'promociones.fecha_fin as fin',
+                'promociones.descuento as descuento',
+                ]);
+        // dd($data['productos']);
+            // dd($data['productos']);
+        $fechaR = date('d')."-".date('m')."-".date('Y');
+        $data['titulo'] = "EHS - WP - Productos Faltantes en WP - (".$fechaR.")";
+        return view('wp.wp_productos', compact('data'));
     }
 }

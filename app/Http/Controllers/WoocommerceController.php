@@ -217,10 +217,10 @@ class WoocommerceController extends Controller
     public function actualizarExistencias(Request $request){
         set_time_limit(0);
         // $productos=Post::find(1);
-        // $p=Product::find(15575);
+        // $p=Product::find(24663);
         // $p->saveMeta(['_stock'=>81]);
         // $p=Product::find(15575);
-        // dd($p->stock);
+        // dd($p->regular_price);
         // $woocommerce = new WooClient(
         //     'https://www.ehstecnologias.com.mx/',
         //     'ck_209a05b01fc07d7b4d54c05383b048f9d58c075f',
@@ -244,6 +244,7 @@ class WoocommerceController extends Controller
                 ->orderBy('productos.id')
                 ->get([
                     'woocommerce.idWP',
+                    'woocommerce.precio_venta',
                     'productos.clave_ct',
                 ]
             );
@@ -257,15 +258,21 @@ class WoocommerceController extends Controller
             ->orderBy('productos.id')
             ->get([
                 'woocommerce.idWP',
+                'woocommerce.precio_venta',
                 'productos.clave_ct',
             ]);
             // $data['productos'] = Producto::where('categoria_id', $test)->where('subcategoria_id', $test2)->where('marca_id', $test3)->where('estatus', 'Activo')->get();
         }
         // for ($i = 0; $i < 2; $i++) {
-        for ($i = 0; $i < sizeof($data['productos']); $i++) {
-            $productoWooCommerce=Product::find($data['productos'][$i]['idWP']);
+            for ($i = 0; $i < sizeof($data['productos']); $i++) {
+                // dd($data['productos'][$i]['precio_venta']);
+                $productoWooCommerce=Product::find($data['productos'][$i]['idWP']);
             // $post = Post::find(1);
-            $productoWooCommerce->saveMeta(['_stock'=>$APICT->existenciaProductoWP($data['productos'][$i]['clave_ct'])]);
+            $productoWooCommerce->saveMeta([
+                '_stock'=>$APICT->existenciaProductoWP($data['productos'][$i]['clave_ct']),
+                '_regular_price'=>$data['productos'][$i]['precio_venta'],
+                '_price'=>$data['productos'][$i]['precio_venta']
+            ]);
             // $dataWP = [
             //     'stock_quantity' => $APICT->existenciaProductoWP($data['productos'][$i]['clave_ct']),
             // ];

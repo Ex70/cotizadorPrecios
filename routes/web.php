@@ -175,7 +175,7 @@ Route::get('/wp_promociones_vencidas',[WPController::class, 'wp_promociones_venc
 Route::get('/wp_inventario',[WPController::class, 'wp_inventario']);
 Route::get('/wp_inventario_50',[WPController::class, 'wp_inventario_50']);
 Route::get('/wp_precios',[WPController::class, 'wp_precios']);
-Route::get('/wp_precios_50',[WPController::class, 'wp_precios_50']);
+// Route::get('/wp_precios_50',[WPController::class, 'wp_precios_50']);
 Route::get('/wp_tipos',[WPController::class, 'wp_tipos']);
 Route::get('/wp_nuevos_mes',[WPController::class, 'wp_nuevos_mes']);
 Route::get('/wp_nuevos_dia',[WPController::class, 'wp_nuevos_dia']);
@@ -186,6 +186,7 @@ Route::post('/wp_productos_filtros', [WPController::class, 'wp_productos_filtros
 Route::get('/wp_bloque_nuevos', [WPController::class, 'wp_bloque_nuevos']);
 Route::get('/wp_met_precios',[WPController::class, 'wp_met_precios']);
 Route::post('/wp_met_precios',[WPController::class, 'swp_met_precios']);
+Route::get('/wp_faltantes_wp',[WPController::class, 'wp_productos_faltantes_50']);
 
 
 

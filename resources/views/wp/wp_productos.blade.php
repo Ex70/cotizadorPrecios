@@ -133,7 +133,7 @@
 									<td>{{$precio_rebajado}}</td> 
 									<td>{{$precio_normal}}</td> 
 									@if (isset($productos->descuento))
-										<td>{{$productos->categoria}}, {{$productos->categoria}} > {{$productos->subcategoria}}, {{$productos->marca}}, Promociones</td>
+										<td>{{$productos->categoria}}, {{$productos->categoria}} > {{$productos->subcategoria}}, {{$productos->marca}}</td>
 									@else
 										<td>{{$productos->categoria}}, {{$productos->categoria}} > {{$productos->subcategoria}}, {{$productos->marca}}</td>
 									@endif

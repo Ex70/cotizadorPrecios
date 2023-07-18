@@ -27,7 +27,7 @@ class WPController extends Controller
                 ->where('productos.estatus', 'Activo')
                 ->where('existencias.almacen_id', '=', 50)
                 ->where('existencias.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',['ACCHPI3600', 'ACCHPI3590'])
+                ->whereIn('productos.clave_ct',['ACCMAC2870', 'IPDMAC4660', 'IPDMAC5240', 'IPDMAC4610', 'IPDMAC5450', 'IPDMAC5440', 'ACCMAC1360', 'ACCMAC910', 'ACCMAC790', 'ACCMAC2350', 'ACCMAC940'])
                 ->get(
                     [
                     'productos.clave_ct',
@@ -306,7 +306,7 @@ class WPController extends Controller
         set_time_limit(0);
         $data['productos'] = Producto::where('productos.estatus', 'Activo')
                 ->where('productos.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',['ACCTCH310', 'CAMPVS2970', 'RCKACC210', 'RCKACC530', 'CABITL1670', 'CAMDAH3480', 'CAMPVS2690', 'NBKCDP1570', 'CABITL690', 'CABITL040', 'NBKCDP1090', 'ACCLNX110', 'ACCNSY135', 'ACCPOL510', 'CAMPVS2620', 'RCKACC035', 'RCKACC1330', 'NBKCDP1580', 'CPUHPI1960', 'ACCNSY085', 'CAMPVS2660', 'ACCITL080', 'CABITL025', 'ACCITL2600', 'ACCTCH550', 'ACCITL2540', 'ACCITL1160', 'ACCITL6170', 'MOUITL810', 'ACCTCH9440', 'SOFKPS920', 'PANLNX020', 'NBKCDP1100', 'NBKCDP1110', 'LFDSMG1220', 'CARXRX3520', 'CARXRX6810', 'CARXRX6990', 'ACCXRX1910', 'LFDSMG1210', 'MEMBLC1800', 'CABITL035', 'RCKACC065', 'RCKACC1550', 'RCKACC2080', 'CABITL4780', 'SOFKPS890', 'SOFKPS910', 'ACCCDM1510', 'ACCPTS1770', 'AIOHPI880', 'ACCPOL940', 'LFDSMG1050', 'CARXRX5330', 'CARXRX5900', 'CARXRX6880', 'CARXRX6900', 'CARXRX7150', 'CARXRX5680', 'RCKACC1015', 'ACCITL4070', 'TARITL770', 'ACCHUW640', 'SOFKPS830', 'SOFKPS840', 'SOFKPS850', 'SOFKPS880', 'CARBRT1250', 'CPULNX500', 'SWTPVS020', 'SERDEL3380', 'CPULNX570', 'CAMPVS2630', 'CARXRX5840', 'CARXRX3850', 'CARXRX3880', 'CARXRX5660', 'CARXRX6010', 'CARXRX6620', 'CARXRX6910', 'CARXRX6860', 'CARXRX6980', 'CARXRX7000', 'CARXRX7180', 'ACCXRX710', 'RCKACC1120', 'CABITL1320', 'ACCITL4050', 'ACCHUW440', 'CARXRX7230', 'SOFKPS820', 'SOFKPS860', 'SOFKPS900', 'AIOHPI1020', 'ACCPTS1680', 'LFDSMG1130', 'CARXRX3940', 'CARXRX5550', 'CARXRX6310', 'CARXRX2710', 'CARXRX5280', 'CARXRX5300', 'CARXRX3870', 'CARXRX5860', 'CARXRX6260', 'MONSMG1800', 'CAMPVS3040', 'CAMPVS3060', 'CAMPVS3070', 'CABITL3860', 'RCKACC1820', 'ACCITL4660', 'RCKACC1970', 'ACCITL6510', 'TVIASS3240'])
+                ->whereIn('productos.clave_ct',['ACCMAC2870', 'IPDMAC4660', 'IPDMAC5240', 'IPDMAC4610', 'IPDMAC5450', 'IPDMAC5440', 'ACCMAC1360', 'ACCMAC910', 'ACCMAC790', 'ACCMAC2350', 'ACCMAC940'])
                 //->where('productos.clave_ct', '=', '')
                 // ->groupBy('clave_ct')
                 // ->take(1)
@@ -436,6 +436,8 @@ class WPController extends Controller
             ->where('productos.clave_ct', '!=' , '')
             ->whereIn('existencias.almacen_id', [50])
             ->where('promociones.fecha_fin', '>=', $fechaR)
+            ->where('productos.estatus', '=', 'Activo')
+            ->where('existencias.existencias', '>', 0)
             ->get([
                 'productos.clave_ct',
                 'productos.nombre',
@@ -1249,9 +1251,9 @@ public function wp_bloque_videovigilancia(){
         dd('Bloque Listo');
     }
 
-    public function wp_met_precios(Request $request){
+    public function wp_actualizar_precio_individual_1(Request $request){
         $clave = $request->clavect;
-        $clave = 'MONDLL870';
+        // $clave = 'MONDLL870';
         $data['productos'] = Producto::join('woocommerce', 'productos.clave_ct', '=', 'woocommerce.clave_ct')
         ->leftJoin('promociones', 'productos.clave_ct', '=', 'promociones.clave_ct')
         ->leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
@@ -1262,6 +1264,7 @@ public function wp_bloque_videovigilancia(){
                 ->where('existencias.almacen_id', '=', 50)
                 ->get(
                     [
+                    'woocommerce.idWP',
                     'productos.clave_ct',
                     'productos.nombre',
                     'productos.precio_unitario',
@@ -1270,35 +1273,42 @@ public function wp_bloque_videovigilancia(){
                     'promociones.fecha_fin',
                     'woocommerce.precio_venta',
                     'woocommerce.precio_venta_rebajado',
+                    'existencias.existencias as existencia'
                 ]
-                    )
-            ->toArray();
+                    );
+            // ->toArray();
+
+            
         // dd($data['productos']);
         // dd(($data['productos'][0]['precio_unitario']));
-        if(isset($data['productos'][0]['margen'])){
-            if(isset($data['productos'][0]['descuento'])){
-                $data['productos'][0]['precio_rebajado'] = round(((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1))*((100-($data['productos'][0]['descuento']))/100)),2);
-                $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1)),2);
-            }else{
-                $data['productos'][0]['precio_rebajado'] = '';
-                $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1)),2);
-            }
-        }else{
-            if(isset($data['productos'][0]['descuento'])){
-                $data['productos'][0]['precio_rebajado'] = round((($data['productos'][0]['precio_unitario'])*(1.1111)*((100-($data['productos'][0]['descuento']))/100)),2);
-                $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(1.1111)),2);
-            }else{
-                $data['productos'][0]['precio_rebajado'] = '';
-                $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(1.1111)),2);
-            }
-        }
-        dd($data['productos'][0]['precio_normal']);
         if ($request->has('clavect')) {
+            if ($data['productos']== null) {
+                $texto1 = 'Producto no encontrado en almacen 50';
+                dd($texto1);
+            }else{
+                if(isset($data['productos'][0]['margen'])){
+                    if(isset($data['productos'][0]['descuento'])){
+                        $data['productos'][0]['precio_rebajado'] = round(((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1))*((100-($data['productos'][0]['descuento']))/100)),2);
+                        $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1)),2);
+                    }else{
+                        $data['productos'][0]['precio_rebajado'] = '';
+                        $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1)),2);
+                    }
+                }else{
+                    if(isset($data['productos'][0]['descuento'])){
+                        $data['productos'][0]['precio_rebajado'] = round((($data['productos'][0]['precio_unitario'])*(1.1111)*((100-($data['productos'][0]['descuento']))/100)),2);
+                        $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(1.1111)),2);
+                    }else{
+                        $data['productos'][0]['precio_rebajado'] = '';
+                        $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(1.1111)),2);
+                    }
+                }
+                // dd($data['productos'][0]['precio_normal']);
+            }
+            
         }
-        
         return view('wp.wp_carta_act_precios', compact('data'));
     }
-
 
     public function wp_productos_faltantes_50(){
         // $clave = 'ACCACO050';

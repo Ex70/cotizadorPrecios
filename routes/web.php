@@ -184,8 +184,11 @@ Route::get('/wp_promociones_dia',[WPController::class, 'wp_promocion_dia']);
 Route::get('/wp_filtros',[WPController::class, 'wp_filtros']);
 Route::post('/wp_productos_filtros', [WPController::class, 'wp_productos_filtros']);
 Route::get('/wp_bloque_nuevos', [WPController::class, 'wp_bloque_nuevos']);
-Route::get('/wp_met_precios',[WPController::class, 'wp_met_precios']);
-Route::post('/wp_met_precios',[WPController::class, 'swp_met_precios']);
+Route::get('/wp_precio_individual',[WPController::class, 'wp_actualizar_precio_individual_1']);
+Route::post('/wp_precio_individual',[WPController::class, 'wp_actualizar_precio_individual_1']);
+Route::post('/wp_act_precios',[WoocommerceController::class, 'wp_actualizar_precio_individual_2']);
+// Route::get('/wp_act_precios',[WPController::class, 'wp_actualizar_precio_individual_2']);
+// Route::post('/wp_act_precios',[WPController::class, 'wp_actualizar_precio_individual_2']);
 Route::get('/wp_faltantes_wp',[WPController::class, 'wp_productos_faltantes_50']);
 
 

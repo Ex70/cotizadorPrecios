@@ -285,4 +285,31 @@ class WoocommerceController extends Controller
         // dd($data['productos'][0]);
         // dd("Terminado");
     }
+
+    public function wp_actualizar_precio_individual_2(Request $request){
+        set_time_limit(0);
+        // dd('Hola');
+        $APICT = new CTConnect;
+        $precio_n = $request->precio_sugerido;
+        // $existencias_n = $request->existencias;
+        $clave_ct = $request->clave;
+        $idWP = $request->idWP;
+        // dd($clave_ct);
+        $productoWooCommerce=Product::find($idWP);
+        // dd($APICT->existenciaProductoWP($clave_ct));
+        $productoWooCommerce->saveMeta([
+            '_stock'=>$APICT->existenciaProductoWP($clave_ct),
+            '_regular_price'=>$precio_n,
+            '_price'=>$precio_n
+        ]);
+
+        $producto = Woocommerce::updateOrCreate(
+            ['idWP' => $idWP],
+            [
+                'idWP' => $idWP,
+                'precio_venta' => $precio_n,
+            ]
+        );
+        dd('Producto Actualizado');
+    }
 }

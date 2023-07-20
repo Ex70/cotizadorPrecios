@@ -187,8 +187,9 @@ Route::get('/wp_bloque_nuevos', [WPController::class, 'wp_bloque_nuevos']);
 Route::get('/wp_precio_individual',[WPController::class, 'wp_actualizar_precio_individual_1']);
 Route::post('/wp_precio_individual',[WPController::class, 'wp_actualizar_precio_individual_1']);
 Route::post('/wp_act_precios',[WoocommerceController::class, 'wp_actualizar_precio_individual_2']);
-// Route::get('/wp_act_precios',[WPController::class, 'wp_actualizar_precio_individual_2']);
-// Route::post('/wp_act_precios',[WPController::class, 'wp_actualizar_precio_individual_2']);
+Route::get('/wp_promo_individual',[WPController::class, 'actualizarPromociones']);
+Route::post('/wp_promo_individual',[WPController::class, 'actualizarPromociones']);
+// Route::post('/wp_act_promo',[WoocommerceController::class, 'wp_actualizar_precio_individual_2']);
 Route::get('/wp_faltantes_wp',[WPController::class, 'wp_productos_faltantes_50']);
 
 

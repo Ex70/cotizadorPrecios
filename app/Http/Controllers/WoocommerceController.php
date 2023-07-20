@@ -312,4 +312,5 @@ class WoocommerceController extends Controller
         );
         dd('Producto Actualizado');
     }
+
 }

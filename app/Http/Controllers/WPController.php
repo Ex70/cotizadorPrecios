@@ -1376,4 +1376,62 @@ public function wp_bloque_videovigilancia(){
         $data['titulo'] = "EHS - WP - Productos Xalapa - (".$fechaR.")";
         return view('wp.wp_productos', compact('data'));
     }
+
+    public function actualizarPromociones(Request $request){
+        set_time_limit(0);
+        $clave = $request->clavect;
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        $data['productos'] = Producto::join('woocommerce', 'productos.clave_ct', '=', 'woocommerce.clave_ct')
+        ->leftJoin('promociones', 'productos.clave_ct', '=', 'promociones.clave_ct')
+        ->leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+        ->join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+        ->where('productos.clave_ct', '=', $clave)
+        ->where('existencias.existencias', '>', 0)
+        ->where('productos.estatus', 'Activo')
+        ->where('existencias.almacen_id', '=', 50)
+        ->whereDate('promociones.fecha_fin','>=',$fecha)
+        ->get([
+            'woocommerce.idWP',
+            'productos.clave_ct',
+            'productos.nombre',
+            'productos.precio_unitario',
+            'margenes_por_producto.margen_utilidad as margen',
+            'promociones.descuento',
+            'promociones.fecha_fin as fecha_fin',
+            'promociones.fecha_inicio as fecha_inicio',
+            'woocommerce.fecha_inicio as fecha_iwp',
+            'woocommerce.fecha_fin as fecha_fwp',
+            'woocommerce.precio_venta_rebajado as precio_desc_wp',
+            'woocommerce.precio_venta as precio_wp'
+        ])
+        ->ToArray();
+
+        if ($request->has('clavect')) {
+            if ($data['productos']== null) {
+                $texto1 = 'Producto no encontrado en almacen 50';
+                dd($texto1);
+            }else{
+                if(isset($data['productos'][0]['margen'])){
+                    if(isset($data['productos'][0]['descuento'])){
+                        $data['productos'][0]['precio_rebajado'] = round(((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1))*((100-($data['productos'][0]['descuento']))/100)),2);
+                        $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1)),2);
+                    }else{
+                        $data['productos'][0]['precio_rebajado'] = '';
+                        $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(($data['productos'][0]['margen'])+1)),2);
+                    }
+                }else{
+                    if(isset($data['productos'][0]['descuento'])){
+                        $data['productos'][0]['precio_rebajado'] = round((($data['productos'][0]['precio_unitario'])*(1.1111)*((100-($data['productos'][0]['descuento']))/100)),2);
+                        $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(1.1111)),2);
+                    }else{
+                        $data['productos'][0]['precio_rebajado'] = '';
+                        $data['productos'][0]['precio_normal']= round((($data['productos'][0]['precio_unitario'])*(1.1111)),2);
+                    }
+                }
+                // dd($data['productos'][0]['precio_normal']);
+            }
+            $data['productos'][0]['precio_venta'] = round((($data['productos'][0]['precio_unitario'])*((100-($data['productos'][0]['descuento']))/100)),2);
+        }
+        return view('wp.wp_carta_act_promo', compact('data'));
+    }
 }

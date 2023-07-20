@@ -180,6 +180,8 @@ class PreciosController extends Controller
         $imagenes = new ImagenesController();
         $existencias = new ExistenciasController();
         $promociones = new PromocionesController();
+        $apict = new CTConnect();
+        $divisa= $apict->divisa();
         $existencia_producto = 0;
         $products->limpieza();
         $existencias->limpieza();
@@ -227,7 +229,7 @@ class PreciosController extends Controller
                         'categoria_id' => $productos[$i]['idCategoria'],
                         'nombre' => $productos[$i]['nombre'],
                         'descripcion_corta' => $productos[$i]['descripcion_corta'],
-                        'precio_unitario' => $productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio'] * $productos[$i]['tipoCambio']) * 1.16), 2, '.', '') : number_format(($productos[$i]['precio'] * 1.16), 2, '.', ''),
+                        'precio_unitario' => $productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio'] * $divisa) * 1.16), 2, '.', '') : number_format(($productos[$i]['precio'] * 1.16), 2, '.', ''),
                         'sku' => ltrim($productos[$i]['numParte']),
                         'ean' => $productos[$i]['ean'],
                         'upc' => $productos[$i]['upc'],

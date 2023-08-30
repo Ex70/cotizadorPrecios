@@ -313,4 +313,48 @@ class WoocommerceController extends Controller
         dd('Producto Actualizado');
     }
 
+    public function actualizarPromocion(Request $request){
+        set_time_limit(0);
+        // dd('Hola');
+        $APICT = new CTConnect;
+        $precio_n = $request->precio_sugerido;
+        $precio_o = $request->precio_oferta;
+        $fecha_i = $request->fecha_inicio;
+        $fecha_f = $request->fecha_fin;
+        // $fecha_f = '2023-07-19';
+        $clave_ct = $request->clave;
+        $timeStamp1 = strtotime($fecha_i);
+        $timeStamp2 = strtotime($fecha_f);
+        // dd($timeStamp2);
+        $idWP = $request->idWP;
+        // $idWP = 29086;
+        // dd($idWP);
+        $productoWooCommerce=Product::find($idWP);
+        // dd($APICT->existenciaProductoWP($clave_ct));
+        $productoWooCommerce->saveMeta([
+            // '_stock'=>$APICT->existenciaProductoWP($clave_ct),
+            '_regular_price'=>$precio_n,
+            '_price'=>$precio_o,
+            '_sale_price'=>$precio_o,
+            '_date_on_sale_from'=>$fecha_i,
+            '_date_on_sale_to'=>$fecha_f,
+            '_date_on_sale_from_gmt'=>$fecha_i,
+            '_date_on_sale_to_gmt'=>$fecha_f,
+            '_sale_price_dates_from'=>$timeStamp1,
+            '_sale_price_dates_to'=>$timeStamp2,
+        ]);
+
+        $producto = Woocommerce::updateOrCreate(
+            ['idWP' => $idWP],
+            [
+                'idWP' => $idWP,
+                'precio_venta' => $precio_n,
+                'precio_venta_rebajado'=>$precio_o,
+                'fecha_inicio'=>$fecha_i,
+                'fecha_fin'=>$fecha_f
+            ]
+        );
+        dd('Producto Actualizado');
+    }
+
 }

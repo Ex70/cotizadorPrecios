@@ -33,6 +33,7 @@
             @csrf
             <input type="hidden" name="fecha_inicio" value="{{$data['productos'][0]['fecha_inicio']}}">
             <input type="hidden" name="fecha_fin" value="{{$data['productos'][0]['fecha_fin']}}">
+            <input type="hidden" name="precio_sugerido" value="{{$data['productos'][0]['precio_normal']}}">
             <input type="hidden" name="precio_oferta" value="{{$data['productos'][0]['precio_rebajado']}}">
             <input type="hidden" name="clave" value="{{$data['productos'][0]['clave_ct']}}">
             <input type="hidden" name="idWP" value="{{$data['productos'][0]['idWP']}}">

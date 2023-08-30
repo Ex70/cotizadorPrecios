@@ -31,21 +31,24 @@ class ZegucomController extends Controller
             if($sku==""){
                 $sku="NOEXISTE";
             }
+            // $sku="WDS250G3B0B";
+            // dd($sku);
             // $website = $client->request('GET', 'https://www.zegucom.com.mx/?cons='.$sku.'&mod=search&reg=1');
             $website = $client->request('GET', 'https://www.zegucom.com.mx/productos/search?search='.$sku.'');
             // $website = $client->request('GET', 'https://www.zegucom.com.mx/productos/search?search=CS400C-5BBC');
             // $result = $website->filter('.search-price-now > .search-price-now-value ');
-            $result = $website->filter('.blue-text.text-darken-4');
+            $result = $website->filter('.red-text.text-darken-4');
             // dd($result->count());
             // dd(str_replace($remove, "", $website->filter('.text-darken-4')->first()->text()));
             // $result = $website->filter('.price-text > .result-price-search');
             // $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.price-text > .result-price-search')->first()->text()) : $precios[$i] = 0;
-            $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.blue-text.text-darken-4')->first()->text()) : $precios[$i] = 0;
+            $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.red-text.text-darken-4')->first()->text()) : $precios[$i] = 0;
             // dd($precios[$i]);
             $productoZegucom = Zegucom::updateOrCreate(
                 ['sku'=>$sku, 'clave_ct'=>$clave_ct],
                 ['precio_unitario'=>$precios[$i]]
             );
+            // dd($productoZegucom);
         }
         // dd($precios);
         return $precios;

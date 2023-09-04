@@ -31,7 +31,7 @@ class ZegucomController extends Controller
             if($sku==""){
                 $sku="NOEXISTE";
             }
-            $sku="981-000889";
+            // $sku="981-000889";
             // dd($sku);
             // $website = $client->request('GET', 'https://www.zegucom.com.mx/?cons='.$sku.'&mod=search&reg=1');
             $website = $client->request('GET', 'https://www.zegucom.com.mx/productos/search?search='.$sku.'');
@@ -45,7 +45,7 @@ class ZegucomController extends Controller
             // $result = $website->filter('.price-text > .result-price-search');
             // $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.price-text > .result-price-search')->first()->text()) : $precios[$i] = 0;
             $precios[$i] = $result->count() ? str_replace($remove, "", $website->filter('.text-darken-4')->eq(1)->first()->text()) : $precios[$i] = 0;
-            dd($precios[$i]);
+            // dd($precios[$i]);
             $productoZegucom = Zegucom::updateOrCreate(
                 ['sku'=>$sku, 'clave_ct'=>$clave_ct],
                 ['precio_unitario'=>$precios[$i]]

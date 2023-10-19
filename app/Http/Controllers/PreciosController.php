@@ -96,6 +96,12 @@ class PreciosController extends Controller
         } else {
             dd("No existe");
         }
+        $xmlExist = Storage::disk('prueba-ftp')->exists('catalogo_xml/productos.xml');
+        if ($xmlExist) {
+            Storage::disk('local')->put('public/products.json', Storage::disk('prueba-ftp')->get('catalogo_xml/productos.xml'));
+        } else {
+            dd("No existe");
+        }
         //$productos = Storage::get('public/products.json');
         //     set_time_limit(0);
         //     for($i=0;$i<sizeof($productos);$i++){
@@ -2685,10 +2691,14 @@ class PreciosController extends Controller
 
     public function lecturaAtributos()
     {
-        set_time_limit(0);
-        $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
-        for ($i = 0; $i < sizeof($productos); $i++) {
-        // for ($i = 0; $i < 10; $i++) {
+      set_time_limit(0);
+      $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
+      $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
+      $xml_file = simplexml_load_string($xmlstring);
+      $json = json_encode($xml_file );
+      $array = json_decode($json,TRUE);
+      for ($i = 0; $i < sizeof($productos); $i++) {
+      // for ($i = 0; $i < 10; $i++) {
             $existencia_producto = 0;
             if ($productos[$i]['especificaciones'] != null) {
                 // dd($productos[$i]['especificaciones']);

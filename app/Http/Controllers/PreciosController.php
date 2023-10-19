@@ -98,7 +98,7 @@ class PreciosController extends Controller
         }
         $xmlExist = Storage::disk('prueba-ftp')->exists('catalogo_xml/productos.xml');
         if ($xmlExist) {
-            Storage::disk('local')->put('public/products.json', Storage::disk('prueba-ftp')->get('catalogo_xml/productos.xml'));
+            Storage::disk('local')->put('public/products.xml', Storage::disk('prueba-ftp')->get('catalogo_xml/productos.xml'));
         } else {
             dd("No existe");
         }

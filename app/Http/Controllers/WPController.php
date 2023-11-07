@@ -26,8 +26,10 @@ class WPController extends Controller
                 ->leftjoin('promociones', 'promociones.clave_ct', 'productos.clave_ct')
                 ->where('productos.estatus', 'Activo')
                 ->where('existencias.almacen_id', '=', 50)
-                ->where('existencias.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',['ACCMAC2870', 'IPDMAC4660', 'IPDMAC5240', 'IPDMAC4610', 'IPDMAC5450', 'IPDMAC5440', 'ACCMAC1360', 'ACCMAC910', 'ACCMAC790', 'ACCMAC2350', 'ACCMAC940'])
+                // ->whereIn('existencias.almacen_id', [50, 53])
+                // ->whereIN('productos.categoria_id', [634, 633, 635, 636, 873, 9] )
+                // ->where('existencias.existencias', '>', 0)
+                ->whereIn('productos.clave_ct',['CAMNNN020', 'KITCNN070', 'ACCEVL140'])
                 ->get(
                     [
                     'productos.clave_ct',
@@ -39,7 +41,6 @@ class WPController extends Controller
                     'productos.precio_unitario',
                     'productos.enlace',
                     'productos.imagen',
-                    'productos.precio_unitario',
                     'existencias.almacen_id as almacen',
                     'existencias.existencias as existencias',
                     // 'productos.existencias as existencias',
@@ -304,23 +305,23 @@ class WPController extends Controller
 
     public function wp_imagenes(){
         set_time_limit(0);
+        // $data['productos'] = Producto::join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
         $data['productos'] = Producto::where('productos.estatus', 'Activo')
-                ->where('productos.existencias', '>', 0)
-                ->whereIn('productos.clave_ct',['ACCMAC2870', 'IPDMAC4660', 'IPDMAC5240', 'IPDMAC4610', 'IPDMAC5450', 'IPDMAC5440', 'ACCMAC1360', 'ACCMAC910', 'ACCMAC790', 'ACCMAC2350', 'ACCMAC940'])
-                //->where('productos.clave_ct', '=', '')
-                // ->groupBy('clave_ct')
+                // ->where('productos.estatus', 'Activo')
+                ->whereIn('productos.clave_ct',['PANHSE1410','PANSMG4350'])
+                // ->whereIN('productos.categoria_id', [616, 781])
+                // ->where('productos.marca_id', '=', 5)
                 // ->take(1)
                 // ->orderBy('existencias.almacen_id', 'desc')
-                ->get(['productos.clave_ct',]
+                // ->where('productos.estatus', 'Activo')
+                // ->whereIn('productos.subcategoria_id', [978, 672, 839, 977, 1106, 1108, 1109, 1110])
+                //->where('productos.subcategoria_id', '=', 978)
+                // ->where('existencias.almacen_id', '=', 50)
+                // ->where('existencias.existencias', '>', 3)
+                ->get(['productos.clave_ct']
             );
         $fechaR = date('d')."-".date('m')."-".date('Y');
         $data['titulo'] = "EHS - WP - Enlaces de Imagenes - (".$fechaR.")";
-        // dd($data['productos'][0]['clave_ct']);
-        $aux = '//';
-        // for ($i = 0; $i < sizeof($data['productos']); $i++) {
-            // return Storage::download('http:'.$aux.'ctonline.mx/img/productos/'.$data['productos'][$i]['clave_ct'].'.jpg', $data['productos'][$i]['clave_ct'] );
-            // return Storage::download('https://ctonline.mx/img/productos/MONBNQ1240.jpg', $data['productos'][$i]['clave_ct']);
-        // }
         return view('wp.wp_imagenes', compact('data'));
 
     }
@@ -336,7 +337,7 @@ class WPController extends Controller
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->where('productos.estatus', 'Activo')
             ->whereIN('existencias.almacen_id', [50])
-            ->where('existencias.existencias', '>', 3)
+            ->where('existencias.existencias', '>', 0)
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereNotIn('productos.clave_ct', Woocommerce::get('woocommerce.clave_ct'))
             ->get([
@@ -366,12 +367,20 @@ class WPController extends Controller
         $fechaR = date('Y')."-".date('m')."-".date('d');
         $data['productos'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->leftJoin('margenes_por_producto', 'margenes_por_producto.clave_ct', '=', 'productos.clave_ct')
+            // ->leftjoin('promociones', 'promociones.clave_ct', 'productos.clave_ct')
             ->where('productos.clave_ct', '!=' , '')
             ->where('existencias.almacen_id', '=' , 50)
             ->get([
                 'productos.clave_ct',
                 'existencias.existencias',
-                'productos.estatus'
+                'productos.estatus',
+                'productos.clave_ct',
+                'productos.precio_unitario',
+                'margenes_por_producto.margen_utilidad as margen',
+                // 'promociones.fecha_inicio as inicio',
+                // 'promociones.fecha_fin as fin',
+                // 'promociones.descuento as descuento'
                 ]);
         $data['titulo'] = "EHS - WP - Inventario - (".$fechaR.")";        
         return view('wp.wp_inventario', compact('data'));
@@ -456,7 +465,7 @@ class WPController extends Controller
                 'promociones.descuento as descuento'
                 ]);
         // dd('Bien');
-        $data['titulo'] = "EHS - WP - Precios - (".$fechaR.")";        
+        $data['titulo'] = "EHS - WP - Promociones - (".$fechaR.")";        
         return view('wp.wp_promociones', compact('data'));
     }
 
@@ -529,6 +538,7 @@ class WPController extends Controller
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [978, 1008])
@@ -563,6 +573,7 @@ public function wp_bloque_bocinas(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [41, 1107])
@@ -597,6 +608,7 @@ public function wp_bloque_diademas(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [839, 977])
@@ -631,6 +643,7 @@ public function wp_bloque_gabinetes(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [832])
@@ -665,6 +678,7 @@ public function wp_bloque_impresion(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [792, 793, 131, 121, 53, 165])
@@ -699,6 +713,7 @@ public function wp_bloque_kit(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [517, 833])
@@ -733,6 +748,7 @@ public function wp_bloque_laptop(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [585, 789])
@@ -767,6 +783,7 @@ public function wp_bloque_ram(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [101])
@@ -801,6 +818,7 @@ public function wp_bloque_monitores(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [107, 324, 790, 985, 1103])
@@ -835,6 +853,7 @@ public function wp_bloque_mouse(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [110, 834])
@@ -869,6 +888,7 @@ public function wp_bloque_silla(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [901])
@@ -903,6 +923,7 @@ public function wp_bloque_smartwatch(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [976])
@@ -937,6 +958,7 @@ public function wp_bloque_tabletas(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [591])
@@ -971,6 +993,7 @@ public function wp_bloque_telacdos(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [157, 837])
@@ -1005,6 +1028,7 @@ public function wp_bloque_videovigilancia(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.categoria_id', [632])
@@ -1039,6 +1063,7 @@ public function wp_bloque_videovigilancia(){
             ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
             ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
             ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
             ->where('productos.clave_ct', '!=' , '')
             ->where('promociones.fecha_fin', '>=', $fecha)
             ->whereIN('productos.subcategoria_id', [100, 606, 608, 669, 64, 605, 870])
@@ -1434,4 +1459,109 @@ public function wp_bloque_videovigilancia(){
         }
         return view('wp.wp_carta_act_promo', compact('data'));
     }
+
+    public function wp_bloque_computadoras(){
+        set_time_limit(0);
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        $texto_inicial = 'Bloque de Computadoras';
+        Storage::append('bloques_promociones.txt', $texto_inicial);
+        $texto1 = '[products columns="4" orderby="menu_order" order="ASC" ids="';
+        Storage::append('bloques_promociones.txt', $texto1);
+        $data['productos'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+            ->Join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+            ->Join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+            ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
+            ->where('productos.clave_ct', '!=' , '')
+            ->where('promociones.fecha_fin', '>=', $fecha)
+            ->whereIN('productos.subcategoria_id', [585, 589, 28, 589])
+            ->get([
+                'woocommerce.idWP',
+                ]);
+        for ($i = 0; $i < sizeof($data['productos']); $i++) {
+            if(($i+1) != sizeof($data['productos'])){
+                $texto2 = $data['productos'][$i]['idWP']. ', ';
+                Storage::append("bloques_promociones.txt", $texto2, NULL);
+            }else{
+                $texto2 = $data['productos'][$i]['idWP'];
+                Storage::append("bloques_promociones.txt", $texto2, NULL);
+            }
+        }
+        $texto3 = '"][/vc_column][/vc_row]';
+        Storage::append("bloques_promociones.txt", $texto3, NULL);
+        $texto4 = 'Total de productos en landing: ' .$i;
+        Storage::append("bloques_promociones.txt", $texto4);
+    }
+    public function wp_bloque_componentes(){
+        set_time_limit(0);
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        $texto_inicial = 'Bloque de Componentes';
+        Storage::append('bloques_promociones.txt', $texto_inicial);
+        $texto1 = '[products columns="4" orderby="menu_order" order="ASC" ids="';
+        Storage::append('bloques_promociones.txt', $texto1);
+        $data['productos'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+            ->Join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+            ->Join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+            ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
+            ->where('productos.clave_ct', '!=' , '')
+            ->where('promociones.fecha_fin', '>=', $fecha)
+            ->whereIN('productos.subcategoria_id', [611, 613, 64, 605, 606, 917, 189, 79, 517, 101, 913, 107, 324, 1103, 109, 110, 104, 916, 156, 157, 1027])
+            ->get([
+                'woocommerce.idWP',
+                ]);
+        for ($i = 0; $i < sizeof($data['productos']); $i++) {
+            if(($i+1) != sizeof($data['productos'])){
+                $texto2 = $data['productos'][$i]['idWP']. ', ';
+                Storage::append("bloques_promociones.txt", $texto2, NULL);
+            }else{
+                $texto2 = $data['productos'][$i]['idWP'];
+                Storage::append("bloques_promociones.txt", $texto2, NULL);
+            }
+        }
+        $texto3 = '"][/vc_column][/vc_row]';
+        Storage::append("bloques_promociones.txt", $texto3, NULL);
+        $texto4 = 'Total de productos en landing: ' .$i;
+        Storage::append("bloques_promociones.txt", $texto4);
+    }
+    public function wp_bloque_gaming(){
+        set_time_limit(0);
+        $fecha = date('Y')."-".date('m')."-".date('d');
+        $texto_inicial = 'Bloque de Gaming';
+        Storage::append('bloques_promociones.txt', $texto_inicial);
+        $texto1 = '[products columns="4" orderby="menu_order" order="ASC" ids="';
+        Storage::append('bloques_promociones.txt', $texto1);
+        $data['productos'] = Producto::join('woocommerce', 'woocommerce.clave_ct', '=', 'productos.clave_ct')
+            ->Join('categorias', 'categorias.id', '=', 'productos.categoria_id')
+            ->Join('subcategorias', 'subcategorias.id', '=', 'productos.subcategoria_id')
+            ->join('promociones', 'promociones.clave_ct', '=', 'productos.clave_ct')
+            ->Join('existencias', 'existencias.clave_ct', '=', 'productos.clave_ct')
+            ->where('existencias.existencias', '>', 3)
+            ->where('existencias.almacen_id', '=', 50)
+            ->where('productos.clave_ct', '!=' , '')
+            ->where('promociones.fecha_fin', '>=', $fecha)
+            ->whereIN('productos.subcategoria_id', [287, 288, 289, 291, 292, 295, 296, 448, 450, 283, 285, 449, 293, 284, 286, 290, 294])
+            ->get([
+                'woocommerce.idWP',
+                ]);
+        for ($i = 0; $i < sizeof($data['productos']); $i++) {
+            if(($i+1) != sizeof($data['productos'])){
+                $texto2 = $data['productos'][$i]['idWP']. ', ';
+                Storage::append("bloques_promociones.txt", $texto2, NULL);
+            }else{
+                $texto2 = $data['productos'][$i]['idWP'];
+                Storage::append("bloques_promociones.txt", $texto2, NULL);
+            }
+        }
+        $texto3 = '"][/vc_column][/vc_row]';
+        Storage::append("bloques_promociones.txt", $texto3, NULL);
+        $texto4 = 'Total de productos en landing: ' .$i;
+        Storage::append("bloques_promociones.txt", $texto4);
+    }
+
+
 }

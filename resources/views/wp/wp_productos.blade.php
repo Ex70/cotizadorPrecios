@@ -121,12 +121,12 @@
 												$precio_normal= round((($productos->precio_unitario)*(1.10)),2);
 											}
 										}
-										if (($productos->almacen) == 50) {
+										// if (($productos->almacen) == 50) {
 											
-										}else{
-											$precio_rebajado = $precio_rebajado+100;
-											$precio_normal = $precio_normal+100;
-										}
+										// }else{
+										// 	$precio_rebajado = $precio_rebajado+100;
+										// 	$precio_normal = $precio_normal+100;
+										// }
 										// $precio_final = round((($productos->precio_unitario)*(1.10)),2)
 										// $precio_final = round((($productos->precio_unitario)*(($productos->margen)+1)),2)
 									@endphp

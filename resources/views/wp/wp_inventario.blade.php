@@ -27,6 +27,7 @@
 								<tr>
 									<th>SKU</th>
 									<th>Inventario</th>
+									<th>Precio normal</th>
                                     {{-- <th></th>
                                     <th></th> --}}
 								</tr>
@@ -42,6 +43,35 @@
 									@endif
                                     {{-- <td></td>
                                     <td></td> --}}
+									@php
+										if(isset($productos->margen)){
+											if(isset($productos->descuento)){
+												// $precio_rebajado = round(((($productos->precio_unitario)*(($productos->margen)+1))*((100-($productos->descuento))/100)),2);
+												$precio_normal= round((($productos->precio_unitario)*(($productos->margen)+1)),2);
+											}else{
+												// $precio_rebajado = '';
+												$precio_normal= round((($productos->precio_unitario)*(($productos->margen)+1)),2);
+											}
+										}else{
+											if(isset($productos->descuento)){
+												// $precio_rebajado = round((($productos->precio_unitario)*(1.10)*((100-($productos->descuento))/100)),2);
+												$precio_normal= round((($productos->precio_unitario)*(1.10)),2);
+											}else{
+												// $precio_rebajado = '';
+												$precio_normal= round((($productos->precio_unitario)*(1.10)),2);
+											}
+										}
+										// if (($productos->almacen) == 50) {
+											
+										// }else{
+										// 	$precio_rebajado = $precio_rebajado+100;
+										// 	$precio_normal = $precio_normal+100;
+										// }
+										// $precio_final = round((($productos->precio_unitario)*(1.10)),2)
+										// $precio_final = round((($productos->precio_unitario)*(($productos->margen)+1)),2)
+									@endphp
+									{{-- <td>{{$precio_rebajado}}</td>  --}}
+									<td>{{$precio_normal}}</td> 
 								</tr>
 								@endforeach
 							</tbody>

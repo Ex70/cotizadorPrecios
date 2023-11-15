@@ -75,6 +75,7 @@ Route::get('getMarca/{id?}/{id2?}', [PreciosController::class,'getMarcas'])->nam
 Route::get("json", [PreciosController::class, "lectura"]);
 Route::get("jsonLocal", [PreciosController::class, "lecturaLocal"]);
 Route::get("atributos", [PreciosController::class, "lecturaAtributos"]);
+Route::get("cva", [PreciosController::class, "lecturaCVA"]);
 Route::get("token", [CTConnect::class, "token"]);
 Route::get("sitemap", [PreciosController::class, "sitemap"]);
 Route::get("enlaces", [PreciosController::class, "enlaces"]);

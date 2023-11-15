@@ -295,6 +295,128 @@ class PreciosController extends Controller
         dd("Archivo cargado");
     }
 
+    public function lecturaCVA()
+    {
+      set_time_limit(0);
+      $xmlString = file_get_contents(storage_path() . "/app/public/ocelot.xml");
+      $xmlObject = simplexml_load_string($xmlString);
+      $json = json_encode($xmlObject);
+      $productos = json_decode($json, true);
+      dd($productos['item']);
+      // dd($productos['item'][0]);
+      
+      // dd($xmlString);
+
+        $products = new ProductosController();
+        $imagenes = new ImagenesController();
+        $existencias = new ExistenciasController();
+        $promociones = new PromocionesController();
+        // $apict = new CTConnect();
+        // $divisa= $apict->divisa();
+        $existencia_producto = 0;
+        // $products->limpieza();
+        // $existencias->limpieza();
+        // $promociones->limpieza();
+        for ($i = 0; $i < sizeof($productos['item']); $i++) {
+          // for($i=0;$i<10;$i++){
+            $existencia_producto = 0;
+            if ($productos[$i]['solucion'] != 0) {
+                // PRUEBA EXISTENCIAS
+                $existencia_producto = $productos[$i]['disponibleCD'];
+                dd($existencia_producto);
+                // $existencia_producto = $this->existenciasTotales($productos[$i]);
+                // $existencia_producto2 = $this->existenciasTotalesXalapa($productos[$i]);
+                $marca_nueva = Marca::updateOrCreate(
+                    ['id' => $productos[$i]['idMarca']],
+                    [
+                        'id' => $productos[$i]['idMarca'],
+                        'nombre' => $productos[$i]['marca']
+                    ]
+                );
+                $categoria_nueva = Categoria::updateOrCreate(
+                    ['id' => $productos[$i]['idCategoria']],
+                    [
+                        'id' => $productos[$i]['idCategoria'],
+                        'nombre' => $productos[$i]['categoria']
+                    ]
+                );
+                $subcategoria_nueva = Subcategoria::updateOrCreate(
+                    ['id' => $productos[$i]['idSubCategoria']],
+                    [
+                        'id' => $productos[$i]['idSubCategoria'],
+                        'categoria_id' => $productos[$i]['idCategoria'],
+                        'nombre' => $productos[$i]['subcategoria']
+                    ]
+                );
+                $producto = Producto::updateOrCreate(
+                    ['clave_ct' => $productos[$i]['clave']],
+                    [
+                        'idProductoCT' => $productos[$i]['idProducto'],
+                        'marca_id' => $productos[$i]['idMarca'],
+                        'subcategoria_id' => $productos[$i]['idSubCategoria'],
+                        'categoria_id' => $productos[$i]['idCategoria'],
+                        'nombre' => $productos[$i]['nombre'],
+                        'descripcion_corta' => $productos[$i]['descripcion_corta'],
+                        'precio_unitario' => $productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio'] * $productos[$i]['tipoCambio']) * 1.16), 2, '.', '') : number_format(($productos[$i]['precio'] * 1.16), 2, '.', ''),
+                        // 'precio_unitario' => $productos[$i]['moneda'] == "USD" ? number_format((($productos[$i]['precio'] * $divisa) * 1.16), 2, '.', '') : number_format(($productos[$i]['precio'] * 1.16), 2, '.', ''),
+                        'sku' => ltrim($productos[$i]['numParte']),
+                        'ean' => $productos[$i]['ean'],
+                        'upc' => $productos[$i]['upc'],
+                        // 'imagen' => $productos[$i]['imagen'],
+                        'existencias' => $existencia_producto,
+                        'estatus' => $productos[$i]['activo'] == 1 ? 'Activo' : 'Descontinuado'
+                    ]
+                );
+                if (!empty($productos[$i]['promociones'])) {
+                    if ($productos[$i]['promociones'][0]['tipo'] != "porcentaje") {
+                        $promocion = Promocion::updateOrCreate(
+                            ['clave_ct' => $productos[$i]['clave']],
+                            [
+                                'descuento' => 100 - ($productos[$i]['promociones'][0]['promocion'] * 100) / $productos[$i]['precio'],
+                                'fecha_inicio' => date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
+                                'fecha_fin' => date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))
+                            ]
+                        );
+                    } else {
+                        $promocion = Promocion::updateOrCreate(
+                            ['clave_ct' => $productos[$i]['clave']],
+                            [
+                                'descuento' => $productos[$i]['promociones'][0]['promocion'],
+                                'fecha_inicio' => date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['inicio'])),
+                                'fecha_fin' => date('Y-m-d', strtotime($productos[$i]['promociones'][0]['vigencia']['fin']))
+                            ]
+
+                        );
+                    }
+                }
+                // $palabras_clave = explode(",", $productos[$i]['descripcion_corta']);
+                // for ($j = 0; $j < sizeof($palabras_clave); $j++) {
+                //     $producto = Palabras::updateOrCreate(
+                //         [
+                //             'clave_ct' => $productos[$i]['clave'],
+                //             'palabra' => $palabras_clave[$j]
+                //         ]
+                //     );
+                // }
+            }
+        }
+        // $existencias = new CTConnect;
+        //         $existencias->existencias($productos);
+        // for($i=0;$i<2;$i++){
+        //     if($productos[$i]['idCategoria']!=0){
+        //         $palabras_clave = explode(",",$productos[$i]['descripcion_corta']);
+        //         for($j=0;$j<sizeof($palabras_clave);$j++){
+        //             $producto = Palabras::updateOrCreate(
+        //                 ['clave_ct'=>$productos[$i]['clave'],
+        //                 'palabra'=>$palabras_clave[$j]]
+        //             );
+        //         }
+        //     }
+        // }
+        // dd($productos);
+        dd("Archivo cargado");
+    }
+
     public function existencias($productos)
     {
         set_time_limit(0);
@@ -2693,10 +2815,21 @@ class PreciosController extends Controller
     {
       set_time_limit(0);
       $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
-      $productos = json_decode(file_get_contents(storage_path() . "/app/public/productos.json"), true);
-      $xml_file = simplexml_load_string($xmlstring);
-      $json = json_encode($xml_file );
-      $array = json_decode($json,TRUE);
+
+      $xmlString = file_get_contents(storage_path() . "/app/public/ocelot.xml");
+      $xmlObject = simplexml_load_string($xmlString);
+
+      // dd($xmlString);
+      $json = json_encode($xmlObject);
+      $array = json_decode($json, true);
+      dd($array);
+      dd($xmlString);
+
+      $atributos = file_get_contents(storage_path() . "/app/public/products.xml");
+      $xml_file = simplexml_load_string($atributos);
+      $json = json_encode($xml_file);
+      $atributos2 = json_decode($json,TRUE);
+      dd($atributos);
       for ($i = 0; $i < sizeof($productos); $i++) {
       // for ($i = 0; $i < 10; $i++) {
             $existencia_producto = 0;
